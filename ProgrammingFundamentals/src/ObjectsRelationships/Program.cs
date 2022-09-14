@@ -13,7 +13,7 @@ Chef chef = new Chef
     Salary = 80000,
     // Aggregation Relationship
     // If we delete the chef object, it doesn't affect the life cycle of cook object.
-    TeamMembers = new List<Employee> { cook }
+    Staff = new List<Employee> { cook }
 };
 
 chef.Tech();

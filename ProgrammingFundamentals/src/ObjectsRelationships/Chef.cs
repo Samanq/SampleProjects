@@ -6,10 +6,10 @@
     {
         // Aggregation Relationship
         // Chef HAS A OR SEVERAL Team members.
-        public List<Employee> TeamMembers { get; set; } = new List<Employee>();
+        public List<Employee> Staff { get; set; } = new List<Employee>();
         public void Tech()
         {
-            string membersName = string.Join(", ", TeamMembers.Select(t => $"{t.FirstName} {t.LastName} "));
+            string membersName = string.Join(", ", Staff.Select(t => $"{t.FirstName} {t.LastName} "));
 
             Console.WriteLine($"Chef {FirstName} {LastName} is teaching to {membersName}");
         }
