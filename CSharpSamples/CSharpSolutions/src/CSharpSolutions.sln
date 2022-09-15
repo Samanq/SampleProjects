@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MappingSample", "MappingSample", "{E6CAF0D3-0001-4824-AC9F-F7D82E74096A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingSample", "MappingSample\MappingSample.csproj", "{2917AAE2-E802-4AB3-9279-5DB78BD1A52F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MappingSample", "MappingSample\MappingSample.csproj", "{2917AAE2-E802-4AB3-9279-5DB78BD1A52F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GenericRepositorySample", "GenericRepositorySample", "{AF01D10C-D64E-4E36-A9E5-859EEB7F1C14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericRepositorySample", "GenericRepositorySample\GenericRepositorySample.csproj", "{7F26335A-F75B-4A1B-B045-FE437771FA20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +21,17 @@ Global
 		{2917AAE2-E802-4AB3-9279-5DB78BD1A52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2917AAE2-E802-4AB3-9279-5DB78BD1A52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2917AAE2-E802-4AB3-9279-5DB78BD1A52F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F26335A-F75B-4A1B-B045-FE437771FA20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F26335A-F75B-4A1B-B045-FE437771FA20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F26335A-F75B-4A1B-B045-FE437771FA20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F26335A-F75B-4A1B-B045-FE437771FA20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2917AAE2-E802-4AB3-9279-5DB78BD1A52F} = {E6CAF0D3-0001-4824-AC9F-F7D82E74096A}
+		{7F26335A-F75B-4A1B-B045-FE437771FA20} = {AF01D10C-D64E-4E36-A9E5-859EEB7F1C14}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80359828-D192-405E-82E2-1392E4D35199}
