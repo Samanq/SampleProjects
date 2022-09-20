@@ -1,4 +1,12 @@
+using CleanArchitecture.Application;
+using CleanArchitecture.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services
+    .AddApplication()
+    .AddInfraStructure();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

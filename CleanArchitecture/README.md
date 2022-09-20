@@ -17,7 +17,7 @@
 ---
 ## Contracts
 
-1. Create contracts in Peresntation.Contracts
+1. Create contracts in Peresntation.Contracts.
 ```c#
 namespace CleanArchitecture.Contracts.Authentication;
 
@@ -26,4 +26,53 @@ public record RegisterRequest(
     string LastName,
     string Email,
     string Password);
+```
+
+## API
+1. Create the Api Controllers in Api projects.
+```C#
+namespace CleanArchitecture.Api.Controllers;
+
+using CleanArchitecture.Contracts.Authentication;
+using Microsoft.AspNetCore.Mvc;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AuthenticationController : ControllerBase
+{
+    [HttpPost]
+    [Route("Login")]
+    public async Task<IActionResult> Login([FromBody]LoginRequest request)
+    {
+        return NoContent();
+    }
+
+    [HttpPost]
+    [Route("Register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        return NoContent();
+    }
+}
+
+```
+## Application layer
+1. Install Microsoft.Extensions.DependencyInjection.Abstractions package
+2. Create services here
+3. Define the DependencyInjection
+
+## Infrastucture layer
+1. Install Microsoft.Extensions.DependencyInjection.Abstractions package
+2. Define the DependencyInjection
+```C#
+namespace CleanArchitecture.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddInfraStructure(this IServiceCollection services)
+    {
+        return services;
+    }
+}
 ```
