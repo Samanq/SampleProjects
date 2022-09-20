@@ -14,3 +14,16 @@
 2. In the Infrastructure project add a refrence to the application project.
 3. In the Application project add a refrence to the domain project.
 4. In the Api project add a refrence to the Infrastructure project. (theoretically we shouldn't have a refrence from Presentation layer to Infrastructure layer, but in actuality we need a refrence to infrastructure  )
+---
+## Contracts
+
+1. Create contracts in Peresntation.Contracts
+```c#
+namespace CleanArchitecture.Contracts.Authentication;
+
+public record RegisterRequest(
+    string FirstName,
+    string LastName,
+    string Email,
+    string Password);
+```
