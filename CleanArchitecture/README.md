@@ -57,11 +57,13 @@ public class AuthenticationController : ControllerBase
 
 ```
 ## Application layer
+We Defining our Interface here.
 1. Install Microsoft.Extensions.DependencyInjection.Abstractions package
 2. Create services here
 3. Define the DependencyInjection
 
 ## Infrastucture layer
+We Implenet the Interfaces here
 1. Install Microsoft.Extensions.DependencyInjection.Abstractions package
 2. Define the DependencyInjection
 ```C#
@@ -76,3 +78,4 @@ public static class DependencyInjection
     }
 }
 ```
+3. Install System.IdentityModel.Tokens.Jwt package
