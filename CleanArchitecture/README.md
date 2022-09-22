@@ -79,3 +79,17 @@ public static class DependencyInjection
 }
 ```
 3. Install System.IdentityModel.Tokens.Jwt package
+4. Install Microsoft.Extensions.Configuration package  
+5. Install Microsoft.Extensions.Options.ConfigurationExtensions package
+
+### Adding user secret
+1. For initialing the user secrets run this command in terminal
+    - dotnet user-secrets init --project \<projectFolderPath>
+2. For setting the value of the user secret run this command in terminal
+    - dotnet user-secret set --project \<projectFolderPath> \<"settingKeyNameInAppSetting"> \<"user-secret-value">
+
+Example
+```powershell
+dotnet user-secrets init --project .\Presentation\CleanArchitecture.Api\
+dotnet user-secrets set --project .\Presentation\CleanArchitecture.Api\ "JwtSettings:Secret" "super-secret-key-from-user-secrets"
+```

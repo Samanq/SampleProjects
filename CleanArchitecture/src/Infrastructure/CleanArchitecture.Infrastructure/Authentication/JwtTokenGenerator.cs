@@ -2,6 +2,7 @@
 
 using CleanArchitecture.Application.Common.Interfaces.Authentication;
 using CleanArchitecture.Application.Common.Interfaces.Services;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,10 +10,12 @@ using System.Security.Claims;
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly JwtSettings _jwtSettings;
 
-    public JwtTokenGenerator(IDateTimeProvider dateTimeProvider)
+    public JwtTokenGenerator(IDateTimeProvider dateTimeProvider, IOptions<JwtSettings> jwtPptions)
     {
         _dateTimeProvider = dateTimeProvider;
+        _jwtSettings = jwtPptions.Value;
     }
 
     public string GenerateToken(Guid userId, string firstName, string lastName)
@@ -26,16 +29,16 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         };
 
         var signinCredential = new SigningCredentials(
-            new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("super-secret-key")),
+            new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
             SecurityAlgorithms.HmacSha256);
 
 
         var securityToken = new JwtSecurityToken(
-            issuer: "CleanArchitecture",
-            audience: "CleanArchitecture",
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
             claims: claims,
             signingCredentials: signinCredential,
-            expires: _dateTimeProvider.Now.AddDays(1)
+            expires: _dateTimeProvider.Now.AddMinutes(_jwtSettings.ExpiryMinutes)
             );
 
 
