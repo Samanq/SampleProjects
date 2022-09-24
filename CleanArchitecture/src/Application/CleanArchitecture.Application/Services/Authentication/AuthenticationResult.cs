@@ -1,8 +1,7 @@
-﻿namespace CleanArchitecture.Application.Services.Authentication;
+﻿using CleanArchitecture.Domain.Entities;
+
+namespace CleanArchitecture.Application.Services.Authentication;
 
 public record AuthenticationResult(
-Guid Id,
-string FirstName,
-string LastName,
-string Email,
-string Token);
+    User User,
+    string Token);

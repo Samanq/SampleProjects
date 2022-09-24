@@ -11,15 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Contracts
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7882D23D-52C6-4DA0-8D3F-C947A7581712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Infrastructure", "Infrastructure\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{BB0D1230-B21E-4C19-A109-5F4D340C7FA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure", "Infrastructure\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{BB0D1230-B21E-4C19-A109-5F4D340C7FA0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{A6C811EF-C089-4EAC-A060-053846F44ECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Application", "Application\CleanArchitecture.Application\CleanArchitecture.Application.csproj", "{1302E18B-73D0-4143-BD81-BA5B7E731E50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Application", "Application\CleanArchitecture.Application\CleanArchitecture.Application.csproj", "{1302E18B-73D0-4143-BD81-BA5B7E731E50}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{65A07634-870B-4D5A-98C8-A52C4BE74446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Domain", "Domain\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj", "{2ADEE605-AD34-4D94-85E1-295224F43145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Domain", "Domain\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj", "{2ADEE605-AD34-4D94-85E1-295224F43145}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

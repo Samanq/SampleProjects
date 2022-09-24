@@ -1,37 +1,57 @@
 ﻿using CleanArchitecture.Application.Common.Interfaces.Authentication;
+using CleanArchitecture.Application.Common.Interfaces.Persistence;
+using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.Services.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IUserRepository _userRepository;
 
-    public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator)
+    public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
+        _userRepository = userRepository;
     }
 
     public AuthenticationResult Login(string email, string password)
     {
-        return new AuthenticationResult(
-            Guid.NewGuid(),
-            "Saman",
-            "Qaydi",
-            email,
-            "000");
-        
+        if (_userRepository.GetByEmail(email) is not User user)
+        {
+            throw new Exception("This email does not exist");
+        }
+
+        if (user.Password != password)
+        {
+            throw new Exception("Wrong password");
+        }
+
+        var token = _jwtTokenGenerator.GenerateToken(user);
+
+        return new AuthenticationResult(user, token);
     }
 
     public AuthenticationResult Register(string firstName, string lastName, string email, string password)
     {
-        var userId = Guid.NewGuid();
-        var token = _jwtTokenGenerator.GenerateToken(userId, firstName, lastName);
+        if (_userRepository.GetByEmail(email) is not null)
+        {
+            throw new Exception("User already exist");
+        }
 
-        return new AuthenticationResult(
-            userId,
-            firstName,
-            lastName,
-            email,
-            token);
+        var user = new User
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            Password = password
+        };
+
+        _userRepository.Add(user);
+
+
+        var token = _jwtTokenGenerator.GenerateToken(user);
+
+        return new AuthenticationResult(user, token);
     }
 }
