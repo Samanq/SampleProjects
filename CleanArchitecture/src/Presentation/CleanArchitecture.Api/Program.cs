@@ -21,8 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler("/error");
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

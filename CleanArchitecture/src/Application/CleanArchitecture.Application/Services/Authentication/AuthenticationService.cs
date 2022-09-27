@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Interfaces.Authentication;
+﻿using CleanArchitecture.Application.Common.Errors;
+using CleanArchitecture.Application.Common.Interfaces.Authentication;
 using CleanArchitecture.Application.Common.Interfaces.Persistence;
 using CleanArchitecture.Domain.Entities;
 
@@ -36,7 +37,7 @@ public class AuthenticationService : IAuthenticationService
     {
         if (_userRepository.GetByEmail(email) is not null)
         {
-            throw new Exception("User already exist");
+            throw new DuplicateEmailException();
         }
 
         var user = new User
