@@ -1,7 +1,7 @@
 # C# Fundamentals
 
 ## Delegate
-- Delegate is a <ins>type</ins> that holds a <ins>reference</ins> to a <ins>method</ins>.
+- Delegate is a <ins>type</ins> that holds a <ins>reference</ins> to  <ins>methods</ins> with a particular parameter list and return type.
 - Delegate defines the rules of using.
 
 We have a DocumentReader class that is responsiple for returning the documents and it has a method for filtering documents.
@@ -66,6 +66,8 @@ In the program class when we want to filter our documents, we pass one of our fi
 ### Using the FilterDocuments method
 ```c#
 DocumentReader documentReader = new DocumentReader();
+
+// documents parameter is a list of documents we created earlier
 var importantDocument = documentReader.FilterDocuments(documents, DocumentFilters.IsImportant);
 
 Console.WriteLine("Important Documents:");
@@ -79,4 +81,79 @@ foreach (var document in importantDocument)
 ## Anonymous Method
 - Anonymous method is a method <ins>without a name</ins>.
 - Anonumous method can be defined by delegate keyword and can be assigned to a variable of type delegate.
+
+ ### Defining the delegate.
+```c#
+public class DocumentReader
+{
+    // Functions that using this delegete must get a document and return a boolean value.
+    public delegate bool DocumentFilterHandler(Document document);
+
+    public List<Document> FilterDocuments(IEnumerable<Document> documents, DocumentFilterHandler filter)
+    {
+        List<Document> filteredDocuments = new List<Document>();
+
+        foreach (var document in documents)
+        {
+            // If the result of the function that passes to this method is true.
+            if (filter(document))
+            {
+                filteredDocuments.Add(document);
+            }
+        }
+
+        return filteredDocuments;
+    }
+}
+```
+
+### Using the FilterDocuments method with anonymouse method
+```c#
+DocumentReader documentReader = new DocumentReader();
+
+// This is a anonymouse function.
+// It doesn't have a name and it defines by delegate keyword
+DocumentFilterHandler importantFilter = delegate (Document document)
+{
+    return document.Description
+    .ToLower()
+    .Contains("#important");
+};
+
+// documents parameter is a list of documents we created earlier
+var importantDocument = documentReader.FilterDocuments(documents, importantFilter);
+
+Console.WriteLine("Important Documents:");
+foreach (var document in importantDocument)
+{
+    Console.WriteLine($"{document.Title}\n{document.Description}\n");
+}
+Console.WriteLine("--------------------------------");
+```
+---
+
+### Lambda Expression
+
+For defining anonymouse functions with lambda expression.
+
+#### Intead of this
+```c#
+DocumentFilterHandler importantFilter = delegate (Document document)
+{
+    return document.Description
+    .ToLower()
+    .Contains("#important");
+};
+```
+
+#### We can use Statement
+```c#
+var testDocument = documentReader.FilterDocuments(documents, p => {
+    return p.Description.ToLower().Contains("#test");
+});
+```
+#### Or Expression lambda
+```c#
+var testDocument = documentReader.FilterDocuments(documents, p => p.Description.ToLower().Contains("#test"));
+```
 ---
