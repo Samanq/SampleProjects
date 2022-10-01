@@ -1,5 +1,6 @@
 ﻿public static class DocumentFilters
 {
+    // All methods get a document a return a boolean value like the delegate defines inside the DocumentReaderClass.
     public static bool IsTest(Document document)
     {
         return document.Description
