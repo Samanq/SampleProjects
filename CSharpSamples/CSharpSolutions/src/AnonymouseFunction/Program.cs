@@ -45,7 +45,8 @@ DocumentFilterHandler importantFilter = delegate (Document document)
     .Contains("#important");
 };
 
-// documents parameter is a list of documents we created earlier
+// documents parameter is a list of documents we created earlier.
+// importantFilter is a anonyumouse method.
 var importantDocuments = documentReader.FilterDocuments(documents, importantFilter);
 
 Console.WriteLine("Important Documents:");
