@@ -1,4 +1,4 @@
-# Glonal Error Handling
+# Global Error Handling
 
 ## Via Middleware
 1. Create a folder named Middleware,
@@ -42,8 +42,60 @@ public class ErrorHandlingMiddleware
  // Custom middleware for Error handling
 app.UseMiddleware<ErrorHandlingMiddleware>();
 ```
-
+---
 ## Via exception filter attribute
+1. Create a folder named Filters
+2. Create a class named ErrorHandlingFilterAttribute.cs that inherite from ExceptionFilterAttribute
+3. Override OnException
+```c#
+public class ErrorHandlingFilterAttribute : ExceptionFilterAttribute
+{
+    public override void OnException(ExceptionContext context)
+    {
+        Exception exception = context.Exception;
+
+        context.Result = new ObjectResult(new { error = "An Error occurred while processing your request" })
+        {
+            StatusCode = 500,
+        };
+
+        context.ExceptionHandled = true;
+    }
+}
+```
+4. Now you can add this attribute to every class you need.
+```C#
+[Route("api/[controller]")]
+[ApiController]
+[ErrorHandlingFilter]
+public class StudentsController : ControllerBase
+{
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        return Ok(students);
+    }
+
+    [HttpPost]
+    public IActionResult Create(Student student)
+    {
+        var currentStudent = students.SingleOrDefault(s => s.Email.ToLower() == student.Email.ToLower());
+
+        if (currentStudent is not null)
+        {
+            throw new Exception("Email already exist");
+        }
+
+        students.Add(student);
+
+        return CreatedAtAction(nameof(Get), new { id = student.Id }, student);
+    }
+}
+```
+5. Or add to all controllers via options into program.cs
+```C#
+builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
+```
 
 ## Problem Details
 
