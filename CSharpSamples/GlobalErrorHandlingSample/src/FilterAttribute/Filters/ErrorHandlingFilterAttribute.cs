@@ -1,18 +1,21 @@
-﻿namespace FilterAttribute.Filters;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Net;
 
+namespace FilterAttribute.Filters;
 public class ErrorHandlingFilterAttribute : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
     {
         Exception exception = context.Exception;
 
-        context.Result = new ObjectResult(new { error = exception.Message })
+        var problemDetails = new ProblemDetails 
         {
-            StatusCode = 500,
+            Title = exception.Message,
+            Status = (int)HttpStatusCode.InternalServerError,
         };
+
+        context.Result = new ObjectResult(problemDetails);
 
         context.ExceptionHandled = true;
     }
