@@ -9,6 +9,7 @@ public class ErrorHandlingFilterAttribute : ExceptionFilterAttribute
     {
         Exception exception = context.Exception;
 
+        // Using ProblemDetails instead of custom message
         var problemDetails = new ProblemDetails 
         {
             Title = exception.Message,

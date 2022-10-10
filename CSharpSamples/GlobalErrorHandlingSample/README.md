@@ -54,10 +54,18 @@ public class ErrorHandlingFilterAttribute : ExceptionFilterAttribute
     {
         Exception exception = context.Exception;
 
-        context.Result = new ObjectResult(new { error = "An Error occurred while processing your request" })
+        // context.Result = new ObjectResult(new { error = exception.Message })
+        // {
+        //     StatusCode = 500,
+        // };
+
+        // Using ProblemDetails instead of custom message
+        var problemDetails = new ProblemDetails 
         {
-            StatusCode = 500,
+            Title = exception.Message,
+            Status = (int)HttpStatusCode.InternalServerError,
         };
+        context.Result = new ObjectResult(problemDetails);
 
         context.ExceptionHandled = true;
     }
@@ -96,8 +104,6 @@ public class StudentsController : ControllerBase
 ```C#
 builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
 ```
-
-## Problem Details
 
 ## Via error endpoint
 
