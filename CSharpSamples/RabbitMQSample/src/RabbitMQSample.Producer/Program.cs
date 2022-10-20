@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 var factory = new ConnectionFactory
 {
     // URI_Pattern = protocol://username:password@server:port
-    Uri = new Uri("amqp://guest:guest@localhost:15672")
+    Uri = new Uri("amqp://guest:guest@localhost:5672")
 };
 
 using var connection = factory.CreateConnection();
