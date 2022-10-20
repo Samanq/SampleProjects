@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilterAttribute", "FilterAt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiddlewareAndErrorEndpoint", "MiddlewareAndErrorEndpoint\MiddlewareAndErrorEndpoint.csproj", "{E447DFED-B760-4533-9460-73BAA7F5AE61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomProblemDetailsFactory", "CustomProblemDetailsFactory\CustomProblemDetailsFactory.csproj", "{610DDC46-5A9C-4D85-A2A7-7E22E21D77A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E447DFED-B760-4533-9460-73BAA7F5AE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E447DFED-B760-4533-9460-73BAA7F5AE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E447DFED-B760-4533-9460-73BAA7F5AE61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{610DDC46-5A9C-4D85-A2A7-7E22E21D77A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{610DDC46-5A9C-4D85-A2A7-7E22E21D77A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{610DDC46-5A9C-4D85-A2A7-7E22E21D77A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{610DDC46-5A9C-4D85-A2A7-7E22E21D77A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

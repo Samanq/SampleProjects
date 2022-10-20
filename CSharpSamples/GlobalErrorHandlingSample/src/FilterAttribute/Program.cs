@@ -2,7 +2,9 @@ using FilterAttribute.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add ErrorHandlingFilterAttribute to all Controllers
 builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

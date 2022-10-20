@@ -1,7 +1,7 @@
-﻿namespace MiddlewareAndErrorEndpoint.Controllers;
-
+﻿using CustomProblemDetailsFactory.Models;
 using Microsoft.AspNetCore.Mvc;
-using MiddlewareAndErrorEndpoint.Models;
+
+namespace CustomProblemDetailsFactory.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -9,9 +9,9 @@ public class StudentsController : ControllerBase
 {
     private static List<Student> students = new List<Student>
     {
-        new Student{Id = 1, Name = "John", Email = "John@Example.com"},
-        new Student{Id = 2, Name = "Jane", Email = "Jane@Example.com"},
-        new Student{Id = 3, Name = "Peter", Email = "Peter@Example.com"}
+    new Student{Id = 1, Name = "John", Email = "John@Example.com"},
+    new Student{Id = 2, Name = "Jane", Email = "Jane@Example.com"},
+    new Student{Id = 3, Name = "Peter", Email = "Peter@Example.com"}
     };
 
     [HttpGet]
