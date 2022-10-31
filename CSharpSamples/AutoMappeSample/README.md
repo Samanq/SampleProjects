@@ -77,15 +77,8 @@ public class AutoMapperProfile : Profile
 			opt => opt.MapFrom(src => src.FirstName))
 			.ForMember(dest =>
 			dest.LName,
-			opt => opt.MapFrom(src => src.LastName));
-
-        CreateMap<StudentDto, Student>()
-			.ForMember(dest => 
-			dest.FirstName,
-			opt => opt.MapFrom(src => src.FName))
-            .ForMember(dest =>
-            dest.LastName,
-            opt => opt.MapFrom(src => src.LName));
+			opt => opt.MapFrom(src => src.LastName))
+			.ReverseMap(); // For reverse mapping.
     }
 }
 

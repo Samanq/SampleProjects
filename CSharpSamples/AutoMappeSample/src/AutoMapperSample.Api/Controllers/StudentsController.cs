@@ -19,6 +19,14 @@ public class StudentsController : ControllerBase
         return Ok(GenerateStudents().Select(student => _mapper.Map<StudentDto>(student)));
     }
 
+    [HttpPost]
+    public ActionResult<Student> CreateStudent(StudentDto dto)
+    {
+        var student = _mapper.Map<Student>(dto);
+
+        return Ok(student);
+    }
+
 
     private IEnumerable<Student> GenerateStudents()
     {
