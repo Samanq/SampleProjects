@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumSample.Api.Models;
 
 [Route("[controller]")]
@@ -35,5 +36,34 @@ public class StudentsController : ControllerBase
         });
 
         return Ok(students);
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody]Student student)
+    {
+        // Navigate to an url
+        _driver.Navigate().GoToUrl("http://localhost:5107/students/create");
+
+        // Getting an element by Id
+        IWebElement nameBox = _driver.FindElement(By.Id("name"));
+        // Sending keys to an element
+        nameBox.SendKeys(student.Name);
+
+        // Getting a Select element
+        // We Need Selenium.Support package for SelectElement
+        SelectElement genderSelect =
+            new SelectElement(_driver.FindElement(By.Id("gender")));
+        var genders = genderSelect.Options;
+
+        // Selecting an option inside a select
+        // We can select by index, value and text
+        genderSelect.SelectByValue(student.Gender);
+
+        // Submitting a form
+        // We can either select the form element or any element within the form.
+        IWebElement form = _driver.FindElement(By.Id("student-from"));
+        form.Submit();
+
+        return Ok();
     }
 }

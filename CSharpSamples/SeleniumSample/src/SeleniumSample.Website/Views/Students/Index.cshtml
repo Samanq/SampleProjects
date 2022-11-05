@@ -2,16 +2,21 @@
 
 <h1>Students</h1>
 
+<div class="row" style="margin-bottom:10px;">
+    <div class="col-12">
+        <a class="btn btn-success" asp-controller="Students" asp-action="Create">Create new Students</a>
+    </div>
+</div>
 <div class="row">
     @foreach (var student in Model)
     {
         <div class="col-4">
             <div class="student-card">
                 <p id="id" name="Id">@student.Id</p>
-                <p id = "name" name="Name">@student.Name</p>
+                <p id="name" name="Name">@student.Name</p>
                 <p><strong>@student.Gender</strong></p>
             </div>
-            
+
         </div>
     }
 </div>

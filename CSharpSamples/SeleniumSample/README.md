@@ -7,6 +7,7 @@ Install these packages from NuGet
 
 - Selenium.WebDriver
 - Selenium.WebDriver.ChromeDriver (The version should be compatible with your chrome on your machine)
+- Selenium.Support
 ---
 ## Initializing the WebDriver
 I'm using the using keyword for disposing the WebDriver in the end.
@@ -128,6 +129,19 @@ IWebElement emailBox =
 string emailBoxName = emailBox.GetAttribute("name");
 ```
 
+## Getting a Select element
+```C#
+IWebDriver _driver = new ChromeDriver()
+driver.Navigate().GoToUrl("http://localhost:5107/students/create");
+
+SelectElement genderSelect =
+    new SelectElement(_driver.FindElement(By.Id("gender")));
+var genders = genderSelect.Options;
+```
+---
+
+        
+
 ## Click on an element
 ```C#
 IWebDriver driver = new ChromeDriver()
@@ -148,6 +162,29 @@ WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
 IWebElement submitLink =
     wait.Until(d => d.FindElement(By.Id("submit")));
 ```
+
+## Selecting an option inside a select
+```C#
+// Getting a Select element
+// We Need Selenium.Support package for SelectElement
+SelectElement genderSelect =
+    new SelectElement(_driver.FindElement(By.Id("gender")));
+var genders = genderSelect.Options;
+
+// Selecting an option inside a select
+// We can select by index, value and text
+genderSelect.SelectByValue("Male");
+```
+
+## Submitting a form
+```C#
+// We can either select the form element or any element within the form.
+IWebElement form =
+    _driver.FindElement(By.Id("student-from"));
+form.Submit();
+```
+
+
 
 ## Implicit wait
 ```C#

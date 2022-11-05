@@ -28,8 +28,19 @@ namespace SeleniumSample.Website.Controllers
         };
         public IActionResult Index()
         {
-
             return View(_students);
+        }
+
+        public IActionResult Create()
+        {
+            return View(new Student());
+        }
+
+        [HttpPost]
+        public IActionResult Create(Student student)
+        {
+            if (ModelState.IsValid) _students.Add(student);
+            return RedirectToAction("Index");
         }
     }
 }
