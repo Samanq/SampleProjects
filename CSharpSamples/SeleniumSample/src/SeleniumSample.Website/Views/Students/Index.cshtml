@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Student>
+
+<h1>Students</h1>
+
+<div class="row">
+    @foreach (var student in Model)
+    {
+        <div class="col-4">
+            <div class="student-card">
+                <p id="id" name="Id">@student.Id</p>
+                <p id = "name" name="Name">@student.Name</p>
+                <p><strong>@student.Gender</strong></p>
+            </div>
+            
+        </div>
+    }
+</div>
