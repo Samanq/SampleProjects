@@ -140,30 +140,7 @@ var genders = genderSelect.Options;
 ```
 ---
 
-        
-
-## Click on an element
-```C#
-IWebDriver driver = new ChromeDriver()
-driver.Navigate().GoToUrl("https://www.w3schools.com/");
-
-IWebElement acceptCookiesButton = 
-    driver.FindElement(By.Id("accept-choices"));
-
-acceptCookiesButton.Click();
-```
-
-## Wait for an element
-```C#
-IWebDriver driver = new ChromeDriver()
-driver.Navigate().GoToUrl("https://www.w3schools.com/");
-
-WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
-IWebElement submitLink =
-    wait.Until(d => d.FindElement(By.Id("submit")));
-```
-
-## Selecting an option inside a select
+## Getting an option inside a select
 ```C#
 // Getting a Select element
 // We Need Selenium.Support package for SelectElement
@@ -175,6 +152,16 @@ var genders = genderSelect.Options;
 // We can select by index, value and text
 genderSelect.SelectByValue("Male");
 ```
+## Click on an element
+```C#
+IWebDriver driver = new ChromeDriver()
+driver.Navigate().GoToUrl("https://www.w3schools.com/");
+
+IWebElement acceptCookiesButton = 
+    driver.FindElement(By.Id("accept-choices"));
+
+acceptCookiesButton.Click();
+```
 
 ## Submitting a form
 ```C#
@@ -184,7 +171,15 @@ IWebElement form =
 form.Submit();
 ```
 
+## Wait for an element
+```C#
+IWebDriver driver = new ChromeDriver()
+driver.Navigate().GoToUrl("https://www.w3schools.com/");
 
+WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(1));
+IWebElement submitLink =
+    wait.Until(d => d.FindElement(By.Id("submit")));
+```
 
 ## Implicit wait
 ```C#
@@ -203,6 +198,27 @@ IReadOnlyCollection<IWebElement> rows =
     driver.FindElements(By.TagName("tr"));
 ```
 
+## Get and close an alert
+```C#
+_driver.Navigate().GoToUrl("http://localhost:5107/");
+
+// Open an alert
+IWebElement alertLink = _driver.FindElement(By.LinkText("Open an alert"));
+alertLink.Click();
+
+// Switching to the alert
+IAlert alert = _driver.SwitchTo().Alert();
+
+// Getting the alert text
+var alertText = alert.Text;
+
+// Close the alert
+alert.Accept();
+
+// Dismiss the alert
+alert.Dismiss();
+```
+
 ## Sending keys to an element
 ```C#
 IWebDriver driver = new ChromeDriver()
@@ -213,9 +229,62 @@ IWebElement searchBox =
 searchBox.SendKeys("python course");
 ```
 
+## Get and switch Tabs
+```C#
+_driver.Navigate().GoToUrl("http://localhost:5107/");
+
+// Opening a new tab
+IWebElement privacyLink = _driver.FindElement(By.LinkText("Privacy"));
+privacyLink.Click();
+
+// Get all tabs
+var allTabs = _driver.WindowHandles;
+
+// Switch to second tab
+_driver.SwitchTo().Window(allTabs[1]);
+``` 
+
+## Get and set cookies
+```C#
+_driver.Navigate().GoToUrl("http://localhost:5107/");
+
+// Set cookies
+_driver.Manage().Cookies.AddCookie(new Cookie("TestId", "Cookie Value"));
+
+// Read the cookie
+Cookie cookie = _driver.Manage().Cookies.GetCookieNamed("TestId");
+var cookieValue = cookie.Value;
+
+// Delete a cookie
+_driver.Manage().Cookies.DeleteCookieNamed("TestId");
+```
+
+
+## Changing browser aize and position
+```C#
+IWebDriver _driver = new ChromeDriver()
+_driver.Navigate().GoToUrl("http://localhost:5107/students");
+
+// Minimize the browser
+_driver.Manage().Window.Minimize();
+
+// Maximize the browser
+_driver.Manage().Window.Maximize();
+
+// Chnage the browser size
+_driver.Manage().Window.Size = new System.Drawing.Size(350, 450);
+
+// Chnage the browser position
+_driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
+
+// Full screen the browser
+_driver.Manage().Window.FullScreen();
+```
 
 
 
-            
+## Tips
+- Never minimize the browser before navigate.
+
 
 

@@ -1,9 +1,9 @@
-﻿namespace SeleniumSample.Api.Controllers;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumSample.Api.Models;
+
+namespace SeleniumSample.Api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
@@ -14,6 +14,7 @@ public class StudentsController : ControllerBase
     {
         _driver = driver;
     }
+
 
     [HttpGet]
     public IActionResult GetStudents()
