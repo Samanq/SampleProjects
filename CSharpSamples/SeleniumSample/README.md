@@ -281,6 +281,33 @@ _driver.Manage().Window.Position = new System.Drawing.Point(100, 100);
 _driver.Manage().Window.FullScreen();
 ```
 
+## Taking Screenshot
+```C#
+IWebDriver _driver = new ChromeDriver()
+_driver.Navigate().GoToUrl("http://localhost:5107/");
+ITakesScreenshot screenshotDriver = (ITakesScreenshot)_driver;
+
+Screenshot screenshot = screenshotDriver.GetScreenshot();
+
+screenshot.SaveAsFile("bin/homePage.png", ScreenshotImageFormat.Png);
+```
+
+## Executing JavaScript
+```C#
+IWebDriver _driver = new ChromeDriver()
+_driver.Navigate().GoToUrl("http://localhost:5107/");
+
+IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
+
+// Get a value
+string script = "return document.getElementById('google-btn').innerText";
+string buttonText = (string)js.ExecuteScript(script);
+
+// Executing a script
+var enableScript = "document.getElementById('google-btn').removeAttribute('disabled');";
+js.ExecuteScript(enableScript);
+```
+
 
 
 ## Tips

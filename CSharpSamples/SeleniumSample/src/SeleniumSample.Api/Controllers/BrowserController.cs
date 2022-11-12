@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace SeleniumSample.Api.Controllers;
 
@@ -87,5 +88,51 @@ public class BrowserController : ControllerBase
 
 
         return Ok(cookie.Value);
+    }
+
+    [HttpGet("TakeScreenshot")]
+    public IActionResult TakeScreenshot()
+    {
+        _driver.Navigate().GoToUrl("http://localhost:5107/");
+        ITakesScreenshot screenshotDriver = (ITakesScreenshot)_driver;
+
+        Screenshot screenshot = screenshotDriver.GetScreenshot();
+
+        screenshot.SaveAsFile("bin/homePage.png", ScreenshotImageFormat.Png);
+
+        return Ok();
+    }
+
+    [HttpGet("ExecuteJavaScript")]
+    public IActionResult ExecuteJavaScript() 
+    {
+        _driver.Navigate().GoToUrl("http://localhost:5107/");
+        IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
+
+        string script = "return document.getElementById('google-btn').innerText";
+        string buttonText = (string)js.ExecuteScript(script);
+
+        var enableScript = "document.getElementById('google-btn').removeAttribute('disabled');";
+        js.ExecuteScript(enableScript);
+
+        return Ok(buttonText);
+    }
+
+    [HttpGet("BrowserSettings")]
+    public IActionResult BrowserSettings()
+    {
+        Proxy proxy = new Proxy();
+        proxy.Kind = ProxyKind.Manual;
+
+
+        ChromeOptions options = new ChromeOptions();
+        options.AddArgument("--incognito");
+        options.AddArgument("--disable-gpu");
+        options.AddArgument("--start-maximized");
+        options.AcceptInsecureCertificates = true;
+
+        IWebDriver driver = new ChromeDriver(options);
+
+        return Ok();
     }
 }
