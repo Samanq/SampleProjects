@@ -54,6 +54,7 @@ public class ErrorHandlingFilterAttribute : ExceptionFilterAttribute
     {
         Exception exception = context.Exception;
 
+        // Creating a custom message
         // context.Result = new ObjectResult(new { error = exception.Message })
         // {
         //     StatusCode = 500,
@@ -65,13 +66,13 @@ public class ErrorHandlingFilterAttribute : ExceptionFilterAttribute
             Title = exception.Message,
             Status = (int)HttpStatusCode.InternalServerError,
         };
-        context.Result = new ObjectResult(problemDetails);
 
+        context.Result = new ObjectResult(problemDetails);
         context.ExceptionHandled = true;
     }
 }
 ```
-4. Now you can add this attribute to every class you need.
+4. Now you can add [ErrorHandlingFilter] attribute to every controller you need.
 ```C#
 [Route("api/[controller]")]
 [ApiController]
@@ -100,12 +101,12 @@ public class StudentsController : ControllerBase
     }
 }
 ```
-5. Or add to all controllers via options into program.cs
+5. Or add to all controllers via options into program.cs instead of adding the attribute to all controlers.
 ```C#
 // Add ErrorHandlingFilterAttribute to all Controllers
 builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
 ```
-
+---
 ## Via Middleware and error endpoint
 1. In Program.cs add UseExceptionHandler(route)
 ```C#
@@ -132,6 +133,7 @@ public class ErrorsController : ControllerBase
 }
 
 ```
+---
 ## Endpoint with custom ProblemDetailsFactory
 1. Cerate a folder named Errors.
 2. Create a class and inherite from ProblemDetailsFactoty and modify it as you like.
@@ -230,8 +232,38 @@ public class MyCustomProblemDetailsFactory : ProblemDetailsFactory
 // Add Our CustomProblemDetailsFactory
 builder.Services.AddSingleton<ProblemDetailsFactory, MyCustomProblemDetailsFactory>();
 ```
+4. Create a Controller named ErrorsController.
+```C#
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
-4. In Program.cs add UseExceptionHandler(route)
+namespace CustomProblemDetailsFactory.Controllers;
+
+[ApiController]
+[ApiExplorerSettings(IgnoreApi = true)] // We add this because if we define an action without http method attribute, swagger will not run properly
+public class ErrorsController : ControllerBase
+{
+    // No Http Method
+    [Route("/error")]
+    public IActionResult Error()
+    {
+        Exception? exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+        
+        return Problem();
+    }
+}
+
+```
+5. In Program.cs add UseExceptionHandler(route)
 ```C#
 app.UseExceptionHandler("/error");
+```
+6. If you are usign minimal api you use this approach instead of ProblemDetailsFactory in program.cs
+```C#
+// For Minimal implementation
+app.Map("/error", (HttpContext? httpContext) =>
+{
+    Exception? exception = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+    return Results.Problem();
+});
 ```

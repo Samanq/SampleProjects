@@ -1,5 +1,6 @@
 ﻿using CustomProblemDetailsFactory.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 
 namespace CustomProblemDetailsFactory.Controllers;
 
@@ -33,7 +34,8 @@ public class StudentsController : ControllerBase
 
         if (currentStudent is not null)
         {
-            throw new Exception("Email already exist");
+            throw new BadHttpRequestException("Email already exist", 403);
+            
         }
 
         students.Add(student);

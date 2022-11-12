@@ -1,4 +1,5 @@
 using CustomProblemDetailsFactory.Errors;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,14 +15,22 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Add ExceptionHandler with a route
 app.UseExceptionHandler("/error");
+
+// For Minimal implementation
+//app.Map("/error", (HttpContext? httpContext) =>
+//{
+//    Exception? exception = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+//    return Results.Problem();
+//});
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
