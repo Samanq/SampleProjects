@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SerilogSample.WebApi.Models;
 
 namespace SerilogSample.WebApi.Controllers
 {
@@ -66,10 +67,4 @@ namespace SerilogSample.WebApi.Controllers
             }
         }
     }
-}
-
-public class Student
-{
-    public string Name { get; set; } = string.Empty;
-    public int Age { get; set; }
 }
