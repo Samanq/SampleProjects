@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 
 try
 {
-    Log.Information("Starting the WebApi");
+    Log.Information("Starting the WebApi...");
 
     var app = builder.Build();
 
@@ -27,10 +27,11 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
+    
     app.UseAuthorization();
     app.MapControllers();
     app.Run();
+    app.UseSerilogRequestLogging(); // Log every request by serilog.
 
 }
 catch (Exception ex)
@@ -40,6 +41,8 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
+    Log.Information("Finnaly");
+
 }
 
 
