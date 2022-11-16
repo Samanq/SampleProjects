@@ -85,3 +85,27 @@ public IActionResult GetByLastName([StringLength(10)] string LastName)
         .Where(s => s.LastName.ToLower() == LastName.ToLower()));
 }
 ```
+## Fluent Validation
+1. Install FluentValidation.AspNetCore Package
+2. Create a Class named dog as model
+```C#
+public class Dog
+{
+    public string Name { get; set; } = string.Empty;
+    public int Age { get; set; }
+    public string Color { get; set; } = string.Empty;
+}
+```
+3. Create a class named DogValidator and inherite from AbstractValidator
+```C#
+public class DogValidator : AbstractValidator<Dog>
+{
+    public DogValidator()
+    {
+        RuleFor(d => d.Color).NotNull().NotEmpty();
+        RuleFor(d => d.OwnerEmail).EmailAddress();
+        RuleFor(d => d.Color).NotNull().MaximumLength(10);
+        RuleFor(d => d.Color).Must(d => d?.ToLower().Contains("color") == true);
+    }
+}
+```
