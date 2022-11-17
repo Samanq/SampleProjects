@@ -1,6 +1,6 @@
 # Dotnet WebApi Validation
 
-## Validation Attributes
+## Validation Attributes (Data Annotation)
 Create a Student class as a model and use validation attribute for validation
 
 ```C#
@@ -104,8 +104,99 @@ public class DogValidator : AbstractValidator<Dog>
     {
         RuleFor(d => d.Color).NotNull().NotEmpty();
         RuleFor(d => d.OwnerEmail).EmailAddress();
-        RuleFor(d => d.Color).NotNull().MaximumLength(10);
-        RuleFor(d => d.Color).Must(d => d?.ToLower().Contains("color") == true);
+        RuleFor(d => d.Color).NotNull().MaximumLength(20);
+
+        // Include other validation class for readability
+        Include(new DogComplexValidator());
+
+        // Validating a collection member
+        RuleForEach(d => d.DogToys).SetValidator(new DogToyValidator());
     }
 }
+
+public class DogComplexValidator : AbstractValidator<Dog>
+{
+    public DogComplexValidator()
+    {
+        RuleFor(d => d.Color)
+            .Must(d => d?.ToLower().Contains("color") == true)
+            .WithMessage("Color must contains a word 'color'");
+    }
+}
+```
+4. Register the validator in program.cs
+```C#
+// Register the FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+// Register from the assembly.
+builder.Services.AddValidatorsFromAssemblyContaining<DogValidator>();
+// Or register a single validator
+//builder.Services.AddScoped<IValidator<Dog>, DogValidator>();
+```
+
+## Validating outside the controller
+1. Create a service for dogToys and Inject the IValidator.
+```C#
+public class DogToyService : IDogToyService
+{
+    private static List<DogToy> _dogToys = new List<DogToy>()
+    {
+        new DogToy
+        {
+            Name= "Ball",
+            Color = "Red",
+            HasSound = true
+        }
+    };
+
+    private readonly IValidator<DogToy> _validator;
+
+    // Injecting the IValidaor
+    public DogToyService(IValidator<DogToy> validator)
+    {
+        _validator = validator;
+    }
+
+    public async Task Create(DogToy dogToy)
+    {
+        // throw exception if validation fails.
+        await _validator.ValidateAndThrowAsync(dogToy);
+
+        _dogToys.Add(dogToy);
+    }
+}
+```
+2. Create the DogToysController and inject the IDogToyServiuce,  then, call the Create Method
+```C#
+[Route("[controller]")]
+[ApiController]
+public class DogToysController : ControllerBase
+{
+    private readonly IDogToyService _dogToyService;
+
+    public DogToysController(IDogToyService dogToyService)
+    {
+        _dogToyService = dogToyService;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(string name, string color)
+    {
+        // Create method inside the DogToyService is responsible for validation
+        await _dogToyService.Create(new Models.DogToy
+        { 
+            Name = name,
+            Color = color,
+            HasSound = true 
+        });
+
+        return Ok(_dogToyService.GetAll());
+    }
+
+}
+```
+3. Register the IDogService in Program.cs
+```C#
+// Registering IDogToyService
+builder.Services.AddScoped<IDogToyService, DogToyService>();
 ```

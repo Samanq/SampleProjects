@@ -2,44 +2,43 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiValidationSample.Controllers
+namespace ApiValidationSample.Controllers;
+
+[Route("[controller]")]
+[ApiController]
+public class StudentsController : ControllerBase
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class StudentsController : ControllerBase
+    private static List<Student> _students = new List<Student> 
     {
-        private List<Student> _students = new List<Student> 
+        new Student
         {
-            new Student
-            {
-                FirstName= "John",
-                LastName= "Doe",
-                Code= "abc",
-                Email= "John.Doe@Exampl.com",
-                PhoneNumber = "113"
-            }
-        };
-
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(_students);
+            FirstName= "John",
+            LastName= "Doe",
+            Code= "abc",
+            Email= "John.Doe@Exampl.com",
+            PhoneNumber = "113"
         }
+    };
 
-        [HttpGet("GetByLastName")]
-        public IActionResult GetByLastName([StringLength(10)] string LastName)
-        {
-            return Ok(_students
-                .Where(s => s.LastName.ToLower() == LastName.ToLower()));
-        }
 
-        [HttpPost]
-        public IActionResult Create([FromBody] Student student)
-        {
-            _students.Add(student);
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok(_students);
+    }
 
-            return Ok(_students);
-        }
+    [HttpGet("GetByLastName")]
+    public IActionResult GetByLastName([StringLength(10)] string LastName)
+    {
+        return Ok(_students
+            .Where(s => s.LastName.ToLower() == LastName.ToLower()));
+    }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] Student student)
+    {
+        _students.Add(student);
+
+        return Ok(_students);
     }
 }
