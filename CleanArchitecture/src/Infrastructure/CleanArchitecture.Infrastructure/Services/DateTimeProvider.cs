@@ -2,5 +2,5 @@
 using CleanArchitecture.Application.Common.Interfaces.Services;
 public class DateTimeProvider : IDateTimeProvider
 {
-    public DateTime Now => DateTime.UtcNow;
+    public DateTime UtcNow => DateTime.UtcNow;
 }

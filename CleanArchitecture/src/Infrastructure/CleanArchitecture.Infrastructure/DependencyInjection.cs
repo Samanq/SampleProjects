@@ -1,6 +1,4 @@
-﻿namespace CleanArchitecture.Infrastructure;
-
-using CleanArchitecture.Application.Common.Interfaces.Authentication;
+﻿using CleanArchitecture.Application.Common.Interfaces.Authentication;
 using CleanArchitecture.Application.Common.Interfaces.Persistence;
 using CleanArchitecture.Application.Common.Interfaces.Services;
 using CleanArchitecture.Infrastructure.Authentication;
@@ -8,6 +6,8 @@ using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+namespace CleanArchitecture.Infrastructure;
 
 public static class DependencyInjection
 {

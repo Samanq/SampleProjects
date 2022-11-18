@@ -18,6 +18,77 @@ There are 4 layers in Domain-Driven Design
 3. In the **Application** project add a refrence to the **domain** project.
 4. In the **Api** project add a refrence to the **Infrastructure** project. (theoretically we shouldn't have a refrence from Presentation layer to Infrastructure layer, but actuality we need a refrence to infrastructure).
 ---
+
+## Defining Entities in **Domain Layer**
+We Defining entities and exceptions in domain layer.
+1. Open the **CleanArchitecture.Domain**, create a folder named Entities and inside that create a class named **User**
+```C#
+namespace CleanArchitecture.Domain.Entities;
+
+public class User
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+```
+---
+## Defining IDateTimeProvider inteface in **Application layer**
+1. Open the **CleanArchitecture.Application** project.
+2. Navigate to **Common/Interfaces/Services/** and create IDateTimeProvider **interface**.
+```C#
+namespace CleanArchitecture.Application.Common.Interfaces.Services;
+
+public interface IDateTimeProvider
+{
+    DateTime UtcNow { get; }
+}
+```
+
+## Implementing IDateProvider in **Infrastructure layer**
+1. Open the **CleanArchitecture.Infrastructure** project.
+2. Navigate to **Services/** then create **DateTimeProvider** class and Implement **IDateTimeProvider**
+```C#
+namespace CleanArchitecture.Infrastructure.Services;
+using CleanArchitecture.Application.Common.Interfaces.Services;
+
+public class DateTimeProvider : IDateTimeProvider
+{
+    public DateTime UtcNow => DateTime.UtcNow;
+}
+```
+## Registering DateTimeProvider service.
+1. Install Microsoft.Extensions.DependencyInjection.Abstractions package in **CleanArchitecture.Infrastructure** project.
+2. In **CleanArchitecture.Infrastructure** project create a class named DependencyInjection.
+3. Create AddInfraStructure method and Add DateTimeProvider as a singleton service.
+
+note: **AddInfraStructure** method returns all services for Infrastructure layer.
+
+```C#
+using CleanArchitecture.Application.Common.Interfaces.Services;
+using CleanArchitecture.Infrastructure.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace CleanArchitecture.Infrastructure;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddInfraStructure(this IServiceCollection services)
+    {
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        return services;
+    }
+}
+```
+4. Open **CleanArchitecture.Api** Project and in **program.cs** register the infrastructure DependencyInjection
+```C#
+builder.Services
+    .AddInfraStructure();  // Registering Insfrastructure Dependencies
+```
+---
+
 ## Presentation Layer - Contracts
 
 1. Open the **CleanArchitecture.Contracts** project and create a folder named Authentication then create the following **records** for requests model.
@@ -66,21 +137,7 @@ public class AuthenticationController : ControllerBase
 }
 ```
 
-## Domain Layer
-We Defining entities here.
-1. Open the **CleanArchitecture.Domain**, create a folder named Entities and inside that create a class named **User**
-```C#
-namespace CleanArchitecture.Domain.Entities;
 
-public class User
-{
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-}
-```
 ## Application layer
 We Defining our Interfaces here.
 1. Install **Microsoft.Extensions.DependencyInjection.Abstractions** package in **CleanArchitecture.Application** project.

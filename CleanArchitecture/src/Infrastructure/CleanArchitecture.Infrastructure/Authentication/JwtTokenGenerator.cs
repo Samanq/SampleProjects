@@ -39,7 +39,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             audience: _jwtSettings.Audience,
             claims: claims,
             signingCredentials: signinCredential,
-            expires: _dateTimeProvider.Now.AddMinutes(_jwtSettings.ExpiryMinutes)
+            expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes)
             );
 
 
