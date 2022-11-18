@@ -3,10 +3,9 @@ using CleanArchitecture.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services
-    .AddApplication()
-    .AddInfraStructure(builder.Configuration);
+    .AddApplication()   // Registering Application Dependencies
+    .AddInfraStructure(builder.Configuration);  // Registering Insfrastructure Dependencies
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -4,7 +4,7 @@ using CleanArchitecture.Application.Services.Authentication;
 using CleanArchitecture.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
@@ -17,7 +17,7 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost]
     [Route("Login")]
-    public async Task<IActionResult> Login([FromBody]LoginRequest request)
+    public IActionResult Login([FromBody]LoginRequest request)
     {
         var authResult = _authenticationService.Login(
             request.Email,
@@ -35,7 +35,7 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost]
     [Route("Register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public IActionResult Register([FromBody] RegisterRequest request)
     {
         var authResult = _authenticationService.Register(
             request.FirstName,
