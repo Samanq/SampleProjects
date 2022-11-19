@@ -2,11 +2,12 @@
 
 using CleanArchitecture.Application.Services.Authentication;
 using CleanArchitecture.Contracts.Authentication;
+using CleanArchitecture.Domain.Common.Errors;
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
-[ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
 {
     private readonly IAuthenticationService _authenticationService;
 
@@ -23,33 +24,39 @@ public class AuthenticationController : ControllerBase
             request.Email,
             request.Password);
 
-        var response = new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Email,
-            authResult.Token);
-
-        return Ok(response);
+        if (authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredential)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: authResult.FirstError.Description);
+        }
+        return authResult.Match(
+            authResult => Ok(MapAuthResult(authResult)),
+            errors => Problem(errors));
     }
 
     [HttpPost]
     [Route("Register")]
     public IActionResult Register([FromBody] RegisterRequest request)
     {
-        var authResult = _authenticationService.Register(
+        ErrorOr<AuthenticationResult> authResult = _authenticationService.Register(
             request.FirstName,
             request.LastName,
             request.Email,
             request.Password);
 
-        var response = new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Email,
-            authResult.Token);
+        return authResult.Match(
+            authResult => Ok(MapAuthResult(authResult)),
+            errors => Problem(errors));
+    }
 
-        return Ok(response);
+    private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
+    {
+        return new AuthenticationResponse(
+                    authResult.User.Id,
+                    authResult.User.FirstName,
+                    authResult.User.LastName,
+                    authResult.User.Email,
+                    authResult.Token);
     }
 }

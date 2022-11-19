@@ -1,7 +1,9 @@
 ﻿using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Application.Common.Interfaces.Authentication;
 using CleanArchitecture.Application.Common.Interfaces.Persistence;
+using CleanArchitecture.Domain.Common.Errors;
 using CleanArchitecture.Domain.Entities;
+using ErrorOr;
 
 namespace CleanArchitecture.Application.Services.Authentication;
 
@@ -16,16 +18,18 @@ public class AuthenticationService : IAuthenticationService
         _userRepository = userRepository;
     }
 
-    public AuthenticationResult Login(string email, string password)
+    public ErrorOr<AuthenticationResult> Login(string email, string password)
     {
         if (_userRepository.GetByEmail(email) is not User user)
         {
-            throw new Exception("This email does not exist");
+            // Return one error
+            return Errors.Authentication.InvalidCredential;
         }
 
         if (user.Password != password)
         {
-            throw new Exception("Wrong password");
+            // Return list of errors
+            return new[] { Errors.Authentication.InvalidCredential };
         }
 
         var token = _jwtTokenGenerator.GenerateToken(user);
@@ -33,11 +37,11 @@ public class AuthenticationService : IAuthenticationService
         return new AuthenticationResult(user, token);
     }
 
-    public AuthenticationResult Register(string firstName, string lastName, string email, string password)
+    public ErrorOr<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
     {
         if (_userRepository.GetByEmail(email) is not null)
         {
-            throw new DuplicateEmailException();
+            return Errors.User.DuplicateError;
         }
 
         var user = new User
