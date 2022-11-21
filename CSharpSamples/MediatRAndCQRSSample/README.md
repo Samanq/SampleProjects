@@ -60,6 +60,9 @@ public interface IPesonRepository
 ```
 
 ### Defining Commands and queries for MediatR
+A **command** does something but does not return a value
+
+A **Query** returns a result
 1. Create folder named **Features**, then create a folder inside that named **People** for your entity.
 
 2. Inside **People** create two folder named **Commands** and **Queries**.
