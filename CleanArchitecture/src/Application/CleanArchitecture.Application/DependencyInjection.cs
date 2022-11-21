@@ -1,15 +1,13 @@
-﻿namespace CleanArchitecture.Application;
-
-using CleanArchitecture.Application.Services.Authentication;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+namespace CleanArchitecture.Application;
 public static class DependencyInjection
 {
     // Registering every service in application layer
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
-
+        services.AddMediatR(typeof(DependencyInjection).Assembly);
         return services;
     }
 }

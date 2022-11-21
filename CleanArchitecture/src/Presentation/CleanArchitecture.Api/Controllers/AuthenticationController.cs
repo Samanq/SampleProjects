@@ -1,28 +1,33 @@
-﻿namespace CleanArchitecture.Api.Controllers;
-
-using CleanArchitecture.Application.Services.Authentication;
+﻿using CleanArchitecture.Application.Authentication.Commands.Register;
+using CleanArchitecture.Application.Authentication.Common;
+using CleanArchitecture.Application.Authentication.Queries.Login;
 using CleanArchitecture.Contracts.Authentication;
 using CleanArchitecture.Domain.Common.Errors;
 using ErrorOr;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
+namespace CleanArchitecture.Api.Controllers;
 [Route("[controller]")]
 public class AuthenticationController : ApiController
 {
-    private readonly IAuthenticationService _authenticationService;
+    // Using ISender instead of IMediator
+    //private readonly IMediator _mediator;
+    private readonly ISender _mediator;
 
-    public AuthenticationController(IAuthenticationService authenticationService)
+
+    public AuthenticationController(IMediator mediator)
     {
-        _authenticationService = authenticationService;
+        _mediator = mediator;
     }
+    
 
     [HttpPost]
     [Route("Login")]
-    public IActionResult Login([FromBody]LoginRequest request)
+    public async Task<IActionResult> Login([FromBody]LoginRequest request)
     {
-        var authResult = _authenticationService.Login(
-            request.Email,
-            request.Password);
+        var query = new LoginQuery(request.Email, request.Password);
+        ErrorOr<AuthenticationResult> authResult = await _mediator.Send(query);
 
         if (authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredential)
         {
@@ -37,13 +42,10 @@ public class AuthenticationController : ApiController
 
     [HttpPost]
     [Route("Register")]
-    public IActionResult Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult>  Register([FromBody] RegisterRequest request)
     {
-        ErrorOr<AuthenticationResult> authResult = _authenticationService.Register(
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            request.Password);
+        var command = new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
+        ErrorOr<AuthenticationResult> authResult = await _mediator.Send(command);
 
         return authResult.Match(
             authResult => Ok(MapAuthResult(authResult)),
