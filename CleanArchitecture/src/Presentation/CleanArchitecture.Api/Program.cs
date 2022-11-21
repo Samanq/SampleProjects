@@ -1,18 +1,14 @@
-using CleanArchitecture.Api.Common.Errors;
+using CleanArchitecture.Api;
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
+    .AddPresentation()  // Registering Presentation Dependencies
     .AddApplication()   // Registering Application Dependencies
     .AddInfraStructure(builder.Configuration);  // Registering Insfrastructure Dependencies
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<ProblemDetailsFactory, SampleProblemDetailsFactory>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

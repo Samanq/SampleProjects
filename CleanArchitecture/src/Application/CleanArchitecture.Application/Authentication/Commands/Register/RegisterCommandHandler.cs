@@ -22,6 +22,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
+        await Task.CompletedTask; // For Getting rid of the warning
+
         if (_userRepository.GetByEmail(command.Email) is not null)
         {
             return Errors.User.DuplicateError;
