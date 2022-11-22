@@ -1,7 +1,7 @@
 ﻿using ApiValidationSample.Models;
 using FluentValidation;
 
-namespace ApiValidationSample.Validators;
+namespace ApiValidationSample.Validations;
 
 public class DogToyValidator : AbstractValidator<DogToy>
 {

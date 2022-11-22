@@ -1,5 +1,5 @@
+using ApiValidationSample.Common;
 using ApiValidationSample.Services;
-using ApiValidationSample.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 // Register the FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
 // Register from the assembly.
-builder.Services.AddValidatorsFromAssemblyContaining<DogValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<IAssemblyMarker>();
 // Or register a single validator
 //builder.Services.AddScoped<IValidator<Dog>, DogValidator>();
 

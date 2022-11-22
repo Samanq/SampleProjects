@@ -25,9 +25,12 @@ public class Student
 
     [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage ="Code should contain only a-z letters")]
     public string Code { get; set; } = string.Empty;
+
+    [MinLength(10), MaxLength(50)]
+    public string Description { get; set; } = string.Empty;
 }
 ```
-
+---
 ## Implementing IValidatableObject
 ```C#
 public class Teacher : IValidatableObject
@@ -45,11 +48,13 @@ public class Teacher : IValidatableObject
     }
 }
 ```
+---
 
 ## Custom Validation Attribute
-Create a new class name StudentTypeValidationAttribute and inherite from ValidationAttribute, then override IsValid method.
+Create a new class name StudentTypeValidationAttribute and inherite from **ValidationAttribute**, then override **IsValid** method.
 
 ```C#
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
 public class StudentTypeValidationAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
@@ -73,7 +78,7 @@ public class Student
     public string Type { get; set; } = string.Empty;
 }
 ```
-
+---
 ## Validation in parameter
 you can user validation attributes in your parameters.
 
@@ -85,9 +90,11 @@ public IActionResult GetByLastName([StringLength(10)] string LastName)
         .Where(s => s.LastName.ToLower() == LastName.ToLower()));
 }
 ```
+---
+
 ## Fluent Validation
-1. Install FluentValidation.AspNetCore Package
-2. Create a Class named dog as model
+1. Install **FluentValidation.AspNetCore** Package.
+2. Create a Class named dog as model.
 ```C#
 public class Dog
 {
@@ -96,7 +103,7 @@ public class Dog
     public string Color { get; set; } = string.Empty;
 }
 ```
-3. Create a class named DogValidator and inherite from AbstractValidator
+3. Create a class named DogValidator and inherite from **AbstractValidator**, then, write the rules inside the **constructor** .
 ```C#
 public class DogValidator : AbstractValidator<Dog>
 {
@@ -105,6 +112,7 @@ public class DogValidator : AbstractValidator<Dog>
         RuleFor(d => d.Color).NotNull().NotEmpty();
         RuleFor(d => d.OwnerEmail).EmailAddress();
         RuleFor(d => d.Color).NotNull().MaximumLength(20);
+        RuleFor(d => d.Description).Length(10,50);
 
         // Include other validation class for readability
         Include(new DogComplexValidator());
@@ -114,6 +122,7 @@ public class DogValidator : AbstractValidator<Dog>
     }
 }
 
+// We can have mupltiple validator in merge them with include.
 public class DogComplexValidator : AbstractValidator<Dog>
 {
     public DogComplexValidator()

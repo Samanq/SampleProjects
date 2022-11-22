@@ -1,4 +1,4 @@
-﻿using ApiValidationSample.Attributes;
+﻿using ApiValidationSample.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace ApiValidationSample.Models;
@@ -25,6 +25,14 @@ public class Student
     [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage ="Code should contain only a-z letters")]
     public string Code { get; set; } = string.Empty;
 
+    [MinLength(10), MaxLength(50)]
+    public string Description { get; set; } = string.Empty;
+
+    // Custom Attribute
+    [Future]
+    public DateTime FinishDate { get; set; }
+
+    // Custom Validation
     [StudentTypeValidation]
     public string Type { get; set; } = string.Empty;
 }
