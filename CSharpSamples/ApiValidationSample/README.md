@@ -133,7 +133,7 @@ public class DogComplexValidator : AbstractValidator<Dog>
     }
 }
 ```
-4. Register the validator in program.cs
+4. Register the validator in **program.cs**
 ```C#
 // Register the FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -144,7 +144,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<DogValidator>();
 ```
 
 ## Validating outside the controller
-1. Create a service for dogToys and Inject the IValidator.
+1. Create a class for dogToys and Inject the **IValidator**.
 ```C#
 public class DogToyService : IDogToyService
 {
