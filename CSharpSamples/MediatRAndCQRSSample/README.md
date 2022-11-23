@@ -8,6 +8,7 @@
 3. Create a class library project **MediatRAndCQRSSample.Domain**
 
 3. Create a class library project **MediatRAndCQRSSample.Infrastructure**
+---
 
 ## References
 1. In MediatRAndCQRSSample.**Application** project add a reference to MediatRAndCQRSSample.**Domain** .
@@ -15,11 +16,7 @@
 2. In MediatRAndCQRSSample.**WebApi** project add a reference to MediatRAndCQRSSample.**Application** .
 
 3. In MediatRAndCQRSSample.**Infrastructure** project add a reference to MediatRAndCQRSSample.**Application** .
-
-## Packges
-In the WebAPI project install **MediatR** package from nuget.
-
-
+---
 ## Domain Layer
 1. Create a folder named **Entities** and create class named Person
 ```C#
@@ -33,6 +30,7 @@ public class Person
 }
 
 ```
+---
 
 ## Application Layer
 
@@ -125,6 +123,7 @@ public static class DependencyInjection
     }
 }
 ```
+---
 
 ## Infrastructure Layer
 ### Installing required packages
@@ -201,7 +200,7 @@ public static class DependencyInjection
 }
 
 ```
-
+---
 
 ## Presentation Layer (API)
 
