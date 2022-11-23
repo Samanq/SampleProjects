@@ -35,8 +35,8 @@ public class Person
 ## Application Layer
 
 ### Installing required packages
-1. Install **MediatR.Extensions.Microsoft.DependencyInjection** package
-2. Install **Microsoft.Extensions.DependencyInjection.Abstractions** package
+1. Install **MediatR.Extensions.Microsoft.DependencyInjection** package.
+2. Install **Microsoft.Extensions.DependencyInjection.Abstractions** package.
 
 ### Defining Repository interface
 1. Create a folder named **Repositories**, then create an interface called **IPersonRepository**
@@ -58,14 +58,15 @@ public interface IPesonRepository
 ```
 
 ### Defining Commands and queries for MediatR
-A **command** does something but does not return a value
+<mark>A **command** does something but does not return a value.</mark>
 
-A **Query** returns a result
+<mark>A **Query** returns a result.</mark>
+
 1. Create folder named **Features**, then create a folder inside that named **People** for your entity.
 
 2. Inside **People** create two folder named **Commands** and **Queries**.
 
-3. Inside **Queries** folder create a folder named **GetAllPeople** and inside that create a **record** called **GetAllPeopleQuery** and Inherite from **IRequest** and pass the return type.
+3. Inside **Queries** folder create a folder named **GetAllPeople** and inside that create a **record** called **GetAllPeopleQuery** and Implement the **IRequest** interface then, pass the return type.
 ```C#
 using MediatR;
 using MediatRAndCQRSSample.Domain.Entities;
