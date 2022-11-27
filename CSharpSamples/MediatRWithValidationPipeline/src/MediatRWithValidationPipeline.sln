@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRWithValidationPipeline.Domain", "MediatRWithValidationPipeline.Domain\MediatRWithValidationPipeline.Domain.csproj", "{9C0F4893-559D-4CB6-8BD6-910A5AEB1A99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRWithValidationPipeline.Application", "MediatRWithValidationPipeline.Application\MediatRWithValidationPipeline.Application.csproj", "{71CA02A2-FFF0-470A-99E0-72F126148A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRWithValidationPipeline.Infrastructure", "MediatRWithValidationPipeline.Infrastructure\MediatRWithValidationPipeline.Infrastructure.csproj", "{57146F5A-E980-4C09-A2CB-16A00865591A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRWithValidationPipeline.Api", "MediatRWithValidationPipeline.Api\MediatRWithValidationPipeline.Api.csproj", "{DA596996-8027-43A3-8AC2-4C45221B6D35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C0F4893-559D-4CB6-8BD6-910A5AEB1A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0F4893-559D-4CB6-8BD6-910A5AEB1A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0F4893-559D-4CB6-8BD6-910A5AEB1A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0F4893-559D-4CB6-8BD6-910A5AEB1A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71CA02A2-FFF0-470A-99E0-72F126148A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71CA02A2-FFF0-470A-99E0-72F126148A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71CA02A2-FFF0-470A-99E0-72F126148A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71CA02A2-FFF0-470A-99E0-72F126148A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57146F5A-E980-4C09-A2CB-16A00865591A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57146F5A-E980-4C09-A2CB-16A00865591A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57146F5A-E980-4C09-A2CB-16A00865591A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57146F5A-E980-4C09-A2CB-16A00865591A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA596996-8027-43A3-8AC2-4C45221B6D35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA596996-8027-43A3-8AC2-4C45221B6D35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA596996-8027-43A3-8AC2-4C45221B6D35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA596996-8027-43A3-8AC2-4C45221B6D35}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C9A989B-9D9B-45F6-9331-E0D5BDC73A7C}
+	EndGlobalSection
+EndGlobal
