@@ -1,9 +1,11 @@
-﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+﻿using AuthorizationWithJwtSample.Application.Authentication;
+using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
 using AuthorizationWithJwtSample.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace AuthorizationWithJwtSample.Infrastructure.Authentication;
@@ -17,7 +19,6 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     {
         _jwtSettings = jwtSettings.Value;
     }
-
 
     public string GenerateToken(User user)
     {
@@ -48,4 +49,13 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         // Creating the token result.
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
+
+    //public RefreshToken GenerateRefreshToken()
+    //{
+    //    var refreshToken = new RefreshToken(
+    //        Token: Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+    //        ExipryDateTime: DateTime.Now.AddMinutes(10));
+
+    //    return refreshToken;
+    //}
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AuthorizationWithJwtSample.Application.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorizationWithJwtSample.Api.Controllers
@@ -7,11 +8,19 @@ namespace AuthorizationWithJwtSample.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IUserRepository _userRepository;
+
+        public UsersController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+
         [HttpGet]
         [Authorize]
         public IActionResult GetAllUsers()
         {
-            return Ok();
+            return Ok(_userRepository.GetAll());
         }
     }
 }

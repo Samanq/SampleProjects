@@ -5,4 +5,5 @@ namespace AuthorizationWithJwtSample.Application.Authentication.Interfaces;
 public interface IJwtTokenGenerator
 {
     string GenerateToken(User user);
+    //RefreshToken GenerateRefreshToken();
 }

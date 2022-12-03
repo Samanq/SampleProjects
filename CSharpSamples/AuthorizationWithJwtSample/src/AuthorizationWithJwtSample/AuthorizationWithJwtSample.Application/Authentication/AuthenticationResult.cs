@@ -2,6 +2,6 @@
 
 namespace AuthorizationWithJwtSample.Application.Authentication
 {
-    public record AuthenticationResult(User user, string token);
+    public record AuthenticationResult(User? user, string token);
     
 }

@@ -1,5 +1,7 @@
 ﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+using AuthorizationWithJwtSample.Application.Repository;
 using AuthorizationWithJwtSample.Infrastructure.Authentication;
+using AuthorizationWithJwtSample.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,8 @@ public static class DependencyInjection
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
+        // Registering UserRepository
+        services.AddScoped<IUserRepository, UserRepository>();
 
         // Binding the JwtSettings
         var jwtSettings = new JwtSettings();
