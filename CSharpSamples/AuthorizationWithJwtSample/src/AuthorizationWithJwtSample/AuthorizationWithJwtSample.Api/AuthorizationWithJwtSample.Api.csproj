@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>5a6f60fb-4d9c-4487-bd49-8e77671b64df</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AuthorizationWithJwtSample.Application\AuthorizationWithJwtSample.Application.csproj" />
+    <ProjectReference Include="..\AuthorizationWithJwtSample.Infrastructure\AuthorizationWithJwtSample.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
