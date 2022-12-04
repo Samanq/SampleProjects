@@ -1,0 +1,37 @@
+﻿@using BlazorSample.Shared;
+@inject HttpClient Http;
+<h3>ProductList</h3>
+
+<ul class="list-unstyled">
+    @foreach (var product in products)
+    {
+        <li class="media my-3">
+            <div class="media-img-wrapper">
+                <a href="#">
+                    <img class="media-img" src="@product.ImageUrl" alt="@product.Title" />
+                </a> 
+            </div>
+            <div class="media-body">
+                <a href="#">
+                    <h4 class="mb-0">@product.Title</h4>
+                    <p>@product.Description</p>
+                    <h5 class="price">$@product.Price</h5>
+                </a>
+            </div>
+        </li>
+    }
+</ul>
+
+@code {
+    private List<Product> products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<Product>>("api/Products");
+
+        if (result is not null)
+        {
+            products = result;
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿@page "/products/{id:int}"
+@using BlazorSample.Shared;
+@*@inject IProductRepository ProductRepositor*@
+<h3>@product.Title</h3>
+
+@code {
+    private Product product = new Product();
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        product.Title = "asdasd";
+        product.Price = 18.52m;
+        product.Description = "asdflkasjfhkldshfklsdahf sdlfkh jalksd f lksd f";
+        product.ImageUrl = "https://asdsad.com";
+        product.Id = 2;
+
+        //return base.OnParametersSetAsync();
+    }
+}
