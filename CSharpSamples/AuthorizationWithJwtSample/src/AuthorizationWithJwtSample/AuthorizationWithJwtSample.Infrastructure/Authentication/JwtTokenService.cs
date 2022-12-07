@@ -10,12 +10,12 @@ using System.Text;
 
 namespace AuthorizationWithJwtSample.Infrastructure.Authentication;
 
-public class JwtTokenGenerator : IJwtTokenGenerator
+public class JwtTokenService : IJwtTokenService
 {
     private readonly JwtSettings _jwtSettings;
 
     // Injecting JwtSettings
-    public JwtTokenGenerator(IOptions<JwtSettings> jwtSettings)
+    public JwtTokenService(IOptions<JwtSettings> jwtSettings)
     {
         _jwtSettings = jwtSettings.Value;
     }
@@ -50,12 +50,12 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
 
-    //public RefreshToken GenerateRefreshToken()
-    //{
-    //    var refreshToken = new RefreshToken(
-    //        Token: Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-    //        ExipryDateTime: DateTime.Now.AddMinutes(10));
+    public RefreshToken GenerateRefreshToken()
+    {
+        var refreshToken = new RefreshToken(
+            Token: Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+            ExipryDateTime: DateTime.Now.AddMinutes(10));
 
-    //    return refreshToken;
-    //}
+        return refreshToken;
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
-using AuthorizationWithJwtSample.Application.Repository;
+using AuthorizationWithJwtSample.Application.Repositories;
 using AuthorizationWithJwtSample.Infrastructure.Authentication;
 using AuthorizationWithJwtSample.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddSingleton(Options.Create(jwtSettings));
 
         // Registering the JwtTokenGenerator
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
         // Registering the Authentication with JwtBearer
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

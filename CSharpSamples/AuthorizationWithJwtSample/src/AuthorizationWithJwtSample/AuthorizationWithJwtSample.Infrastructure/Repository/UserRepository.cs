@@ -1,4 +1,4 @@
-﻿using AuthorizationWithJwtSample.Application.Repository;
+﻿using AuthorizationWithJwtSample.Application.Repositories;
 using AuthorizationWithJwtSample.Domain.Entities;
 
 namespace AuthorizationWithJwtSample.Infrastructure.Repository;
@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public IEnumerable<User> GetAll()
+    public IEnumerable<User>? GetAll()
     {
         return _users;
     }

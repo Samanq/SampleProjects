@@ -1,12 +1,12 @@
 ﻿using AuthorizationWithJwtSample.Domain.Entities;
 
-namespace AuthorizationWithJwtSample.Application.Repository;
+namespace AuthorizationWithJwtSample.Application.Repositories;
 
 public interface IUserRepository
 {
     User? GetById(int id);
     User? GetByEmail(string email);
-    IEnumerable<User> GetAll();
+    IEnumerable<User>? GetAll();
     User? Create(
         string name,
         string email,

@@ -1,5 +1,5 @@
-﻿using AuthorizationWithJwtSample.Application.Authentication;
-using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+using AuthorizationWithJwtSample.Application.Authentication.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthorizationWithJwtSample.Application;

@@ -10,17 +10,80 @@ public class User
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public byte[]? PasswordHash { get; set; }
+    public byte[]? PasswordSalt { get; set; }
+    public string RefreshToken { get; set; } = string.Empty;
+    public DateTime RefreshTokenExpiryDate { get; set; }
 }
 ```
 ---
 ## Application layer
-1. Create an interface named **IJwtTokenGenerator** in **Authentication/Interfaces** folder.
+1. Create a record named **AuthenticationResult** in **Authentication** folder.
+```C#
+namespace AuthorizationWithJwtSample.Application.Authentication;
+
+public record AuthenticationResult(User? user, string token);
+```
+
+2. Create a record named **HashedPasswordResult** in **Authentication** folder.
+```C#
+namespace AuthorizationWithJwtSample.Application.Authentication;
+
+public record HashedPasswordResult(
+    byte[] PasswordHash,
+    byte[] PasswordSalt);
+```
+
+3. Create a record named **RefreshToken** in **Authentication** folder.
+```C#
+namespace AuthorizationWithJwtSample.Application.Authentication;
+
+public record RefreshToken(
+    string Token,
+    DateTime ExipryDateTime);
+
+```
+
+4. Create an interface named **IJwtTokenService** in **Authentication/Interfaces** folder.
 ```C#
 namespace AuthorizationWithJwtSample.Application.Authentication.Interfaces;
 
-public interface IJwtTokenGenerator
+public interface IJwtTokenService
 {
     string GenerateToken(User user);
+    RefreshToken GenerateRefreshToken();
+}
+```
+
+5. Create an interface named **IAuthenticationService** in **Authentication/Interfaces** folder.
+```C#
+namespace AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+
+public interface IAuthenticationService
+{
+    AuthenticationResult Register(string name, string email, string password);
+    AuthenticationResult Login(string email, string password);
+    HashedPasswordResult CreatePasswordHash(string password);
+    bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
+}
+```
+
+6. Create an interface named **IUserRepository** in **Repositories** folder.
+```C#
+namespace AuthorizationWithJwtSample.Application.Repositories;
+
+public interface IUserRepository
+{
+    User? GetById(int id);
+    User? GetByEmail(string email);
+    IEnumerable<User>? GetAll();
+    User? Create(
+        string name,
+        string email,
+        byte[] passwordHash,
+        byte[] passwordSalt,
+        string refreshToken,
+        DateTime refreshTokenExpiryDateTime);
 }
 ```
 ---

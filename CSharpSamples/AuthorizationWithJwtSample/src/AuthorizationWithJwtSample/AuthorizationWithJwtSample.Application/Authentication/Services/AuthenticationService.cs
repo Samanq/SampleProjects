@@ -1,43 +1,56 @@
 ﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
-using AuthorizationWithJwtSample.Application.Repository;
+using AuthorizationWithJwtSample.Application.Repositories;
 using AuthorizationWithJwtSample.Domain.Entities;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AuthorizationWithJwtSample.Application.Authentication;
+namespace AuthorizationWithJwtSample.Application.Authentication.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IJwtTokenService _jwtTokenService;
     private readonly IUserRepository _userRepository;
 
-    public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
+    public AuthenticationService(IJwtTokenService jwtTokenService, IUserRepository userRepository)
     {
-        _jwtTokenGenerator = jwtTokenGenerator;
+        _jwtTokenService = jwtTokenService;
         _userRepository = userRepository;
     }
 
 
     public AuthenticationResult Login(string email, string password)
     {
-        throw new NotImplementedException();
+        var user = _userRepository.GetByEmail(email);
+
+        if (user is null)
+        {
+            throw new Exception("Wrong email or password");
+        }
+
+        if (VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+        {
+            return new AuthenticationResult(user, _jwtTokenService.GenerateToken(user));
+        }
+
+        throw new Exception("Something went wrong in login");
     }
     public AuthenticationResult Register(string name, string email, string password)
     {
         var hashedPassword = CreatePasswordHash(password);
+        var refreshToken = _jwtTokenService.GenerateRefreshToken();
 
         var user = new User
         {
             Name = name,
-            Email= email,
+            Email = email,
             PasswordHash = hashedPassword.PasswordHash,
             PasswordSalt = hashedPassword.PasswordSalt,
-            // TODO Fix RefreshToken and ExpiryDateTime
-            RefreshToken = "asd",
-            RefreshTokenExpiryDate= DateTime.UtcNow,
+            RefreshToken = refreshToken.Token,
+            RefreshTokenExpiryDate = refreshToken.ExipryDateTime,
         };
 
-        var token = _jwtTokenGenerator.GenerateToken(user);
+        var token = _jwtTokenService.GenerateToken(user);
 
         var createResult = _userRepository.Create(
             user.Name,
@@ -60,8 +73,13 @@ public class AuthenticationService : IAuthenticationService
             return new HashedPasswordResult(passwordHash, passwrodSalt);
         }
     }
-    public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+    public bool VerifyPasswordHash(string password, byte[]? passwordHash, byte[]? passwordSalt)
     {
+        if (passwordHash is null || passwordSalt is null)
+        {
+            return false;
+        }
+
         using (var hmac = new HMACSHA512(passwordSalt))
         {
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
