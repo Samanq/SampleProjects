@@ -13,5 +13,7 @@ public interface IUserRepository
         byte[] passwordHash,
         byte[] passwordSalt,
         string refreshToken,
-        DateTime refreshTokenExpiryDateTime);
+        DateTime? refreshTokenExpiryDateTime);
+
+    User? Update(User user);
 }

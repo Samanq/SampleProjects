@@ -1,4 +1,7 @@
-﻿namespace AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+﻿using AuthorizationWithJwtSample.Application.Common;
+using AuthorizationWithJwtSample.Domain.Entities;
+
+namespace AuthorizationWithJwtSample.Application.Authentication.Interfaces;
 
 public interface IAuthenticationService
 {
@@ -6,4 +9,5 @@ public interface IAuthenticationService
     AuthenticationResult Login(string email, string password);
     HashedPasswordResult CreatePasswordHash(string password);
     bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
+    Response<User?> RevokeRefreshToken(string email);
 }

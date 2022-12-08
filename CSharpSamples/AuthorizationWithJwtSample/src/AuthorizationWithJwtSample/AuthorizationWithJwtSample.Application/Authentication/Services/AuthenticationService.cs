@@ -1,4 +1,5 @@
 ﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+using AuthorizationWithJwtSample.Application.Common;
 using AuthorizationWithJwtSample.Application.Repositories;
 using AuthorizationWithJwtSample.Domain.Entities;
 using System.Reflection;
@@ -28,12 +29,14 @@ public class AuthenticationService : IAuthenticationService
             throw new Exception("Wrong email or password");
         }
 
-        if (VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+        if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
         {
-            return new AuthenticationResult(user, _jwtTokenService.GenerateToken(user));
+            throw new Exception("Wrong email or password");
         }
 
-        throw new Exception("Something went wrong in login");
+        return new AuthenticationResult(
+                _jwtTokenService.GenerateAccessToken(user),
+                _jwtTokenService.GenerateRefreshToken().Token);
     }
     public AuthenticationResult Register(string name, string email, string password)
     {
@@ -50,7 +53,7 @@ public class AuthenticationService : IAuthenticationService
             RefreshTokenExpiryDate = refreshToken.ExipryDateTime,
         };
 
-        var token = _jwtTokenService.GenerateToken(user);
+        var token = _jwtTokenService.GenerateAccessToken(user);
 
         var createResult = _userRepository.Create(
             user.Name,
@@ -60,7 +63,7 @@ public class AuthenticationService : IAuthenticationService
             user.RefreshToken,
             user.RefreshTokenExpiryDate);
 
-        var authResult = new AuthenticationResult(createResult, token);
+        var authResult = new AuthenticationResult(token, user.RefreshToken);
 
         return authResult;
     }
@@ -85,5 +88,46 @@ public class AuthenticationService : IAuthenticationService
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return computedHash.SequenceEqual(passwordHash);
         }
+    }
+
+    public string RefreshToken(int userId, string accessToken, string refreshToken)
+    {
+        if (string.IsNullOrEmpty(refreshToken))
+            throw new ArgumentNullException("Refresh token connot be null");
+
+        //var principal = _jwtTokenService.GetPrincipalFromExpiredToken(accessToken);
+        var user = _userRepository.GetById(userId);
+
+        if (user is null ||
+            user.RefreshToken != refreshToken ||
+            user.RefreshTokenExpiryDate <= DateTime.UtcNow)
+        {
+            throw new Exception("Bad token");
+        }
+
+        var newAccessToken = _jwtTokenService.GenerateAccessToken(user);
+        var newRefreshToken = _jwtTokenService.GenerateRefreshToken();
+
+        user.RefreshToken = newRefreshToken.Token;
+
+        _userRepository.Update(user);
+
+        return newAccessToken;
+    }
+    public Response<User?> RevokeRefreshToken(string email)
+    {
+        var user = _userRepository.GetByEmail(email);
+
+        if (user is null) 
+        {
+            return new Response<User?>(false, "user cannot be found!", null);
+        }
+
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryDate = null;
+
+        _userRepository.Update(user);
+
+        return new Response<User?>(true, $"Refresh token revoked for {user.Name}", user);
     }
 }

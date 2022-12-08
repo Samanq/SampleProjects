@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
         byte[] passwordHash,
         byte[] passwordSalt,
         string refreshToken,
-        DateTime refreshTokenExpiryDateTime)
+        DateTime? refreshTokenExpiryDateTime)
     {
         var user = new User
         {
@@ -48,5 +48,18 @@ public class UserRepository : IUserRepository
         return _users
             .Where(u => u.Id == id)
             .SingleOrDefault();
+    }
+
+    public User? Update(User user)
+    {
+        var currentUser = _users
+            .Where(u => u.Id == user.Id).SingleOrDefault();
+
+        if (currentUser is not null)
+        {
+            currentUser = user;
+        }
+
+        return user;
     }
 }

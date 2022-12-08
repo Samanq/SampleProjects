@@ -12,7 +12,12 @@ public class User
     public string Email { get; set; } = string.Empty;
     public byte[]? PasswordHash { get; set; }
     public byte[]? PasswordSalt { get; set; }
+
+    // When the access token expires, we can use refresh token to get a new access token from the authentication controller.
+    // Whenever the user login into the application using valid credentials, we will update refresh token and token expiry time.
+    // If something went wrong, the refresh token can be revoked which means that when the application tries to use it to get a new access token, that request will be rejected, and the user  have to authenticate again.
     public string RefreshToken { get; set; } = string.Empty;
+    // The lifetime of a refresh token is usually much longer than the lifetime of an access token.
     public DateTime RefreshTokenExpiryDate { get; set; }
 }
 ```

@@ -20,7 +20,7 @@ public class JwtTokenService : IJwtTokenService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateToken(User user)
+    public string GenerateAccessToken(User user)
     {
         // Creating signing credential 
         var signingCredential = new SigningCredentials(
@@ -54,8 +54,34 @@ public class JwtTokenService : IJwtTokenService
     {
         var refreshToken = new RefreshToken(
             Token: Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-            ExipryDateTime: DateTime.Now.AddMinutes(10));
+            ExipryDateTime: DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryInDays));
 
         return refreshToken;
+    }
+
+    public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
+            ValidateLifetime = false, // Ignore token expiration date.
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        SecurityToken securityToken;
+
+        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+        var jwtSecurityToken = securityToken as JwtSecurityToken;
+
+        if (jwtSecurityToken == null ||
+            !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new SecurityTokenException("Invalid token");
+        }
+
+        return principal;
     }
 }
