@@ -1,4 +1,5 @@
 ﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorizationWithJwtSample.Api.Controllers;
@@ -35,35 +36,41 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("RefreshToken")]
-    public IActionResult RefreshToken(string refreshToken)
+    [Authorize]
+    [HttpPost("RefreshToken/{userId}")]
+    public IActionResult RefreshToken(int userId,[FromBody] string refreshToken)
     {
         if (string.IsNullOrEmpty(refreshToken))
             return BadRequest("Invalid client request");
 
-        //string accessToken = tokenApiModel.AccessToken;
-        //string refreshToken = tokenApiModel.RefreshToken;
-        var principal = _authenticationService.Get _jwt.GetPrincipalFromExpiredToken(accessToken);
-        var username = principal.Identity.Name; //this is mapped to the Name claim by default
-        var user = _userContext.LoginModels.SingleOrDefault(u => u.UserName == username);
-        if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-            return BadRequest("Invalid client request");
-        var newAccessToken = _tokenService.GenerateAccessToken(principal.Claims);
-        var newRefreshToken = _tokenService.GenerateRefreshToken();
-        user.RefreshToken = newRefreshToken;
-        _userContext.SaveChanges();
-        return Ok(new AuthenticatedResponse()
-        {
-            Token = newAccessToken,
-            RefreshToken = newRefreshToken
-        });
+        var newAccessToken = _authenticationService
+            .RefreshToken(userId, GetTokenFromHeader(), refreshToken);
+        
+       return Ok(newAccessToken);
     }
 
     [HttpPost("RevokeRefreshToken")]
     public IActionResult RevokeRefreshToken(string email)
     {
-        var response = _authenticationService.RevokeRefreshToken(email);
+        var response = _authenticationService
+            .RevokeRefreshToken(email);
 
         return Ok(response.Data);
+    }
+
+    private string GetTokenFromHeader()
+    {
+        var keyword = "Bearer ";
+
+        var currentAccessToken = HttpContext.Request.Headers["Authorization"]
+            .ToString().Replace(keyword, string.Empty);
+
+        //var currentAccessToken = HttpContext.Request.Headers["Authorization"]
+        //    .ToString();
+        //currentAccessToken = currentAccessToken
+        //    .Substring(currentAccessToken.IndexOf(keyword) + keyword.Length, currentAccessToken.Length - keyword.Length);
+
+
+        return currentAccessToken;
     }
 }

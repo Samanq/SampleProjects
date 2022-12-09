@@ -89,13 +89,12 @@ public class AuthenticationService : IAuthenticationService
             return computedHash.SequenceEqual(passwordHash);
         }
     }
-
     public string RefreshToken(int userId, string accessToken, string refreshToken)
     {
         if (string.IsNullOrEmpty(refreshToken))
             throw new ArgumentNullException("Refresh token connot be null");
 
-        //var principal = _jwtTokenService.GetPrincipalFromExpiredToken(accessToken);
+        var principal = _jwtTokenService.GetPrincipalFromExpiredToken(accessToken);
         var user = _userRepository.GetById(userId);
 
         if (user is null ||

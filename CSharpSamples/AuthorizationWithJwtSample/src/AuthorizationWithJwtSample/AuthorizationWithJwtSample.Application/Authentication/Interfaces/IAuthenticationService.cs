@@ -9,5 +9,6 @@ public interface IAuthenticationService
     AuthenticationResult Login(string email, string password);
     HashedPasswordResult CreatePasswordHash(string password);
     bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
+    string RefreshToken(int userId, string accessToken, string refreshToken);
     Response<User?> RevokeRefreshToken(string email);
 }

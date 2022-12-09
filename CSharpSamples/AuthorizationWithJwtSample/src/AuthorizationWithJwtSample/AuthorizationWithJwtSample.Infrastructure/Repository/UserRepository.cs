@@ -16,9 +16,16 @@ public class UserRepository : IUserRepository
         string refreshToken,
         DateTime? refreshTokenExpiryDateTime)
     {
+        var userId = 1;
+
+        if (_users.Any())
+        {
+            userId = _users.Max(u => u.Id) + 1;
+        }
+
         var user = new User
         {
-            Id = 2,
+            Id = userId,
             Name = name,
             Email = email,
             PasswordHash = passwordHash,

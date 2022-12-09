@@ -67,12 +67,12 @@ public class JwtTokenService : IJwtTokenService
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
-            ValidateLifetime = false, // Ignore token expiration date.
+            ValidateLifetime = false // Ignore token expiration date.
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        SecurityToken securityToken;
 
+        SecurityToken securityToken;
         var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
         var jwtSecurityToken = securityToken as JwtSecurityToken;
 
