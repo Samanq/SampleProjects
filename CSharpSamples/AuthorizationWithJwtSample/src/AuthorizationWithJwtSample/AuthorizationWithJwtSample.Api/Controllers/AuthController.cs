@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
+    [AllowAnonymous]
     [HttpPost("RefreshToken/{userId}")]
     public IActionResult RefreshToken(int userId,[FromBody] string refreshToken)
     {

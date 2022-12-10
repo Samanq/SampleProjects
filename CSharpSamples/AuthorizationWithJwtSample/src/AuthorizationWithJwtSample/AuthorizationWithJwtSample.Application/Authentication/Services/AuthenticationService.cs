@@ -35,9 +35,15 @@ public class AuthenticationService : IAuthenticationService
             throw new Exception("Wrong email or password");
         }
 
-        return new AuthenticationResult(
-                _jwtTokenService.GenerateAccessToken(user),
-                _jwtTokenService.GenerateRefreshToken().Token);
+        var accessToken = _jwtTokenService.GenerateAccessToken(user);
+        var refreshToken = _jwtTokenService.GenerateRefreshToken();
+
+        user.RefreshToken = refreshToken.Token;
+        user.RefreshTokenExpiryDate = refreshToken.ExipryDateTime;
+
+        var updatedUser = _userRepository.Update(user);
+
+        return new AuthenticationResult(accessToken, updatedUser?.RefreshToken);
     }
     public AuthenticationResult Register(string name, string email, string password)
     {
