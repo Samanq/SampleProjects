@@ -5,7 +5,7 @@ namespace AuthorizationWithJwtSample.Application.Repositories;
 public interface IUserRepository
 {
     User? GetById(int id);
-    User? GetByEmail(string email);
+    User? GetByEmail(string? email);
     IEnumerable<User>? GetAll();
     User? Create(
         string name,

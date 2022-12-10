@@ -3,6 +3,7 @@ using AuthorizationWithJwtSample.Application.Common;
 using AuthorizationWithJwtSample.Application.Repositories;
 using AuthorizationWithJwtSample.Domain.Entities;
 using System.Reflection;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -53,9 +54,9 @@ public class AuthenticationService : IAuthenticationService
             RefreshTokenExpiryDate = refreshToken.ExipryDateTime,
         };
 
-        var token = _jwtTokenService.GenerateAccessToken(user);
+        var accessToken = _jwtTokenService.GenerateAccessToken(user);
 
-        var createResult = _userRepository.Create(
+        var createdUser = _userRepository.Create(
             user.Name,
             user.Email,
             user.PasswordHash,
@@ -63,7 +64,12 @@ public class AuthenticationService : IAuthenticationService
             user.RefreshToken,
             user.RefreshTokenExpiryDate);
 
-        var authResult = new AuthenticationResult(token, user.RefreshToken);
+        if (createdUser is null)
+        {
+            throw new Exception("User cannot be create.");
+        }
+
+        var authResult = new AuthenticationResult(accessToken, createdUser.RefreshToken);
 
         return authResult;
     }
@@ -89,13 +95,22 @@ public class AuthenticationService : IAuthenticationService
             return computedHash.SequenceEqual(passwordHash);
         }
     }
-    public string RefreshToken(int userId, string accessToken, string refreshToken)
+    public AuthenticationResult RefreshToken(int userId, string accessToken, string refreshToken)
     {
         if (string.IsNullOrEmpty(refreshToken))
             throw new ArgumentNullException("Refresh token connot be null");
 
         var principal = _jwtTokenService.GetPrincipalFromExpiredToken(accessToken);
-        var user = _userRepository.GetById(userId);
+
+        if (principal is null || !principal.Claims.Any())
+        {
+            throw new Exception("Bad Token");
+        }
+
+        var userEmail = principal?.Claims
+        .FirstOrDefault(p => p.Type == ClaimValueTypes.Email)?.Value;
+
+        var user = _userRepository.GetByEmail(userEmail);
 
         if (user is null ||
             user.RefreshToken != refreshToken ||
@@ -111,13 +126,15 @@ public class AuthenticationService : IAuthenticationService
 
         _userRepository.Update(user);
 
-        return newAccessToken;
+        var authResult = new AuthenticationResult(newAccessToken, newRefreshToken.Token);
+
+        return authResult;
     }
     public Response<User?> RevokeRefreshToken(string email)
     {
         var user = _userRepository.GetByEmail(email);
 
-        if (user is null) 
+        if (user is null)
         {
             return new Response<User?>(false, "user cannot be found!", null);
         }

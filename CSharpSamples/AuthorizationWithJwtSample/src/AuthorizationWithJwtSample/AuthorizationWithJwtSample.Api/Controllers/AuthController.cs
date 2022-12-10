@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
             return BadRequest("Invalid client request");
 
         var newAccessToken = _authenticationService
-            .RefreshToken(userId, GetTokenFromHeader(), refreshToken);
+            .RefreshToken(userId, GetAccessTokenFromHeader(), refreshToken);
         
        return Ok(newAccessToken);
     }
@@ -58,18 +58,12 @@ public class AuthController : ControllerBase
         return Ok(response.Data);
     }
 
-    private string GetTokenFromHeader()
+    private string GetAccessTokenFromHeader()
     {
         var keyword = "Bearer ";
 
         var currentAccessToken = HttpContext.Request.Headers["Authorization"]
             .ToString().Replace(keyword, string.Empty);
-
-        //var currentAccessToken = HttpContext.Request.Headers["Authorization"]
-        //    .ToString();
-        //currentAccessToken = currentAccessToken
-        //    .Substring(currentAccessToken.IndexOf(keyword) + keyword.Length, currentAccessToken.Length - keyword.Length);
-
 
         return currentAccessToken;
     }

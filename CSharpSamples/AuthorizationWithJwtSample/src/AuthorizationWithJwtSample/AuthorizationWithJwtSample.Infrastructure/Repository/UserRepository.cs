@@ -43,10 +43,10 @@ public class UserRepository : IUserRepository
         return _users;
     }
 
-    public User? GetByEmail(string email)
+    public User? GetByEmail(string? email)
     {
         return _users
-            .Where(u => u.Email.ToLower() == email.ToLower())
+            .Where(u => u.Email.ToLower() == email?.ToLower())
             .SingleOrDefault();
     }
 
