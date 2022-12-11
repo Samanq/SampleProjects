@@ -43,7 +43,10 @@ public class AuthenticationService : IAuthenticationService
 
         var updatedUser = _userRepository.Update(user);
 
-        return new AuthenticationResult(accessToken, updatedUser?.RefreshToken);
+        return new AuthenticationResult(
+            accessToken,
+            new RefreshToken(updatedUser.RefreshToken, updatedUser.RefreshTokenExpiryDate));
+
     }
     public AuthenticationResult Register(string name, string email, string password)
     {
@@ -75,7 +78,9 @@ public class AuthenticationService : IAuthenticationService
             throw new Exception("User cannot be create.");
         }
 
-        var authResult = new AuthenticationResult(accessToken, createdUser.RefreshToken);
+        var authResult = new AuthenticationResult(
+            accessToken,
+            new RefreshToken(createdUser.RefreshToken, createdUser.RefreshTokenExpiryDate));
 
         return authResult;
     }
@@ -101,7 +106,7 @@ public class AuthenticationService : IAuthenticationService
             return computedHash.SequenceEqual(passwordHash);
         }
     }
-    public AuthenticationResult RefreshToken(int userId, string accessToken, string refreshToken)
+    public AuthenticationResult RefreshToken(string accessToken, string refreshToken)
     {
         if (string.IsNullOrEmpty(refreshToken))
             throw new ArgumentNullException("Refresh token connot be null");
@@ -132,7 +137,9 @@ public class AuthenticationService : IAuthenticationService
 
         _userRepository.Update(user);
 
-        var authResult = new AuthenticationResult(newAccessToken, newRefreshToken.Token);
+        var authResult = new AuthenticationResult(
+            newAccessToken,
+            new RefreshToken(newRefreshToken.Token, newRefreshToken.ExipryDateTime));
 
         return authResult;
     }

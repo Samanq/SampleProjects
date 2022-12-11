@@ -1,4 +1,6 @@
-﻿using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
+﻿using AuthorizationWithJwtSample.Api.Dtos;
+using AuthorizationWithJwtSample.Application.Authentication;
+using AuthorizationWithJwtSample.Application.Authentication.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,37 +18,51 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public IActionResult Register(string name, string email, string password)
+    public IActionResult Register([FromBody] RegisterRequest request)
     {
-        var authenticationResult = _authenticationService.Register(name, email, password);
+        if (request is null) return BadRequest();
 
-        return Ok(authenticationResult);
+        var authResult = _authenticationService
+            .Register(request.Name, request.Email, request.Password);
+
+        SetRefreshTokenCookie(authResult.refreshToken);
+
+        return Ok(authResult);
     }
 
     [HttpPost("Login")]
-    public IActionResult Login(string email, string password)
+    public IActionResult Login([FromBody] LoginRequest request)
     {
-        var result = _authenticationService.Login(email, password);
+        var authResult = _authenticationService
+            .Login(request.Email, request.Password);
 
-        if (result is null)
-        {
-            return Unauthorized();
-        }
-        
-        return Ok(result);
+        if (authResult is null) return Unauthorized();
+
+        SetRefreshTokenCookie(authResult.refreshToken);
+
+        return Ok(authResult);
     }
 
     [AllowAnonymous]
-    [HttpPost("RefreshToken/{userId}")]
-    public IActionResult RefreshToken(int userId,[FromBody] string refreshToken)
+    [HttpPost("RefreshToken")]
+    public IActionResult RefreshToken()
     {
-        if (string.IsNullOrEmpty(refreshToken))
+        var rToken = Request.Cookies["refreshToken"];
+        if (rToken is null)
+        {
             return BadRequest("Invalid client request");
+        }
+        //if (string.IsNullOrEmpty(refreshToken))
+        //{
+        //    return BadRequest("Invalid client request");
+        //}
 
-        var newAccessToken = _authenticationService
-            .RefreshToken(userId, GetAccessTokenFromHeader(), refreshToken);
-        
-       return Ok(newAccessToken);
+        var authResult = _authenticationService
+            .RefreshToken(GetAccessTokenFromHeader(), rToken);
+
+        SetRefreshTokenCookie(authResult.refreshToken);
+
+        return Ok(authResult);
     }
 
     [HttpPost("RevokeRefreshToken")]
@@ -58,6 +74,16 @@ public class AuthController : ControllerBase
         return Ok(response.Data);
     }
 
+    private void SetRefreshTokenCookie(RefreshToken refreshToken)
+    {
+        var options = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = refreshToken.ExipryDateTime
+        };
+
+        Response.Cookies.Append("refreshToken", refreshToken.Token, options);
+    }
     private string GetAccessTokenFromHeader()
     {
         var keyword = "Bearer ";

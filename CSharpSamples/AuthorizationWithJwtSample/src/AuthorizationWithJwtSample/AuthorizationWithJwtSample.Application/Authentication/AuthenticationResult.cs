@@ -2,4 +2,4 @@
 
 public record AuthenticationResult(
     string? accessToken,
-    string? refreshToken);
+    RefreshToken? refreshToken);
