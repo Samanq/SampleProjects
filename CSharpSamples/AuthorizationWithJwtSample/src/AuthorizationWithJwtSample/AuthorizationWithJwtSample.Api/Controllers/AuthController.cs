@@ -47,18 +47,15 @@ public class AuthController : ControllerBase
     [HttpPost("RefreshToken")]
     public IActionResult RefreshToken()
     {
-        var rToken = Request.Cookies["refreshToken"];
-        if (rToken is null)
+        var refreshToken = Request.Cookies["refreshToken"];
+        if (refreshToken is null)
         {
             return BadRequest("Invalid client request");
         }
-        //if (string.IsNullOrEmpty(refreshToken))
-        //{
-        //    return BadRequest("Invalid client request");
-        //}
+        
 
         var authResult = _authenticationService
-            .RefreshToken(GetAccessTokenFromHeader(), rToken);
+            .RefreshToken(GetAccessTokenFromHeader(), refreshToken);
 
         SetRefreshTokenCookie(authResult.refreshToken);
 
