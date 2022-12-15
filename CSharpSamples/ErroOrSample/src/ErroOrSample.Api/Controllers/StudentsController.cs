@@ -27,7 +27,7 @@ public class StudentsController : ApiController
     }
 
     [HttpPost]
-    public IActionResult GetByEmail(string name, string email, int age)
+    public IActionResult Create(string name, string email, int age)
     {
         var result = _studentRepository.Create(name, email, age);
 
