@@ -62,7 +62,7 @@ Install-Module -Name Terminal-Icons -Repository PSGallery
 code $profile
 ```
 3. Add this line to the **profile** and save it, after that, restart the terminal
-```json
+```powershell
 Import-Module -Name Terminal-Icons
 ```
 ---
@@ -79,7 +79,7 @@ code $profile
 ```
 	
 3. Append this line to the **profile** and save it, after that restart the terminal
-```json
+```powershell
 Import-Module PSReadLine
 Set-PSReadlineOption -PredictionSource History
 ```
