@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>KnockoutJs Sample</title>
+    <!-- <link href="style.css" rel="stylesheet" /> -->
+</head>
+
+<body>
+    Name: <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'" />
+    <input type="checkbox" data-bind="checked: nameVisible">
+    <p>
+        Hello <span data-bind="text: name, visible: nameVisible"></span>
+    </p>
+    <button type="button" data-bind="click: changeName">Change name</button>
+
+    <script src="./assets/js/jquery-3.6.3.min.js"></script>
+    <script src="./assets/js/knockout-3.5.1.js"></script>
+    <script src="./assets/js/simple-sample.js"></script>
+</body>
+
+</html>
