@@ -16,3 +16,15 @@ let user: [number, string] = [1, "John"]
 
 console.log("Id: " + user[0])
 console.log("Name: " + user[1])
+//----------------------------------------------//
+// Enum
+const samll = 0;
+const medium = 1;
+const large = 2;
+
+// Enums shoud follow Pacal naming convention
+enum Size{Samll, Medium, Large} // Default values are 0,1,2
+enum SecondSize{Samll = 10, Medium = 50, Large = 100}
+enum ThirdSize{Samll = 's', Medium = 'm', Large = 'l'}
+
+let mySize = ThirdSize.Medium

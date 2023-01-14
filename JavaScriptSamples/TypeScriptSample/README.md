@@ -29,7 +29,10 @@ console.log("Hello world");
 ```powershell
 tsc index.ts
 ```
-3. Now you should see index.js in the src folder.
+3. Now you should see index.js in the src folder and you can run it by node command
+```powershell
+node index.js
+```
 ---
 ## Configuring the TypeScript compiler
 Open terminal and navigate to src folder and run this command to create the compiler configuration file (tsconfig.json)
@@ -45,8 +48,11 @@ tsc --init
 - **noEmitOnError** : Compiler doesn't generate js files if there are error in ts codes. (Always enable it)
 - **sourceMap** : It's a file that specifies how each line of TypeScript code maps to the generated JavaScript file.
 - **noImplicitAny** : Compiler will show error for using implicit any type. (if you turn it off the compiler doesn't complain about using any type in functions) (it's not recommended to turn off this option)
+- **noUnusedParameters** : Compailer raise an warning when a function parameter isn't read.
+- **noImplicitReturns** : Compiler checks all path of functions return a value.
+- **noUnusedLocals** : Compiler checks for unused local variables.
 
-Now you can run **tsc** to compile all the **ts** files.
+Now you can run **tsc** command to compile all the **ts** files.
 
 ---
 
@@ -131,6 +137,16 @@ console.log(temp)
 - **unknown** 
 - **never**
 - **enum**
+
+    If we use const for enum, compiler will generate more optimized code
+```typescript
+// Enums shoud follow Pacal naming convention
+enum Size{Samll, Medium, Large} // Default values are 0,1,2
+const enum SecondSize{Samll = 10, Medium = 50, Large = 100}
+const enum ThirdSize{Samll = 's', Medium = 'm', Large = 'l'}
+
+let mySize = ThirdSize.Medium
+```
 - **tuple**
 
     Tuple is a **fixed lenght** array where each element has a particular type
@@ -140,3 +156,7 @@ let user: [number, string] = [1, "John"]
 console.log("Id: " + user[0])
 console.log("Name: " + user[1])
 ```
+---
+## Functions
+### Tips: 
+ - JavaScripts by default always return undefined for functions if doesn't return a value.
