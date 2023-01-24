@@ -52,7 +52,7 @@ tsc --init
 - **noImplicitReturns** : Compiler checks all path of functions return a value.
 - **noUnusedLocals** : Compiler checks for unused local variables.
 
-Now you can run **tsc** command to compile all the **ts** files.
+> Now you can run **tsc** command to compile all the **ts** files.
 
 ---
 
@@ -158,5 +158,48 @@ console.log("Name: " + user[1])
 ```
 ---
 ## Functions
+For defining a function we can use this pattern.
+function \<name>([<parameterName: parameterType>, <anotherParameterName: ParameterType>]): \<returnType>{}
+
+```typescript
+// Defining a function
+// Third number is an optional parameter, if user doesn't send this argument default value will used.
+function addNumbers(firstNumber: number, secondNumber: number, thirdNumber = 0) : number
+{
+    return firstNumber + secondNumber + thirdNumber;
+}
+
+// Calling a function
+addNumbers(10, 20, 3);
+
+// Calling a function without optional parameter
+addNumbers(10, 20);
+
+```
 ### Tips: 
- - JavaScripts by default always return undefined for functions if doesn't return a value.
+ - JavaScripts by default always return **undefined** for functions if the function doesn't return a value.
+
+ ---
+
+ ## Objects
+ First we should define the object, then initialize it and finally we can use it.
+ ```Typescript
+ let student: {
+  readonly id: number; // This property is readonly and user cannot change it's value.
+  name: string;
+  nickName?: string; // This property is optional.
+  study: (subjectTitle: string, duration: number) => void;
+} = {
+  id: 1,
+  name: "john",
+  nickName: "johny",
+  study: (subjectTitle: string, duration: number) => {
+    console.log("is studying " + subjectTitle + " for " + duration + " hours.");
+  },
+}; // Initializing the object.
+
+// Using the object.
+student.name = "John";
+student.study("C#", 2);
+ ```
+ ---
