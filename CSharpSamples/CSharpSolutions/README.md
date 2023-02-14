@@ -1,7 +1,59 @@
 # CSharpSolutions
-Samples of solutions in C#
+Some Fundementals in and some problems and solutions in C#.
 
 ---
+
+## Extension Methods
+Some times we need to add a method to existing classes which we dont't have access to modify them, so we decide to extend them.<br>
+For creating an method we have to creat a **static** class and **static** method, for the parameter must you **this** keyword and the class we want to extend.<br>
+If we want more prameter we can add after **this** TargetClass.<br>
+
+Assume there is a class named Calculator and we dont have access to modify this class.
+```C#
+namespace ExtensionMethodSample.Services;
+
+public class Calculator
+{
+    public int AddTwoNumbers(int firstNumber, int secondNumber)
+    {
+        return firstNumber + secondNumber;
+    }
+}
+```
+Now we want to extend this class and add another method for this class.<br>
+We will create a **static** class and **static** method and as the first parameter we write **this** keyword and TargetClass.
+```C#
+using ExtensionMethodSample.Services;
+
+namespace ExtensionMethodSample.Extensions;
+
+// Extension class shoud be static
+static class CalculatorExtended
+{
+    // Extension method must be static 
+    // It must use this keyword and Target class as the first parameter
+    public static void AddAndPrintNumbers(this Calculator calculator, int firstNumber, int secondNumber)
+    {
+        int result = calculator.AddTwoNumbers(firstNumber, secondNumber);
+        Console.WriteLine($"{firstNumber} + {secondNumber} = {result}");
+    }
+}
+```
+In the end we can see that now the Calculator class has another method in **Program.cs**
+```C#
+using ExtensionMethodSample.Extensions;
+using ExtensionMethodSample.Services;
+
+// Using the default method in Calculator method.
+Calculator calculator = new Calculator();
+Console.WriteLine(calculator.AddTwoNumbers(1, 2)); 
+
+// Using the extension method tha we wrote in CalculatorExtended class.
+calculator.AddAndPrintNumbers(1, 2);
+```
+
+---
+
 
 ## Mapping Sample
 ---
