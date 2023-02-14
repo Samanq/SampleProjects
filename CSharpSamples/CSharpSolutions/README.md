@@ -39,6 +39,18 @@ static class CalculatorExtended
     }
 }
 ```
+If you are extending an interface you should use the interface in your parameter.
+```C#
+
+static class CalculatorExtended
+{
+    public static void AddAndPrintNumbers(this ICalculator calculator, int firstNumber, int secondNumber)
+    {
+        int result = calculator.AddTwoNumbers(firstNumber, secondNumber);
+        Console.WriteLine($"{firstNumber} + {secondNumber} = {result}");
+    }
+}
+```
 In the end we can see that now the Calculator class has another method in **Program.cs**
 ```C#
 using ExtensionMethodSample.Extensions;
