@@ -1,5 +1,6 @@
-# XUnit Sample
-xUnit.net is a free, open source, community-focused unit testing tool for the .NET Framework.<br>
+# XUnit Sample and FluentAssertions
+xUnit.net is a free, open source, community-focused unit testing tool for the .NET Framework.<br><br>
+FluentAssertions is a very extensive set of extension methods that allow you to more naturally specify the expected outcome of a TDD or BDD-style unit tests.
 
 ---
 
@@ -18,6 +19,7 @@ public void AddTwoNumbers_SmallerSecondNumber_ReturnsNegativeNumber
     - xunit
     - xunit.runner.visualstudio
     - Microsoft.NET.Test.Sdk
+    - FluentAssertions
 3. In the Test project add refrences to other projects you want to test.
 
 ## Writing First Test
@@ -349,23 +351,30 @@ public void AddTwoNumbers_OnExecuteWithCustomDataAttribute_ReturnSum(int firstNu
 
 
 ## Asserts list
-| Purpose | Command| Usage |
+For Xunit we use Assert.<br>
+For FluentAssertion we use ActualValue.<br>
+av = Actual Value<br>
+ev = Expected Value<br>
+
+| Purpose | XUnit Syntax | FluentAssertions Syntax |
 |---|---|---|
-| Is True | True(value) | Assert.True(sut.IsActive); |
-| Is False | False(value) | Assert.False(sut.IsActive); |
-| Check Value | Equal(expectedValue, actualValue) | Assert.Equal("John Doe", sut.FullName); |
-| Check Value | NotEqual(expectedValue, actualValue) | Assert.Equal("John Doe", sut.FullName); |
-| Check Value with precision | Equal(expectedValue, actualValue, precision) | Assert.Equal(1.667, sut.DivideTwoNumbers, 3); |
-| Check string's beginning | StartsWith(expectedValue, actualValue) | Assert.Equal("John", sut.FullName); |
-| Check string's end | EndsWith(expectedValue, actualValue) | Assert.Equal("Doe", sut.FullName); |
-| Check string's value and ignore case sensitivity | EndsWith(expectedValue, actualValue, ignoreCase: true ) | Assert.Equal("Doe", sut.FullName, ignoreCase: true); |
-| Check string's value contains charecters | Contains(charecters, value) | Assert.Contains("jh oe", sut.FullName); |
+| Is True | .True(value) | .Should().Be(true); |
+| Is False | .False(value) | .Should().Be(false); |
+| Check Value | .Equal(ev, av) | .Should().Be(ev) |
+| Check Value | .NotEqual(ev, av) | .Should().NotBe(ev); |
+| Value with precision | .Equal(ev, av, precision) | .Should().BeApproximately(ev,precision) |
+| Ignore case sensitivity | .Equal(ev, av, ignoreCase: true ) | .Should().BeEquivalentTo("ev"); |
+| Check beginning  | .StartsWith(ev, av) | .Should().StartWith("ev") |
+| Check ending | .EndsWith(ev, av) | .Should().EndWith("ev") |
+| Contains | Contains(characters, ev) | .Should().Contain("ev") |
 | Check does not contains | Contains(charecters, value) | Assert.Contains("jh oe", sut.FullName); |
-| Check with regular expresion | Matches(regularExpression, Actual Value) | Assert.Matches("[A-Z]", sut.FullName); |
-| Check Range | InRange\<type>(ActualValue, min, hight) | Assert.InRange\<int>(sut.code, 100, 200); |
+| Match with wildcard | - | .Should().Match("*s") |
+| Match with regular expression | Matches(regularExpression, Actual Value) | .Should().MatchRegex("[A-Z]") |
+| Be one of | - | .Should().BeOneOf("ev", "ev") |
+| Check Range | InRange\<type>(av, min, hight) | Assert.InRange\<int>(sut.code, 100, 200); |
 | Check Null | Null(Value) | Assert.Null(sut.Children); |
 | Check Not Null | NotNull(Value) | Assert.NotNull(sut.Children); |
-| Check all items in a collection | All(ActualValue, condition) | Assert.All(sut.Children, child => Assert.False(string.IsNullOrWhiteSpace(child))); |
+| Check all items in a collection | All(av, condition) | Assert.All(sut.Children, child => Assert.False(string.IsNullOrWhiteSpace(child))); |
 | Check Type | IsType\<Type>(value) | |
 | Check Type | IsAssignableFrom\<Type>(value) | |
 | Check Instance | NotSame(object1, object2) | |
