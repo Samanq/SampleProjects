@@ -7,7 +7,7 @@ public class OldCar
 
 	public OldCar()
 	{
-		Thread.Sleep(2000);
+		Thread.Sleep(1000);
 	}
 
 	public void Start()

@@ -6,7 +6,7 @@ public class Ship
 
     public Ship()
 	{
-		Thread.Sleep(2);
+		Thread.Sleep(1000);
 	}
 
 

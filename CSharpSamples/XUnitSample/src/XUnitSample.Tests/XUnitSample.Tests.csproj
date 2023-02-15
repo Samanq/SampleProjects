@@ -20,4 +20,10 @@
     <ProjectReference Include="..\XUnitSample.WebApi\XUnitSample.WebApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ExternalTestData\SumTestCases.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

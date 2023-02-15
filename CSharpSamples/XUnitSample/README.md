@@ -163,6 +163,191 @@ public class ShipDeepTest
 ```
 ---
 
+## Adding Custom output 
+For having custom output message we have to inject **ITestOutputHelper** into our test class.
+```C#
+using Xunit;
+using Xunit.Abstractions;
+using XUnitSample.Infrastructure.Services;
+
+namespace XUnitSample.Tests
+{
+    public class CalculatorServiceTest
+    {
+        private readonly ITestOutputHelper _output;
+
+        public CalculatorServiceTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [Fact]
+        public void AddTwoNumbers_SimpleNumbers_ReturnsSum()
+        {
+            var sut = new CalculatorService();
+
+            // Using Custom output message.
+            _output.WriteLine("Test started.");
+
+            var actualValue = sut.AddTwoNumbers(3, 2);
+            Assert.Equal(5, actualValue);
+        }
+    }
+}
+```
+---
+
+## Multiple Test cases with inline attribute
+1. Add **Theory** Attribute for the test method.
+2. Set data for testing in **InlineData** attribute.
+3. Add the inputs in method parameter.
+```C#
+namespace XUnitSample.Tests
+{
+    public class CalculatorServiceTest
+    {
+        [Theory]
+        [InlineData(1, 2, 3)]
+        [InlineData(2, 1, 3)]
+        [InlineData(-1, -1, -2)]
+        public void AddTwoNumbers_OnExecute_ReturnSum(int firstNumber, int secondNumber, int expectedResult)
+        {
+            // Arrange
+            var sut = new CalculatorService();
+
+            // Act
+            var result = sut.AddTwoNumbers(firstNumber, secondNumber);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+    }
+}
+```
+---
+
+## Sharing test cases beetween classes.
+1. Create a class and call it InternalNameTestData.
+2. Define the test cases as IEnumerable<object[]>.
+```C#
+namespace XUnitSample.Tests.TestData;
+
+public class InternalNumbersTestData
+{
+    public static IEnumerable<object[]> SumTestData
+    {
+        get
+        {
+            yield return new object[] { 1, 2, 3 };
+            yield return new object[] { 2, 1, 3 };
+            yield return new object[] { -1, -1, -2 };
+        }
+    }
+}
+```
+3. For the test methods we should use **Theory** and **MemberData** Attribute.
+```C#
+[Theory]
+[MemberData(
+    nameof(InternalNumbersTestData.SumTestData),
+    MemberType = typeof(InternalNumbersTestData))]
+public void AddTwoNumbers_OnExecute_ReturnSum(int firstNumber, int secondNumber, int expectedResult)
+{
+    // Arrange
+    var sut = new CalculatorService();
+
+    // Act
+    var result = sut.AddTwoNumbers(firstNumber, secondNumber);
+
+    // Assert
+    Assert.Equal(expectedResult, result);
+}
+```
+---
+
+## Reading test cases from external file
+1. Create a class and call it ExternalNumbersTestData.
+```C#
+namespace XUnitSample.Tests.ExternalTestData;
+
+public class ExternalNumbersTestData
+{
+    public static IEnumerable<object[]> SumTestData
+    {
+        get
+        {
+            string[] csvLines = File.ReadAllLines(@"..\..\..\ExternalTestData\SumTestCases.csv");
+
+            var testCases = new List<object[]>();
+
+            foreach (var csvLine in csvLines)
+            {
+                IEnumerable<int> values = csvLine.Split(',').Select(int.Parse);
+
+                object[] testCase = values.Cast<object>().ToArray();
+
+                testCases.Add(testCase);
+            }
+
+            return testCases;
+        }
+    }
+}
+```
+2. For the test methods we should use **Theory** and **MemberData** Attribute.
+```C#
+[Theory]
+[MemberData(
+    nameof(ExternalNumbersTestData.SumTestData),
+    MemberType = typeof(ExternalNumbersTestData))]
+public void AddTwoNumbers_OnExecuteWithExternalMemberData_ReturnSum(int firstNumber, int secondNumber, int expectedResult)
+{
+    // Arrange
+    var sut = new CalculatorService();
+
+    // Act
+    var result = sut.AddTwoNumbers(firstNumber, secondNumber);
+
+    // Assert
+    Assert.Equal(expectedResult, result);
+}
+```
+3. If you had problem with reading csv file path you can right click on the csv file and go to the properties and change the **Copy to Output Directory** to **Copy always**. <br>
+or you can change the file path when you want to read the file.
+---
+
+## Creating custom data attribute
+1. Create a class and call it NameDataAttribute and implement **DataAttribute**
+```C#
+public class NumbersSumDataAttribute : DataAttribute
+{
+    public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+    {
+        yield return new object[] { 1, 2, 3 };
+        yield return new object[] { 2, 1, 3 };
+        yield return new object[] { -1, -1, -2 };
+    }
+}
+```
+2. Now you can use the new attribute For the test methods.
+```C#
+[Theory]
+[NumbersSumData]
+public void AddTwoNumbers_OnExecuteWithCustomDataAttribute_ReturnSum(int firstNumber, int secondNumber, int expectedResult)
+{
+    // Arrange
+    var sut = new CalculatorService();
+
+    // Act
+    var result = sut.AddTwoNumbers(firstNumber, secondNumber);
+
+    // Assert
+    Assert.Equal(expectedResult, result);
+}
+```
+---
+
+
 ## Asserts list
 | Purpose | Command| Usage |
 |---|---|---|
@@ -197,3 +382,6 @@ public class ShipDeepTest
 | [Fact] | Method is a test. |
 | [Fact(Skip = "Reason")] | Skip a test. |
 | [Trait("Category", "Name")] | Put in a specified category. |
+| [Theory] | Runs multiple times with different data  |
+| [InlineData()] | Providing multiple case data  |
+| [MemberData()] | Get tes data from a class  |
