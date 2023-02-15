@@ -4,6 +4,7 @@ namespace XUnitSample.Infrastructure.Services;
 
 public class CalculatorService : ICalculatorService, IDisposable
 {
+    public string Type { get; set; } = "Classic";
     public int AddTwoNumbers(int firstNumber, int secondNumber)
     {
         return firstNumber + secondNumber;
