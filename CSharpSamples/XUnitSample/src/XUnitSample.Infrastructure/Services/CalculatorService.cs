@@ -5,13 +5,20 @@ namespace XUnitSample.Infrastructure.Services;
 public class CalculatorService : ICalculatorService, IDisposable
 {
     public string Type { get; set; } = "Classic";
+    public bool IsOn { get; set; } = true;
+
     public int AddTwoNumbers(int firstNumber, int secondNumber)
     {
         return firstNumber + secondNumber;
     }
 
-    public int DivideTwoNumbers(int firstNumber, int secondNumber)
+    public double DivideTwoNumbers(double firstNumber, double secondNumber)
     {
+        if  (secondNumber == 0) 
+        {
+            throw new DivideByZeroException();
+        }
+
         return firstNumber / secondNumber;
     }
 

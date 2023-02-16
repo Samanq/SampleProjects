@@ -4,7 +4,9 @@ public class Ship
 {
 	public string CurrentState { get; set; } = string.Empty;
 
-    public Ship()
+	public DateTime CreationDate { get; set; } = new DateTime(2020, 2, 15, 14, 20, 01);
+
+	public Ship()
 	{
 		Thread.Sleep(1000);
 	}

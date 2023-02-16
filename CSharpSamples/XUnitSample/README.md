@@ -359,23 +359,23 @@ ev = Expected Value<br>
 
 | Purpose | XUnit Syntax | FluentAssertions Syntax |
 |---|---|---|
-| Is True | .True(value) | .Should().Be(true); |
-| Is False | .False(value) | .Should().Be(false); |
+| Is True | .True(value) | .Should().BeTrue() |
+| Is False | .False(value) | .Should().BeFalse() |
 | Check Value | .Equal(ev, av) | .Should().Be(ev) |
 | Check Value | .NotEqual(ev, av) | .Should().NotBe(ev); |
-| Value with precision | .Equal(ev, av, precision) | .Should().BeApproximately(ev,precision) |
+| Value with precision | .Equal(ev, av, telorance) | .Should().BeApproximately(ev,precision) |
 | Ignore case sensitivity | .Equal(ev, av, ignoreCase: true ) | .Should().BeEquivalentTo("ev"); |
 | Check beginning  | .StartsWith(ev, av) | .Should().StartWith("ev") |
 | Check ending | .EndsWith(ev, av) | .Should().EndWith("ev") |
-| Contains | Contains(characters, ev) | .Should().Contain("ev") |
-| Check does not contains | Contains(charecters, value) | Assert.Contains("jh oe", sut.FullName); |
+| Contains | .Contains(characters, ev) | .Should().Contain("ev") |
+| Check does not contains | .Contains(charecters, value) | Assert.Contains("jh oe", sut.FullName); |
 | Match with wildcard | - | .Should().Match("*s") |
-| Match with regular expression | Matches(regularExpression, Actual Value) | .Should().MatchRegex("[A-Z]") |
+| Match with regular expression | .Matches(regularExpression, Actual Value) | .Should().MatchRegex("[A-Z]") |
 | Be one of | - | .Should().BeOneOf("ev", "ev") |
-| Check Range | InRange\<type>(av, min, hight) | Assert.InRange\<int>(sut.code, 100, 200); |
-| Check Null | Null(Value) | Assert.Null(sut.Children); |
-| Check Not Null | NotNull(Value) | Assert.NotNull(sut.Children); |
-| Check all items in a collection | All(av, condition) | Assert.All(sut.Children, child => Assert.False(string.IsNullOrWhiteSpace(child))); |
+| Check Range | .InRange\<type>(av, min, hight) |  |
+| Check Null | .Null(Value) | .Should().BeNull() |
+| Check Not Null | .NotNull(Value) | .Should().NotBeNull() |
+| Check all items in a collection | .All(av, condition) |  |
 | Check Type | IsType\<Type>(value) | |
 | Check Type | IsAssignableFrom\<Type>(value) | |
 | Check Instance | NotSame(object1, object2) | |
@@ -383,6 +383,22 @@ ev = Expected Value<br>
 | Check exceptions | Throws\<Exception>(test code ) | |
 | Check if an event raises | Raises\<TypeOfEventArgs>(attach, detach, action) | |
 | - | PropertyChanaged\<TypeOfEventArgs>(object, NameOfTheProperty, action) | |
+| With custom message | - | .Should().Be(5, because : "message") |
+| Check Date | - | .Should().BeOnOrAfter(expectedDate) |
+| Check Date | - | .Should().BeSameDateAs(expectedDate) |
+| Check Date time | - | .Should().Be(15.February(2020).At(14, 20)) |
+| Check Year | - | .Should().HaveYear(2020) |
+| Check item's count | - | .Should().HaveCount(3) |
+| Check items are unique | - | .Should().OnlyHaveUniqueItems() |
+| Check Exceptions | - | .Invoking(c => c.method()).Should().Throw\<Exception>() |
+| Check if interface is implemented | - | typeof(class).Should().BeDerivedFrom(typeof(interface)) |
+
+
+
+
+
+            
+
 
 ---
 
