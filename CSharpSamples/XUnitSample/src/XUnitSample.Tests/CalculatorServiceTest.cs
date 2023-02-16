@@ -2,6 +2,7 @@
 using Xunit;
 using Xunit.Abstractions;
 using XUnitSample.Infrastructure.Services;
+using XUnitSample.Infrastructure.Services.Interfaces;
 using XUnitSample.Tests.ExternalTestData;
 using XUnitSample.Tests.InternalTestData;
 using XUnitSample.Tests.TestDataAttributes;
@@ -79,6 +80,8 @@ public class CalculatorServiceTest : IDisposable
 
         _sut.Invoking(c => c.DivideTwoNumbers(1,0))
             .Should().Throw<DivideByZeroException>();
+
+        typeof(CalculatorService).Should().BeDerivedFrom(typeof(ICalculatorService));
     }
 
     [Theory]
