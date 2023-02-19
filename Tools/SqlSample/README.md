@@ -29,64 +29,49 @@ Go
 ```
 ---
 
-## Create Simple Table
+## Create Table
 ```SQL
 Create Table	Customers(
-Id				BigInt	Identity	Not Null	Primary Key,
-FirstName		nVarchar(50)		Not Null,
-LastName		nVarchar(50)		Not Null,
-Mobile			nVarchar(13)		Not Null	Unique,
-Code			char(5)				Not Null	Unique,
-Constraint		CK_Customer						Check(Code Like '[0-9][0-9][0-9][0-9][0-9]')) -- Check Condition
+Id		BigInt	Identity	Not Null	Primary Key,
+FirstName	nVarchar(50)		Not Null,
+LastName	nVarchar(50)		Not Null,
+Mobile		nVarchar(13)		Not Null	Unique,
+Code		char(5)			Not Null	Unique,
+DepartmentId	BigInt			Not Null	References Departments(Id)
+Constraint	CK_Customer				Check(Code Like '[0-9][0-9][0-9][0-9][0-9]')) -- Check Condition
 ```
 ---
 
-## Create Simple Table
+## Delete Table
 ```SQL
-Create Table	Departments(
-Id				BigInt	Identity	Not Null	Primary Key,
-Title			nVarchar(50)		Not Null)
-```
----
-
-## Create Table with relation
-```SQL
-Create Table	Students(
-Id				BigInt	Identity	Not Null	Primary Key,
-FirstName		nVarchar(50)		Not Null,
-DepartmentId	BigInt				Not Null	References Departments(Id))
+drop table Customers
 ```
 ---
 
 ## Insert Data
 ```SQL
-Insert	Customers	(FirstName,LastName,Mobile,Code)
-		Values		('Jane','Doe','+989124474326','12346')	
+Insert	Customers	(FirstName, LastName)
+Values			('John','Doe'),
+			('Jane','Doe')
+----------------------------------------------
+Insert	Customers	
+Values			('John','Doe'),
+			('Jane','Doe')
 ```
 ---
 
-## Insert Data
+## Insert from select (INSERT INTO)
 ```SQL
-Insert	Departments	(Title)
-		Values		('Accounting')
-Insert	Departments	(Title)
-		Values		('Research')
-```
----
-
-## Insert Data
-```SQL
-Insert	Students    (DepartmentId, FirstName)
-		Values		(1, 'John')
-Insert	Students	(DepartmentId, FirstName)
-		Values		(2, 'Jane')
+INSERT INTO	Customer	(FirstName, LastName)
+SELECT	FirstName, LastName
+FROM	People;
 ```
 ---
 
 ## Inner Join
 ```SQL
 Select		FirstName as StudentName,
-			Title as Department
+		Title as Department
 From		Students
 Inner Join	Departments
 On Students.DepartmentId = Departments.id
@@ -113,7 +98,4 @@ EXEC	GETSTUDENTS
 ```
 ---
 
-## Delete a Table
-```SQL
-drop table Customers
-```
+
