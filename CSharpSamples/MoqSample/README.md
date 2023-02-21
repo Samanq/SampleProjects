@@ -59,5 +59,26 @@ public void Create_OnExecute_ReturnsStudent()
     actualResult.Should().NotBeNull();
 }
 ```
-
+Instead of sending a specific argument we can also mock the arguments like this .
+```C#
+mockCodeValidator
+            .Setup(x => x.IsValid(It.IsAny<int>()))
+            .Returns(true);
+```
+```C#
+mockCodeValidator
+            .Setup(x => x.IsValid(It.IsInRange<int>(10,20, Moq.Range.Inclusive)))
+            .Returns(true);
+```
+```C#
+mockCodeValidator
+            .Setup(x => x.IsValid(It.IsIn<int>(10, 15, 18,20 )))
+            .Returns(true);
+```
+```C#
+mockCodeValidator
+            .Setup(x => x.IsValid(It.IsRegex["[a-z]"]))
+            .Returns(true);
+```
 ---
+## Mocking a method with out parameter

@@ -8,4 +8,9 @@ internal class CodeValidator : ICodeValidator
     {
         return code > 10 && code < 20;
     }
+
+    public void IsValidWithOut(int code, out bool isCodeValid)
+    {
+        isCodeValid = code > 10 && code < 20;
+    }
 }
