@@ -6,8 +6,8 @@ namespace MoqSample.Infrastructure.Services;
 public class StudentService : IStudentService
 {
     private readonly ICodeValidator _codeValidator;
-
     public string Status { get; set; }
+
 
     public StudentService(ICodeValidator codeValidator)
     {
@@ -17,6 +17,8 @@ public class StudentService : IStudentService
 
     public Student Create(int code, string firstName, string lastName)
     {
+        var codeValidatorStatus = _codeValidator.Status;
+        _codeValidator.Status = "new status";
 
         if (_codeValidator.IsValid(code))
         {
@@ -30,4 +32,6 @@ public class StudentService : IStudentService
         }
         throw new ArgumentOutOfRangeException();
     }
+
+    
 }

@@ -81,4 +81,70 @@ mockCodeValidator
             .Returns(true);
 ```
 ---
+
+## Mocking with Linq
+we can also use linq to create a mock and setup methods.
+```C#
+//Mock<ICodeValidator> mockCodeValidator = new Mock<ICodeValidator>();
+//mockCodeValidator.Setup(x => x.IsValid(It.IsAny<int>())).Returns(true);
+
+//var sut = new StudentService(mockCodeValidator.Object);
+
+ICodeValidator mockCodeValidator = Mock.Of<ICodeValidator>
+    (
+        codeValidator =>
+        codeValidator.IsValid(It.IsAny<int>()) == true
+    );
+
+var sut = new StudentService(mockCodeValidator);
+```
+---
+
 ## Mocking a method with out parameter
+```C#
+// Creating a Mock object
+Mock<ICodeValidator> mockCodeValidator = new Mock<ICodeValidator>();
+
+bool isValid = true;
+
+mockCodeValidator
+    .Setup(x => x.IsValidWithOut(It.IsAny<int>(), out isValid));
+```
+---
+
+## Verify a method calls count
+We can check how many times a method calls.
+```C#
+// Creating a Mock object
+Mock<ICodeValidator> mockCodeValidator = new Mock<ICodeValidator>();
+mockCodeValidator.Setup(x => x.IsValid(It.IsAny<int>())).Returns(true);
+
+var sut = new StudentService(mockCodeValidator.Object);
+
+sut.Create(1, "John", "Doe");
+
+//mockCodeValidator.Verify(x => x.IsValid(It.IsAny<int>()), Times.Never);
+//mockCodeValidator.Verify(x => x.IsValid(It.IsAny<int>()), Times.Exactly(3));
+mockCodeValidator.Verify(x => x.IsValid(It.IsAny<int>()), Times.Once);
+```
+---
+
+## Verify a property Getter or Setter was called 
+```C#
+var mockCodeValidator = new Mock<ICodeValidator>();
+mockCodeValidator.Setup(x => x.IsValid(It.IsAny<int>())).Returns(true);
+
+var sut = new StudentService(mockCodeValidator.Object);
+
+sut.Create(1, "John", "Doe");
+
+// Verify a property Getter was called 
+mockCodeValidator.VerifyGet(x => x.Status);
+//mockCodeValidator.VerifyGet(x => x.Status, Times.Once);
+
+// Verify a property Setter was called 
+mockCodeValidator.VerifySet(x => x.Status);
+//mockCodeValidator.VerifySet(x => x.Status = "new status");
+mockCodeValidator.VerifySet(x => x.Status = It.IsAny<string>());
+```
+---
