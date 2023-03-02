@@ -98,4 +98,27 @@ EXEC	GETSTUDENTS
 ```
 ---
 
+## Creating Trigger
+We can create triggers that is automatically executed in response to certain events or actions, such insert, update or delete.
+In this example you can see that we log data changes in another table in case of update.
+```SQL
+CREATE TRIGGER  tr_Students_Update
+ON              Students
+AFTER UPDATE
+AS
+BEGIN
+  INSERT INTO Changes (ActionDate, TableName, ColumnName, OldValue, NewValue)
+  SELECT        GETDATE(), 'Students', 'FirstName', d.FirstName, i.FirstName
+  FROM          deleted d
+  INNER JOIN    inserted i
+  ON            d.Id = i.Id
+
+  INSERT INTO Changes (ActionDate, TableName, ColumnName, OldValue, NewValue)
+  SELECT        GETDATE(), 'Students', 'LastName', d.LastName, i.LastName
+  FROM          deleted d
+  INNER JOIN    inserted i
+  ON            d.Id = i.Id
+END
+```
+---
 
