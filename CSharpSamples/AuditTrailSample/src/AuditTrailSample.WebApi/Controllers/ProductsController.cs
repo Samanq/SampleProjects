@@ -34,21 +34,28 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(Product product)
     {
+        product.CreatedDate = DateTime.UtcNow;
+        product.ModifiedDate = DateTime.UtcNow;
+
         await _productRepository.Create(product);
 
         return Ok();
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Edit(Product product)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Edit(long id, Product product)
     {
-        var currectProduct = await _productRepository.GetById(product.Id);
-        if (currectProduct != null) 
+        var currectProduct = await _productRepository.GetById(id);
+        if (currectProduct == null) 
         {
             return NotFound();
         }
 
-        await _productRepository.Edit(product);
+        currectProduct.ModifiedDate = DateTime.UtcNow;
+        currectProduct.Price = product.Price;
+        currectProduct.Title = product.Title;
+
+        await _productRepository.Edit(currectProduct);
 
         return Ok();
     }
@@ -57,7 +64,7 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> Delete(long id)
     {
         var product = await _productRepository.GetById(id);
-        if (product != null)
+        if (product == null)
         {
             return NotFound();
         }
