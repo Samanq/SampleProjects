@@ -4,9 +4,9 @@ namespace AuditTrailSample.Application.Repositories;
 
 public interface IProductRepository
 {
-    public Product GetById();
-    public IEnumerable<Product> GetAll();
-    public void Create(Product product);
-    public void Edit(long id, Product product);
-    public void Delete(long id);
+    public Task<Product?> GetById(long id);
+    public Task<IEnumerable<Product>> GetAll();
+    public Task Create(Product product);
+    public Task Edit(Product product);
+    public Task Delete(Product product);
 }

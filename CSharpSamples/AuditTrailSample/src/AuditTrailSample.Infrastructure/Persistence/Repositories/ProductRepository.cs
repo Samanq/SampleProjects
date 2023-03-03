@@ -1,32 +1,45 @@
 ﻿using AuditTrailSample.Application.Repositories;
 using AuditTrailSample.Domain.Entities;
+using AuditTrailSample.Infrastructure.Persistence.DataContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuditTrailSample.Infrastructure.Persistence.Repositories;
 
 public class ProductRepository : IProductRepository
 {
-    public void Create(Product product)
+    private readonly AuditTrailSampleDb _db;
+
+    public ProductRepository(AuditTrailSampleDb dbContext)
     {
-        throw new NotImplementedException();
+        _db = dbContext;
     }
 
-    public void Delete(long id)
+
+    public async Task Create(Product product)
     {
-        throw new NotImplementedException();
+        await _db.Products.AddAsync(product);
+        await _db.SaveChangesAsync();
     }
 
-    public void Edit(long id, Product product)
+    public async Task Delete(Product product)
     {
-        throw new NotImplementedException();
+        _db.Products.Remove(product);
+        await _db.SaveChangesAsync();
     }
 
-    public IEnumerable<Product> GetAll()
+    public async Task Edit(Product product)
     {
-        throw new NotImplementedException();
+        _db.Entry(product).State = EntityState.Modified;
+        await _db.SaveChangesAsync();
     }
 
-    public Product GetById()
+    public async Task<IEnumerable<Product>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _db.Products.ToListAsync();
+    }
+
+    public async Task<Product?> GetById(long id)
+    {
+        return await _db.Products.FindAsync(id);
     }
 }
