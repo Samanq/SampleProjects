@@ -1,5 +1,7 @@
 ﻿using AuditTrailSample.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AuditTrailSample.Infrastructure.Persistence.DataContexts;
 
@@ -11,58 +13,100 @@ public class AuditTrailSampleDb : DbContext
     public DbSet<Audit> Audits { get; set; }
 
 
-
     // Overriding SaveChanges to add our logic before saving changes.
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var modifiedEntities = ChangeTracker.Entries()
-            .Where(e => e.State == EntityState.Modified || e.State == EntityState.Added)
+        var affectedEntities = ChangeTracker.Entries()
+            .Where(e =>
+                e.State == EntityState.Modified ||
+                e.State == EntityState.Added ||
+                e.State == EntityState.Deleted)
             .ToList();
 
-        foreach (var entity in modifiedEntities)
+        foreach (var entity in affectedEntities)
         {
-            var entityName = entity.Entity.GetType().Name;
-            var oldValue = string.Empty;
-            var newValue = string.Empty;
-
-
-            if (entity.State == EntityState.Modified)
+            switch (entity.State)
             {
-                // In EF6 you can use entity.OriginalValues.PropertyNames
-                foreach (var property in entity.OriginalValues.Properties)
-                {
-                    var originalValue = entity.OriginalValues[property.Name]?.ToString();
-                    var currentValue = entity.CurrentValues[property.Name]?.ToString();
+                case EntityState.Added:
+                    // In EF6 you can use entity.OriginalValues.PropertyNames
+                    var tempId = entity.CurrentValues["Id"]?.ToString();
 
-                    if (originalValue != currentValue)
+                    foreach (var property in entity.CurrentValues.Properties)
                     {
-                        oldValue += $"{property.Name}: {originalValue}, ";
-                        newValue += $"{property.Name}: {currentValue}, ";
+                        string? originalValue = null;
+                        var currentValue = entity.CurrentValues[property.Name]?.ToString();
+
+                        AddProperty(entity, property, originalValue, currentValue);
                     }
-                }
-            }
-            else if (entity.State == EntityState.Added)
-            {
-                foreach (var property in entity.CurrentValues.Properties)
-                {
-                    var currentValue = entity.CurrentValues.GetValue<object>(property.Name)?.ToString();
-                    newValue += $"{property.Name}: {currentValue}, ";
-                }
-            }
+                    await base.SaveChangesAsync(cancellationToken);
+                    FixIdAfterInsertion(affectedEntities, tempId);
+                    break;
+                case EntityState.Modified:
+                    foreach (var property in entity.OriginalValues.Properties)
+                    {
+                        var originalValue = entity.OriginalValues[property.Name]?.ToString();
+                        var currentValue = entity.CurrentValues[property.Name]?.ToString();
 
-            var audit = new Audit
-            {
-                EntityName = entityName,
-                OldValue = oldValue.TrimEnd(',', ' '),
-                NewValue = newValue.TrimEnd(',', ' '),
-                Username = "Admin",
-                AuditType = "Unknown",
-                DateTime = DateTime.UtcNow
-            };
+                        if (originalValue != currentValue)
+                        {
+                            AddProperty(entity, property, originalValue, currentValue);
+                        }
+                    }
+                    break;
+                case EntityState.Deleted:
+                    foreach (var property in entity.OriginalValues.Properties)
+                    {
+                        var originalValue = entity.OriginalValues[property.Name]?.ToString();
+                        string? currentValue = null;
 
-            Audits.Add(audit);
+                        AddProperty(entity, property, originalValue, currentValue);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void FixIdAfterInsertion(IEnumerable<EntityEntry> affectedEntities, string? currentId)
+    {
+        foreach (var savedEntity in affectedEntities)
+        {
+            if (savedEntity.State == EntityState.Unchanged)
+            {
+                var entityName = savedEntity.Entity.GetType().Name;
+                var entityId = savedEntity.Property("Id").CurrentValue;
+                var currentAudit = Audits
+                    .Where(a => a.NewValue == currentId)
+                    .SingleOrDefault();
+
+                if (currentAudit != null)
+                {
+                    currentAudit.NewValue = entityId?.ToString();
+                    Entry(currentAudit).State = EntityState.Modified;
+                }
+            }
+        }
+    }
+
+    private void AddProperty(EntityEntry entity, IProperty property, string? originalValue, string? currentValue)
+    {
+        var entityName = entity.Entity.GetType().Name;
+        var entityState = entity.State.ToString();
+
+        var audit = new Audit
+        {
+            EntityName = entityName,
+            PropertyName = property.Name,
+            OldValue = originalValue,
+            NewValue = currentValue,
+            Username = "Admin",
+            AuditType = entityState,
+            DateTime = DateTime.UtcNow
+        };
+
+        Audits.Add(audit);
     }
 }
