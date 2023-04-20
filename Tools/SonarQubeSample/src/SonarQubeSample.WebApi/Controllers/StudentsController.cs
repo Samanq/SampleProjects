@@ -23,7 +23,7 @@ namespace SonarQubeSample.WebApi.Controllers
             return Ok(students);
         }
 
-        [HttpGet("{id}/GetById")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(long id)
         {
             var student = _studentRepository.GetById(id);
@@ -53,5 +53,8 @@ namespace SonarQubeSample.WebApi.Controllers
 
             return Ok();
         }
+
+        string username = "John@Sample.com";
+        string password = "password";
     }
 }
