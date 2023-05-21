@@ -1,0 +1,35 @@
+// Defining a variable
+$secondary-color: #6fefa0;
+
+// Defining a list variable
+$red-colors: (
+  "dark-red": #5b0a0a,
+  "normal-red": #da1414,
+  "light-red": #ff8787,
+);
+
+:root {
+  --primary-colord: #43877c;
+}
+
+body {
+  background-color: rgb(119, 119, 119);
+}
+p {
+  color: aquamarine;
+}
+
+// Using a css variable
+.primary-btn {
+  background-color: var(--primary-colord);
+}
+
+// Using a scss variable
+.primary-btn {
+  background-color: $secondary-color;
+}
+
+// Getting a value from variable with multiple values
+.danger-lable {
+  background-color: map-get($red-colors, "dark-red");
+}
