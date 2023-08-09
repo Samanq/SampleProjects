@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    string result = ViewBag.Result;
+}
+
+
+
+<div class="text-center">
+    <h1 class="display-4">Async Sample</h1>
+    
+    <a asp-action="NormalSync" asp-controller="Home" class="btn btn-primary">Normal Sync Call</a>
+    <a asp-action="Normal" asp-controller="Home" class="btn btn-primary">Async Call</a>
+    <a asp-action="Parallel" asp-controller="Home" class="btn btn-primary">Parallel Async Call</a>
+</div>
+
+<div class="text-center" style="margin-top:50px;">
+    @Html.Raw(result)
+</div>
