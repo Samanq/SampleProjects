@@ -134,6 +134,32 @@ in the events.click() we must write the name of a javascript function or a funct
 </script>
 ```
 
+### Template()
+We can define a custom template for an element.
+For rendering values in HTMl we are must using this syntax: #= ... # <br>
+Syntax for using HTML encoding to display values: #: ... # <br>
+Syntax for executing arbitrary javascript code:: # if(true) {# non-script content here #} # <br>
+
+```html
+@(Html.Kendo()
+    .DropDownListFor(model => model.SelectedStatus)
+    .BindTo(Model.Statuses)
+    .Value(Model.SelectedStatus.ToString())
+    .Template("<span>Hello</span>")
+    .Deferred()
+)
+
+<!-- Model.Statuses is a IEnumerable<SelectListItem> so we can have access to the Text value -->
+@(Html.Kendo()
+    .DropDownListFor(model => model.SelectedStatus)
+    .BindTo(Model.Statuses)
+    .Value(Model.SelectedStatus.ToString())
+    .Template("<span>#:data.Text#</span>")
+    .Deferred()
+)
+```
+
+
 ---
 
 ## UI Components
@@ -176,4 +202,51 @@ public class Product
     }
 }
 ```
+
+
+### ComboBox
+With ComboBox we load load more complex objects
+
+```HTML
+@(Html.Kendo()
+    .ComboBoxFor(model => model.SelectedCourseId)
+    .BindTo(Model.Courses)
+    .DataValueField("Id")
+    .DataTextField("Title")
+    .Placeholder("Select a course")
+)
+
+```
+
+
+### TabStrip()
+We can create tab view wth **TabStrip()**, we must use the **Items()** to define our tabs and for static content we can use **Content()** or **LoadContentFrom("Action, Controller, parameters")** form loading data.<br>
+For **LoadContentFrom()** we can use return **PartialView** in the Action.
+```html
+@(Html.Kendo()
+    .TabStrip()
+    .Name("tabStrip")
+    .Items(tab =>
+    {
+        tab.Add().Text("Details").Content("<p>Some texts for details tab</p>").Selected(true);
+        tab.Add().Text("Description").Content("<p>Some texts for description tab</p>");
+    })
+)
+
+<!-- Loading Dynamically -->
+@(Html.Kendo()
+    .TabStrip()
+    .Name("tabStrip")
+    .Items(tab =>
+    {
+        tab.Add().Text("Details")
+            .LoadContentFrom("StudentDetails", "Student", Model.Id);
+        tab.Add().Text("Courses")
+            .LoadContentFrom("StudentCourses", "Student", Model.Id);
+    })
+)
+```
+
+
+
 
