@@ -1,0 +1,58 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+.box-container {
+  background-color: rgb(150, 204, 255);
+  padding: 25px;
+}
+.ease-box {
+  /* transition-duration: 600ms;
+    transition-property: width;
+    transition-timing-function: ease-in;
+    transition-delay: 2000ms; */
+
+  /* transition: width 600ms ease-in 1000ms;  */
+  transition: width 2000ms ease-in 500ms, background-color 1000ms ease-in 200ms;
+}
+.linear-box {
+  transition: width 2000ms linear 500ms, background-color 1000ms ease-in 200ms;
+}
+.ease-in-box {
+  transition: width 2000ms ease-in 500ms, background-color 1000ms ease-in 200ms;
+}
+.ease-out-box {
+  transition: width 2000ms ease-out 500ms, background-color 1000ms ease-in 200ms;
+}
+.ease-in-out-box {
+  transition: width 2000ms ease-in-out 500ms,
+    background-color 1000ms ease-in 200ms;
+}
+.cubic-bezier-box {
+  transition: width 2000ms cubic-bezier(1, -0.04, 1, 1.15) 500ms,
+    background-color 1000ms ease-in 200ms;
+}
+.box-container:hover .ease-box,
+.box-container:hover .linear-box,
+.box-container:hover .ease-in-box,
+.box-container:hover .ease-out-box,
+.box-container:hover .ease-in-out-box,
+.box-container:hover .cubic-bezier-box {
+  width: 100%;
+  background-color: red;
+}
+
+.box-container div {
+  background-color: green;
+  color: white;
+  width: 5%;
+  height: 100px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
