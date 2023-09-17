@@ -1,6 +1,6 @@
 ﻿using LinqSample.ConsoleApp;
 
-
+#region SelectMany Sample                     *
 // SelectMany Sample
 var courses = StudentService.GetAllStudents()
     .SelectMany(student => student.Courses)
@@ -11,8 +11,8 @@ foreach (var course in courses)
     Console.WriteLine(course);
 }
 
-// SelectMany Sample 
-// Create a items from the result.
+// SelectMany Sample 2
+// Create new items from the result.
 var studentReports = StudentService.GetAllStudents()
     .SelectMany(student => student.Courses, (student, course) =>
         new StudentReport { StudentName = student.Name, CourseName = course });
@@ -23,7 +23,7 @@ foreach (var studentReport in studentReports)
 {
     Console.WriteLine($"{studentReport.StudentName} - {studentReport.CourseName}");
 }
-
+#endregion
 
 #region InnerJoin Sample                      *
 PrintTitle("Inner Join", true, false);

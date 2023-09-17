@@ -34,6 +34,22 @@ var result = people.Where(person => person.Age > 30)                // Condition
 
 ```
 ---
+## SelectMany
+Is a method that is used to perform a one-to-many or a many-to-many **projection** operation on a **sequence of elements**. It is often used when you have **nested collections** and want to **flatten** them or when you want to project elements from one collection into multiple elements in the result.
+```C#
+// SelectMany Sample
+var courses = StudentService.GetAllStudents()
+    .SelectMany(student => student.Courses)
+    .Distinct(); // If you want to ignore the duplicated values
+
+// Sample 2
+// Create new items from the result.
+var studentReports = StudentService.GetAllStudents()
+    .SelectMany(student => student.Courses, (student, course) =>
+        new StudentReport { StudentName = student.Name, CourseName = course });   
+```
+---
+
 ## Inner Join
 Joining two different tables and create a new result.<br>
 Query Syntax:
