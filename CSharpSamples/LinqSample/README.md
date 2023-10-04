@@ -75,3 +75,42 @@ var secondEmployeeReports = employees.Join(employeeTypes,                       
                                            });
 ```
 ---
+
+## GroupBy
+GroupBy is an operator that is used to group a sequence of elements based on a key. <br>
+Query Syntax:
+```C#
+var studentGroupsSorted = from student in StudentService.GetAllStudents()
+        group student by student.GroupName into sGroup
+        orderby sGroup.Key
+        select new
+        {
+            Key = sGroup.Key,
+            Students = sGroup
+        };
+```
+Fluent Syntax:
+```C#
+IEnumerable<IGrouping<string, Student>> studentGroups = StudentService.GetAllStudents()
+    .GroupBy(s => s.GroupName);
+
+foreach (var group in studentGroups)
+{
+    Console.WriteLine(group.Key);
+    foreach (var student in group)
+    {
+        Console.WriteLine($"\t {student.Name}");
+    }
+}
+
+// OR
+var studentGroupsSorted = StudentService.GetAllStudents()
+    .GroupBy(student => student.GroupName)
+    .OrderBy(studentGroup => studentGroup.Key) // Ordering by GroupName 
+    .Select(studentGroup => new 
+    {
+        Key = studentGroup.Key,
+        Students = studentGroup.OrderBy(student => student.Name) // Order by StudentName
+    });
+```
+---

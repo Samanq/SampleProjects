@@ -80,6 +80,43 @@ foreach (var employeeReport in secondEmployeeReports)
 }
 #endregion
 
+#region GroupBy Sample                        *
+PrintTitle("GroupBy Sample", true, true);
+
+IEnumerable<IGrouping<string, Student>> studentGroups = StudentService.GetAllStudents()
+    .GroupBy(s => s.GroupName);
+
+foreach (var group in studentGroups)
+{
+    Console.ForegroundColor= ConsoleColor.Yellow;
+    Console.WriteLine(group.Key);
+    Console.ResetColor();
+    foreach (var student in group)
+    {
+        Console.WriteLine($"\t {student.Name}");
+    }
+}
+
+var studentGroupsSorted = StudentService.GetAllStudents()
+    .GroupBy(student => student.GroupName)
+    .OrderBy(studentGroup => studentGroup.Key) // Ordering by GroupName 
+    .Select(studentGroup => new 
+    {
+        Key = studentGroup.Key,
+        Students = studentGroup.OrderBy(student => student.Name) // Order by StudentName
+    });
+PrintSeperator();
+foreach (var group in studentGroupsSorted)
+{
+    Console.ForegroundColor= ConsoleColor.Yellow;
+    Console.WriteLine(group.Key);
+    Console.ResetColor();
+    foreach(var student in group.Students)
+    {
+        Console.WriteLine($"\t {student.Name}");
+    }
+}
+#endregion
 
 
 
