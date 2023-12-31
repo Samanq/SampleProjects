@@ -7,7 +7,6 @@ public class SentenceGeneratorBenchmark
 {
     private static readonly SentenceGenerator _sentenceGenerator = new();
 
-
     [Benchmark(Baseline = true)]
     public string NormalGenerate()
     {
