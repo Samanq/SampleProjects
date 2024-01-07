@@ -1,0 +1,80 @@
+# `Span<T>`: Powerful Feature for Efficient Memory Management in C#
+
+Span<`T`> is a value type containing a ref and a length (**ref struct**) that released as a part of C# 7.2 2017 and it brings enhanced memory management capabilities.
+
+It enables the representation of contiguous regions of arbitrary memory, regardless of whether that memory is associated with a managed object, is provided by native code via interop, or is on the stack. And it does so while still providing safe access with performance characteristics like that of arrays.
+
+## Sample1
+```C#
+string str = "hello, world";
+
+string worldString = str.Substring(startIndex: 7, length: 5); // Allocates
+
+ReadOnlySpan<char> worldSpan =str.AsSpan().Slice(start: 7, length: 5); // No allocation
+```
+---
+
+### Spans are always in stack.
+
+### We can't have a collection/array of spans.
+
+![Span01](assets/images/Span01.jpg)
+
+---
+### Spans can't be boxed.
+
+![Span02](assets/images/Span02.jpg)
+
+---
+
+### Spans can't be a field in a class.
+
+However they can be a field in a field struct. <br>
+Spans can be a method argument or a return type.<br>
+Spans can be defined inside the methods.<br>
+
+![Span03](assets/images/Span03.jpg)
+
+---
+
+### Iterating a List VS Iterating a Span
+
+```C#
+[MemoryDiagnoser]
+public class FirstBenchmark
+{
+    readonly List<int> numberList = Enumerable.Range(0, 100_000).ToList();
+
+    [Benchmark]
+    public void IterateList()
+    {
+        foreach (int number in numberList) 
+        {
+            int result = number + 1;
+        }
+    }
+
+    [Benchmark]
+    public void IterateSpan()
+    {
+        Span<int> numbersSpan = CollectionsMarshal.AsSpan(numberList);
+
+        foreach (int number in numbersSpan) 
+        {
+            int result = number + 1;
+        }
+    }
+}
+```
+
+![Span04](assets/images/Span04.jpg)
+---
+
+### Should not change the original list while we are iterating the span.
+As we can see here if we create a new array<`int`> from a List<`int`>, changing the list does not affect the array anymore.
+
+![Span05](assets/images/Span05.jpg)
+
+However, if we create a Span<`int`> we must not change the original list anymore, because **Span** is holding a reference to the underlying array structure inside the list.
+
+![Span06](assets/images/Span06.jpg)
