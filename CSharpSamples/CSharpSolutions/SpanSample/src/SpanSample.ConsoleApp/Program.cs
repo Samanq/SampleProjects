@@ -3,13 +3,16 @@ using SpanSample.ConsoleApp;
 using System.Runtime.InteropServices;
 
 //BenchmarkRunner.Run<FirstBenchmark>();
+//BenchmarkRunner.Run<Case03Benchmark>();
 
 //int[] numberArray = new int[10];
 //Span<int> numberSpan = new Span<int>(numberArray);
 
 
-TestClass.IterateNumber();
+//TestClass.IterateNumber();
 //TestClass2.IterateNumber();
+//Case03.Run();
+Case04.Run();
 
 public static class TestClass
 {
@@ -19,7 +22,7 @@ public static class TestClass
         Span<int> numberSpan = CollectionsMarshal.AsSpan(numberList);
 
         Console.WriteLine("First Iteration of Span");
-        for (int i = 0; i < numberSpan.Length; i++) 
+        for (int i = 0; i < numberSpan.Length; i++)
         {
             numberSpan[i] *= 2;
             Console.WriteLine(numberSpan[i]);
@@ -27,17 +30,12 @@ public static class TestClass
         }
 
         Console.WriteLine("\nSecond Iteration of Span");
-        foreach (var item in numberSpan) 
+        foreach (var item in numberSpan)
         {
             Console.WriteLine(item);
         }
     }
 }
-
-
-
-
-
 
 public static class TestClass2
 {
@@ -61,4 +59,70 @@ public static class TestClass2
             Console.WriteLine(item);
         }
     }
+}
+
+public static class Case03
+{
+    static int[] originalNumberArray = Enumerable.Range(1, 100).ToArray();
+
+    public static void Run()
+    {
+        ConsoleHelper.DrawSeparator();
+        Console.WriteLine("Test03\n");
+        int[] newNumberArray = originalNumberArray[0..5];
+        Span<int> newNumberSpan = originalNumberArray.AsSpan()[0..5];
+
+        originalNumberArray[0] = -1;    // Changing the value of original numbers.
+
+        Console.WriteLine("original");
+        foreach (var item in originalNumberArray[0..5])
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("\nnewNumberArray");
+        foreach (var item in newNumberArray)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("\nnewNumberSpan");
+        foreach (var item in newNumberSpan)
+        {
+            Console.WriteLine(item);
+        }
+    }
+}
+
+public static class Case04
+{
+    public static void Run()
+    {
+        // unsafe
+        // {
+        //     int* numbersInStack = stackalloc int[] { 1, 2, 3, 4, 5 };
+        // }
+
+        int[] numbersInHeap = [1, 2, 3, 4, 5];
+        Span<int> numbersInStack = stackalloc int[] { 6, 7, 8, 9, 10 };
+
+
+        Console.WriteLine("");
+    }
+}
+
+
+public static class ConsoleHelper
+{
+    public static void DrawSeparator()
+    {
+        Console.ResetColor();
+
+        Console.WriteLine("\n------------------------------------------------------------------------");
+    }
+}
+
+public class Saman()
+{
+    public int MyProperty { get; set; }
 }

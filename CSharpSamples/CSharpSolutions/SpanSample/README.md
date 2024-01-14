@@ -78,3 +78,21 @@ As we can see here if we create a new array<`int`> from a List<`int`>, changing 
 However, if we create a Span<`int`> we must not change the original list anymore, because **Span** is holding a reference to the underlying array structure inside the list.
 
 ![Span06](assets/images/Span06.jpg)
+---
+
+## Case 03
+When we split an array into another array, we are allocating more memory for the second array in the heap, however if we split it into a Span, we are only referring to the original array.<br>
+We can use different methods to split span.
+```C#
+int[] originalNumberArray = Enumerable.Range(1, 100).ToArray();
+
+Span<int> newNumberSpan = originalNumberArray.AsSpan()[0..5];
+Span<int> newNumberSpan1 = originalNumberArray.AsSpan().Slice(0,5);
+Span<int> newNumberSpan2 = originalNumberArray.AsSpan(0,5);
+```
+
+![TestCase03](assets/images/TestCase03.jpg)
+
+As we can see in the benchmark, we are not allocating more memory and we are just referring to the original array.
+
+![TestCase03](assets/images/TestCase03_Benchmark.jpg)
