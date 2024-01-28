@@ -1,44 +1,33 @@
 # `Span<T>`: Powerful Feature for Efficient Memory Management in C#
 
-Span<`T`> is a value type containing a ref and a length (**ref struct**) that released as a part of C# 7.2 2017 and it brings enhanced memory management capabilities.
+Span<`T`> is a value type containing a **ref** and a **length** (**ref struct**) that released as a part of C# 7.2 2017 and it brings enhanced memory management capabilities.
 
 It enables the representation of contiguous regions of arbitrary memory, regardless of whether that memory is associated with a managed object, is provided by native code via interop, or is on the stack. And it does so while still providing safe access with performance characteristics like that of arrays.
 
-## Sample1
-```C#
-string str = "hello, world";
+## Some facts about Spans
 
-string worldString = str.Substring(startIndex: 7, length: 5); // Allocates
+Since spans are ref struct.<br>
 
-ReadOnlySpan<char> worldSpan =str.AsSpan().Slice(start: 7, length: 5); // No allocation
-```
----
+> Spans store always in stack.
 
-### Spans are always in stack.
+> We can't have a collection/array of spans.
 
-### We can't have a collection/array of spans.
+> Spans can't be boxed.
 
-![Span01](assets/images/Span01.jpg)
+> Spans can't be a field in a **class** or **struct**, however they can be a field in a **reft struct**, or, can be defined inside a methods.
+
+> Spans can't be used as an **async** method argument or a lambda, however, they can be used as an **argument** or a **return type** for **synchronous** methods.<br>
 
 ---
-### Spans can't be boxed.
+## Case 01 Preventing heap allocation
+By using Spans we can prevent heap allocation.
 
-![Span02](assets/images/Span02.jpg)
-
----
-
-### Spans can't be a field in a class.
-
-However they can be a field in a field struct. <br>
-Spans can be a method argument or a return type.<br>
-Spans can be defined inside the methods.<br>
-
-![Span03](assets/images/Span03.jpg)
+![Case01](assets/images/Case01.jpg)
 
 ---
 
-### Iterating a List VS Iterating a Span
-
+### Case 02 Iterating a List VS Iterating a Span
+Iterating a Span is much more faster than a list.
 ```C#
 [MemoryDiagnoser]
 public class FirstBenchmark

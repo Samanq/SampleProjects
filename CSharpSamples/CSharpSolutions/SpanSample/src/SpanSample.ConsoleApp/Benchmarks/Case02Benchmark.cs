@@ -1,17 +1,17 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System.Runtime.InteropServices;
 
-namespace SpanSample.ConsoleApp;
+namespace SpanSample.ConsoleApp.Benchmarks;
 
 [MemoryDiagnoser]
-public class FirstBenchmark
+public class Case02Benchmark
 {
-    readonly List<int> numberList = Enumerable.Range(0, 100_000).ToList();
+    readonly List<int> numberList = Enumerable.Range(0, 100_000_000).ToList();
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void IterateList()
     {
-        foreach (int number in numberList) 
+        foreach (int number in numberList)
         {
             int result = number + 1;
         }
@@ -22,7 +22,7 @@ public class FirstBenchmark
     {
         Span<int> numbersSpan = CollectionsMarshal.AsSpan(numberList);
 
-        foreach (int number in numbersSpan) 
+        foreach (int number in numbersSpan)
         {
             int result = number + 1;
         }

@@ -1,9 +1,19 @@
 ﻿using BenchmarkDotNet.Running;
-using SpanSample.ConsoleApp;
+using SpanSample.ConsoleApp.Benchmarks;
+using SpanSample.ConsoleApp.Helpers;
 using System.Runtime.InteropServices;
 
 //BenchmarkRunner.Run<FirstBenchmark>();
+
+
+//Case01.Run();
+//BenchmarkRunner.Run<Case01Benchmark>();
+
+BenchmarkRunner.Run<Case02Benchmark>();
+
+//BenchmarkRunner.Run<Case02Benchmark>();
 //BenchmarkRunner.Run<Case03Benchmark>();
+
 
 //int[] numberArray = new int[10];
 //Span<int> numberSpan = new Span<int>(numberArray);
@@ -11,8 +21,29 @@ using System.Runtime.InteropServices;
 
 //TestClass.IterateNumber();
 //TestClass2.IterateNumber();
+
 //Case03.Run();
-Case04.Run();
+//Case04.Run();
+
+
+public static class Case01
+{
+    public static void Run()
+    {
+        string str = "hello, world";
+
+        string worldString = str.Substring(startIndex: 7, length: 5); // With heap allocation
+
+        ReadOnlySpan<char> worldSpan = str.AsSpan().Slice(start: 7, length: 5); // Without heap allocation
+
+        Console.WriteLine(worldString);
+        ConsoleX.WriteLine(worldSpan);
+    }
+}
+
+
+
+
 
 public static class TestClass
 {
@@ -67,7 +98,7 @@ public static class Case03
 
     public static void Run()
     {
-        ConsoleHelper.DrawSeparator();
+        ConsoleX.DrawSeparator();
         Console.WriteLine("Test03\n");
         int[] newNumberArray = originalNumberArray[0..5];
         Span<int> newNumberSpan = originalNumberArray.AsSpan()[0..5];
@@ -111,18 +142,10 @@ public static class Case04
     }
 }
 
-
-public static class ConsoleHelper
+public static class Case05
 {
-    public static void DrawSeparator()
+    public static void Run()
     {
-        Console.ResetColor();
 
-        Console.WriteLine("\n------------------------------------------------------------------------");
     }
-}
-
-public class Saman()
-{
-    public int MyProperty { get; set; }
 }

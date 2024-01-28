@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 
-namespace SpanSample.ConsoleApp;
+namespace SpanSample.ConsoleApp.Benchmarks;
 
 [MemoryDiagnoser]
 public class Case03Benchmark
@@ -23,7 +23,7 @@ public class Case03Benchmark
     [Benchmark]
     public void NewSpan()
     {
-        Span<int> newNumberSpan = 
+        Span<int> newNumberSpan =
             _originalNumberArray.AsSpan();
 
         foreach (var item in newNumberSpan)
