@@ -6,7 +6,7 @@ namespace SpanSample.ConsoleApp.Benchmarks;
 [MemoryDiagnoser]
 public class Case02Benchmark
 {
-    readonly List<int> numberList = Enumerable.Range(0, 100_000_000).ToList();
+    readonly List<int> numberList = Enumerable.Range(0, 100_000).ToList();
 
     [Benchmark(Baseline = true)]
     public void IterateList()

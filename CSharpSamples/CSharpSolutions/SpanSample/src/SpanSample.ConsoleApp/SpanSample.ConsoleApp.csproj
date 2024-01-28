@@ -12,4 +12,10 @@
     <PackageReference Include="BenchmarkDotNet" Version="0.13.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\LargeFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

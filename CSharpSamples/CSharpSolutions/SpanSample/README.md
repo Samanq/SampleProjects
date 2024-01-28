@@ -6,9 +6,9 @@ It enables the representation of contiguous regions of arbitrary memory, regardl
 
 ## Some facts about Spans
 
-Since spans are ref struct.<br>
+Since span is a ref struct.<br>
 
-> Spans store always in stack.
+> Spans always store in stack.
 
 > We can't have a collection/array of spans.
 
@@ -19,44 +19,21 @@ Since spans are ref struct.<br>
 > Spans can't be used as an **async** method argument or a lambda, however, they can be used as an **argument** or a **return type** for **synchronous** methods.<br>
 
 ---
-## Case 01 Preventing heap allocation
+## Span Usages
+By using Spans we can prevent heap allocation and Improving performance of array operations such as copying, sorting, and searching.
+### Preventing heap allocation (Case 01)
 By using Spans we can prevent heap allocation.
 
 ![Case01](assets/images/Case01.jpg)
 
 ---
 
-### Case 02 Iterating a List VS Iterating a Span
-Iterating a Span is much more faster than a list.
-```C#
-[MemoryDiagnoser]
-public class FirstBenchmark
-{
-    readonly List<int> numberList = Enumerable.Range(0, 100_000).ToList();
+### Iterating a List VS Iterating a Span (Case 02) 
+Iterating a Span is much more faster than a list.<br>
+For converting a list to a **Span** we can use *CollectionsMarshal.AsSpan()*
 
-    [Benchmark]
-    public void IterateList()
-    {
-        foreach (int number in numberList) 
-        {
-            int result = number + 1;
-        }
-    }
 
-    [Benchmark]
-    public void IterateSpan()
-    {
-        Span<int> numbersSpan = CollectionsMarshal.AsSpan(numberList);
-
-        foreach (int number in numbersSpan) 
-        {
-            int result = number + 1;
-        }
-    }
-}
-```
-
-![Span04](assets/images/Span04.jpg)
+![Case02](assets/images/Case02.jpg)
 ---
 
 ### Should not change the original list while we are iterating the span.
@@ -85,3 +62,11 @@ Span<int> newNumberSpan2 = originalNumberArray.AsSpan(0,5);
 As we can see in the benchmark, we are not allocating more memory and we are just referring to the original array.
 
 ![TestCase03](assets/images/TestCase03_Benchmark.jpg)
+
+---
+### Reading files (Case 06)
+By using **Spans** for reading files we can have a faster and more memory efficient result.
+
+![Case06](assets/images/Case06.jpg)
+
+---

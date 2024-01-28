@@ -1,18 +1,23 @@
 ﻿using BenchmarkDotNet.Running;
 using SpanSample.ConsoleApp.Benchmarks;
 using SpanSample.ConsoleApp.Helpers;
+using System.Reflection;
 using System.Runtime.InteropServices;
-
-//BenchmarkRunner.Run<FirstBenchmark>();
-
+using System.Text;
 
 //Case01.Run();
+//Case02.Run();
+//Case03.Run();
+//Case04.Run();
+//Case05.Run();
+//Case06.Run();
+
 //BenchmarkRunner.Run<Case01Benchmark>();
-
-BenchmarkRunner.Run<Case02Benchmark>();
-
 //BenchmarkRunner.Run<Case02Benchmark>();
 //BenchmarkRunner.Run<Case03Benchmark>();
+//BenchmarkRunner.Run<Case04Benchmark>();
+//BenchmarkRunner.Run<Case05Benchmark>();
+BenchmarkRunner.Run<Case06Benchmark>();
 
 
 //int[] numberArray = new int[10];
@@ -40,10 +45,6 @@ public static class Case01
         ConsoleX.WriteLine(worldSpan);
     }
 }
-
-
-
-
 
 public static class TestClass
 {
@@ -147,5 +148,19 @@ public static class Case05
     public static void Run()
     {
 
+    }
+}
+
+public static class Case06
+{
+    public static void Run()
+    {
+        string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Files\LargeFile.txt");
+
+        using (var sr = new StreamReader(path))
+        {
+            string text = sr.ReadToEnd(); // Allocates a new string object
+            byte[] buffer = Encoding.UTF8.GetBytes(text);
+        }
     }
 }
