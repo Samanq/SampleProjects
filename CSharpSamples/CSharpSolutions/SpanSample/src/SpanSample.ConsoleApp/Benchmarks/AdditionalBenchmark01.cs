@@ -5,19 +5,19 @@ using System.Text;
 namespace SpanSample.ConsoleApp.Benchmarks;
 
 [MemoryDiagnoser]
-public class Case06Benchmark
+public class AdditionalBenchmark01
 {
     private readonly string _path = Path
         .Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Files\LargeFile.txt");
 
     [Benchmark(Baseline = true)]
-    public string ReadFileWithString()
+    public string ReadFileAllText()
     {
         return File.ReadAllText(_path);
     }
     
     [Benchmark]
-    public string ReadFileWithSpan()
+    public string ReadFileAllByte()
     {
         byte[] fileBytes = File.ReadAllBytes(_path);
         return Encoding.UTF8.GetString(fileBytes);

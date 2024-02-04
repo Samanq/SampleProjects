@@ -6,21 +6,23 @@ It enables the representation of contiguous regions of arbitrary memory, regardl
 
 ## Some facts about Spans
 
+Lets start we some facts about Span. <br>
 Since span is a ref struct.<br>
 
 > Spans always store in stack.
 
-> We can't have a collection/array of spans.
+> We cannot have a collection/array of spans.
 
-> Spans can't be boxed.
+> Spans cannot be boxed.
 
-> Spans can't be a field in a **class** or **struct**, however they can be a field in a **reft struct**, or, can be defined inside a methods.
+> Spans cannot be a field in a **class** or **struct**, however, they can be a field in a **reft struct**, or, can be defined inside a methods.
 
-> Spans can't be used as an **async** method argument or a lambda, however, they can be used as an **argument** or a **return type** for **synchronous** methods.<br>
+> Spans cannot be used as an **async** method argument or a lambda, however, they can be used as an **argument** or a **return type** for **synchronous** methods.<br>
 
 ---
 ## Span Usages
-By using Spans we can prevent heap allocation and Improving performance of array operations such as copying, sorting, and searching.
+By using Spans we can prevent heap allocation and improving performance of array operations such as **copying**, **sorting**, and **searching**.
+
 ### Preventing heap allocation (Case 01)
 By using Spans we can prevent heap allocation.
 
@@ -29,44 +31,77 @@ By using Spans we can prevent heap allocation.
 ---
 
 ### Iterating a List VS Iterating a Span (Case 02) 
-Iterating a Span is much more faster than a list.<br>
-For converting a list to a **Span** we can use *CollectionsMarshal.AsSpan()*
-
+Iterating a Span is much more faster than iterating a list.<br>
+For converting a **List** to a **Span** we can use *CollectionsMarshal.AsSpan()*
 
 ![Case02](assets/images/Case02.jpg)
+
+> The original list must not change while the the span is being iterated.
+
+As we can see here if we create a new array<`int`> from a List<`int`>, changing the original list does not affect the array.
+
+![Case02-01](assets/images/Case02-01.png)
+
+However, if we create a Span<`int`> we must not change the original list as we said, because **Span** is holding a reference to the underlying array structure inside the list.
+
+![Case02-02](assets/images/Case02-02.png)
 ---
 
-### Should not change the original list while we are iterating the span.
-As we can see here if we create a new array<`int`> from a List<`int`>, changing the list does not affect the array anymore.
-
-![Span05](assets/images/Span05.jpg)
-
-However, if we create a Span<`int`> we must not change the original list anymore, because **Span** is holding a reference to the underlying array structure inside the list.
-
-![Span06](assets/images/Span06.jpg)
----
-
-## Case 03
-When we split an array into another array, we are allocating more memory for the second array in the heap, however if we split it into a Span, we are only referring to the original array.<br>
+## Slicing a Span (Case 03)
+When we split an array into another array, we are allocating more memory for the second array in the heap, however if we split it into a **Span**, we are only referring to the original array.<br>
 We can use different methods to split span.
 ```C#
 int[] originalNumberArray = Enumerable.Range(1, 100).ToArray();
 
-Span<int> newNumberSpan = originalNumberArray.AsSpan()[0..5];
-Span<int> newNumberSpan1 = originalNumberArray.AsSpan().Slice(0,5);
-Span<int> newNumberSpan2 = originalNumberArray.AsSpan(0,5);
+Span<int> newNumberSpan = originalNumberArray.AsSpan()[0..5]; // Using Range
+Span<int> newNumberSpan1 = originalNumberArray.AsSpan().Slice(0,5); // Using Slice method
+Span<int> newNumberSpan2 = originalNumberArray.AsSpan(0,5); // Using the constructor
 ```
 
-![TestCase03](assets/images/TestCase03.jpg)
+![Case03](assets/images/Case03.jpg)
 
 As we can see in the benchmark, we are not allocating more memory and we are just referring to the original array.
 
-![TestCase03](assets/images/TestCase03_Benchmark.jpg)
+![Case03_Benchmark](assets/images/TestCase03_Benchmark.jpg)
 
 ---
-### Reading files (Case 06)
+
+## Eliminating the need to using unsafe code in some cases.
+As we know arrays are reference types, so the values are stored in the heap and the reference stores in the stack.<br>
+Therefore, if we want to declare an array in stack we should use **unsafe** code and allocate it directly into stack.<br> 
+But by using Spans we can avoid using unsafe code and create an array directly in the stack.
+```C#
+static void UsingUnsafe()
+{
+    const int length = 5;
+    unsafe
+    {
+        int* numbersInStackPointer = stackalloc int[length] { 1, 2, 3, 4, 5 };
+
+        for (int i = 0; i < length; i++)
+        {
+            Console.WriteLine(numbersInStackPointer[i]);
+        }
+    }
+}
+
+static void UsingSpan()
+{
+    // Declaring the array in the stack
+    Span<int> numbersInStack = stackalloc int[] { 1, 2, 3, 4, 5 };
+
+    foreach (var number in numbersInStack)
+    {
+        Console.WriteLine(number);
+    }
+}
+```
+We can also see the benchmark here for the memory allocation.
+![Case04](assets/images/Case04.png)
+
+---
+
+<!-- ## Reading files (Case 06)
 By using **Spans** for reading files we can have a faster and more memory efficient result.
 
-![Case06](assets/images/Case06.jpg)
-
----
+![Case06](assets/images/Case06.jpg) -->
