@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
 using SpanSample.ConsoleApp.Benchmarks;
 using SpanSample.ConsoleApp.Helpers;
 using System.Buffers;
@@ -9,13 +10,15 @@ using System.Runtime.InteropServices;
 //Case03.Run();
 //Case04.Run();
 //Case05.Run();
+//Case06.Run();
 
 //BenchmarkRunner.Run<Case01Benchmark>();
 //BenchmarkRunner.Run<Case02Benchmark>();
 //BenchmarkRunner.Run<Case03Benchmark>();
 //BenchmarkRunner.Run<Case04Benchmark>();
-//BenchmarkRunner.Run<Case05Benchmark>();
-BenchmarkRunner.Run<AdditionalBenchmark01>();
+BenchmarkRunner.Run<Case05Benchmark>();
+//BenchmarkRunner.Run<Case06Benchmark>();
+//BenchmarkRunner.Run<AdditionalBenchmark01>();
 
 public static class Case01
 {
@@ -150,6 +153,73 @@ public static class Case05
 {
     public static void Run()
     {
+        Guid id = Guid.NewGuid();
+        string base64Id = Convert.ToBase64String(id.ToByteArray());
 
+        Console.WriteLine($"{id} \t\t Guid");
+        Console.WriteLine($"{base64Id} \t\t\t Base64String\n");
+
+
+        string friendlyBase64 = GuidHelper.GuidToFriendlyString(id);
+        string friendlyBase64WithSpan = GuidHelper.GuidToFriendlyStringWithSpan(id);
+
+        Console.WriteLine($"{friendlyBase64} \t\t\t\t Guid to friendly string.");
+        Console.WriteLine($"{friendlyBase64WithSpan} \t\t\t\t Guid to friendly string with Span.\n");
+
+
+        Guid guidFromFriendlyString = GuidHelper.FriendlyStringToGuid(friendlyBase64);
+        Guid guidFromFriendlyStringWithSpan = GuidHelper.FriendlyStringToGuidWithSpan(friendlyBase64WithSpan);
+
+
+        Console.WriteLine($"{guidFromFriendlyString} \t\t Friendly string to Guid.");
+        Console.WriteLine($"{guidFromFriendlyStringWithSpan} \t\t Friendly string to Guid with Span.");
+    }
+}
+
+public static class Case06
+{
+    private static string _code = "TST-102321";
+    public static void Run()
+    {
+        Console.WriteLine(StartWith());
+        Console.WriteLine(StartWithSpan());
+        Console.WriteLine(StartWithSpanLoop());
+    }
+
+    public static bool StartWith()
+    {
+        return _code.StartsWith("TST");
+    }
+
+
+    public static bool StartWithSpan()
+    {
+
+        Span<char> chars = stackalloc char[3];
+        chars[0] = 'T';
+        chars[1] = 'S';
+        chars[2] = 'T';
+
+        return _code.AsSpan(0, 3).StartsWith(chars);
+    }
+
+    public static bool StartWithSpanLoop()
+    {
+        Span<char> chars = stackalloc char[3];
+        chars[0] = 'T';
+        chars[1] = 'S';
+        chars[2] = 'T';
+
+        ReadOnlySpan<char> input = _code.AsSpan(0, 3);
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            if (input[i] != chars[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

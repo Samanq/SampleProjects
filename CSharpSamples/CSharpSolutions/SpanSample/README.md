@@ -66,7 +66,7 @@ As we can see in the benchmark, we are not allocating more memory and we are jus
 
 ---
 
-## Eliminating the need to using unsafe code in some cases.
+## Eliminating the need to using unsafe code in some cases. (Case 04)
 As we know arrays are reference types, so the values are stored in the heap and the reference stores in the stack.<br>
 Therefore, if we want to declare an array in stack we should use **unsafe** code and allocate it directly into stack.<br> 
 But by using Spans we can avoid using unsafe code and create an array directly in the stack.
@@ -97,11 +97,18 @@ static void UsingSpan()
 }
 ```
 We can also see the benchmark here for the memory allocation.
+
 ![Case04](assets/images/Case04.png)
 
 ---
 
-<!-- ## Reading files (Case 06)
-By using **Spans** for reading files we can have a faster and more memory efficient result.
+## Comparing a string. (Case 05)
+We can also use Span when we need to compare strings or looking for some characters inside them.<br>
 
-![Case06](assets/images/Case06.jpg) -->
+![Case05](assets/images/Case05.png)
+
+---
+
+## Conclusion
+In conclusion, the Span<`T`> is a useful way for handling and manipulating data in memory.<br>
+It provides a unified, type-safe, and efficient representation of contiguous regions of arbitrary memory. Its usage can lead to significant performance improvements by reducing unnecessary memory allocations and copying. However, it’s important to use Span<`T`> wisely, understanding its limitations and the potential for misuse. As with any powerful tool, it comes with its own set of challenges and complexities.
