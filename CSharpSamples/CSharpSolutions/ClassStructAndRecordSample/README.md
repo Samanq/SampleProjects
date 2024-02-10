@@ -26,7 +26,7 @@ static void ChangeClassNumber(MyClass myClass)
 
 static void ChangeRecordNumber(MyRecord myRecord)
 {
-    //myRecord.Number += 2; Error: this object is immutable and we can't change the value
+    // myRecord.Number += 2; Error: this object is immutable and we can't change the value.
 }
 
 static void ChangeStructNumber(MyStruct myStruct)
@@ -34,7 +34,7 @@ static void ChangeStructNumber(MyStruct myStruct)
     myStruct.Number += 2;
 }
 
-// Defining some class, struct and record objects.
+// Defining a class, struct and record objects.
 public class MyClass
 {
     public int Number { get; set; }
@@ -61,7 +61,7 @@ MyStruct : 1 * The value of the Number has NOT changed because struct is a value
 ```
 
 ## Record
-Records usually re used to represent immutable data structure. <br>
+Records usually re used to represent **immutable** data structure. <br>
 Record introduced in C# 9. <br>
 A **with** expression produces a copy of its operand with the specified properties and fields modified.<br>
 
@@ -80,7 +80,7 @@ Console.WriteLine($"Name: {myRecord.Name}, Number: {myRecord.Number}");
 Console.WriteLine($"Name: {newMyRecordAnotherNumber.Name}, Number: {newMyRecordAnotherNumber.Number}");
 ```
 It's possible to define a record as **struct**. (ValueType).<br>
-By default record is **record struct**. (reference Type)
+By default, record is **record class**. (reference Type)
 ```C#
 public record struct MyRecordStruct
 (
