@@ -1,27 +1,27 @@
 # `Span<T>`: Powerful Feature for Efficient Memory Management in C#
 
-Span<`T`> is a value type containing a **ref** and a **length** (**ref struct**) that released as a part of C# 7.2 2017 and it brings enhanced memory management capabilities.
+Span<`T`> is a value type containing a **ref** and a **length** (**ref struct**) that was released as a part of C# 7.2 2017 and it brings enhanced memory management capabilities.
 
 It enables the representation of contiguous regions of arbitrary memory, regardless of whether that memory is associated with a managed object, is provided by native code via interop, or is on the stack. And it does so while still providing safe access with performance characteristics like that of arrays.
 
 ## Some facts about Spans
 
-Lets start we some facts about Span. <br>
+Let's start with some facts about Span. <br>
 Since span is a ref struct.<br>
 
-> Spans always store in stack.
+> Spans are always stored on the stack.
 
 > We cannot have a collection/array of spans.
 
 > Spans cannot be boxed.
 
-> Spans cannot be a field in a **class** or **struct**, however, they can be a field in a **reft struct**, or, can be defined inside a methods.
+> Spans cannot be a field in a **class** or **struct**, however, they can be a field in a **ref struct**, and, they can also be defined as a field inside methods.
 
 > Spans cannot be used as an **async** method argument or a lambda, however, they can be used as an **argument** or a **return type** for **synchronous** methods.<br>
 
 ---
 ## Span Usages
-By using Spans we can prevent heap allocation and improving performance of array operations such as **copying**, **sorting**, and **searching**.
+By using Spans we can prevent heap allocation and improve the performance of array operations such as **copying**, **sorting**, and **searching**.
 
 ### Preventing heap allocation (Case 01)
 By using Spans we can prevent heap allocation.
@@ -31,12 +31,12 @@ By using Spans we can prevent heap allocation.
 ---
 
 ### Iterating a List VS Iterating a Span (Case 02) 
-Iterating a Span is much more faster than iterating a list.<br>
+Iterating a Span is much faster than iterating a list.<br>
 For converting a **List** to a **Span** we can use *CollectionsMarshal.AsSpan()*
 
 ![Case02](assets/images/Case02.jpg)
 
-> The original list must not change while the the span is being iterated.
+> The original list must not change while the span is being iterated.
 
 As we can see here if we create a new array<`int`> from a List<`int`>, changing the original list does not affect the array.
 
@@ -48,8 +48,8 @@ However, if we create a Span<`int`> we must not change the original list as we s
 ---
 
 ## Slicing a Span (Case 03)
-When we split an array into another array, we are allocating more memory for the second array in the heap, however if we split it into a **Span**, we are only referring to the original array.<br>
-We can use different methods to split span.
+When we split an array into another array, we are allocating more memory for the second array in the heap, however, if we split it into a **Span**, we are only referring to the original array.<br>
+We can use different methods to split a span.
 ```C#
 int[] originalNumberArray = Enumerable.Range(1, 100).ToArray();
 
@@ -66,9 +66,9 @@ As we can see in the benchmark, we are not allocating more memory and we are jus
 
 ---
 
-## Eliminating the need to using unsafe code in some cases. (Case 04)
-As we know arrays are reference types, so the values are stored in the heap and the reference stores in the stack.<br>
-Therefore, if we want to declare an array in stack we should use **unsafe** code and allocate it directly into stack.<br> 
+## Eliminating the need to use unsafe code in some cases. (Case 04)
+As we know arrays are reference types, so the values are stored in the heap and the reference is stored in the stack.<br>
+Therefore, if we want to declare an array in the stack we should use **unsafe** code and allocate it directly into the stack.<br> 
 But by using Spans we can avoid using unsafe code and create an array directly in the stack.
 ```C#
 static void UsingUnsafe()
@@ -103,7 +103,7 @@ We can also see the benchmark here for the memory allocation.
 ---
 
 ## Comparing a string. (Case 05)
-We can also use Span when we need to compare strings or looking for some characters inside them.<br>
+We can also use Span when we need to compare strings or look for some characters inside them.<br>
 
 ![Case05](assets/images/Case05.png)
 
