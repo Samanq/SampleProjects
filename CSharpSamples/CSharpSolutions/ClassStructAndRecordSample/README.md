@@ -1,9 +1,13 @@
 # Class, Struct and Record
-Classes usually are used to modeling complex objects. <br>
+**Classes** are usually used to model complex objects. <br>
 
-Structs usually are used to represent simple and light objects. <br>
+**Structs** are usually used to represent simple and light objects. <br>
 
-**Class** and **Record** are reference types but, **Struct** is a value type.
+**Records** are usually used to represent immutable objects.<br>
+
+**Class** is a reference type but, **Struct** is a value type.
+
+**Record** by default is a reference type, however it can be defined as a **record struct**.
 ```C#
 MyClass myClass = new() { Number = 1 };
 MyRecord myRecord = new(Number: 1);
@@ -61,7 +65,7 @@ MyStruct : 1 * The value of the Number has NOT changed because struct is a value
 ```
 
 ## Record
-Records usually re used to represent **immutable** data structure. <br>
+Records are usually used to represent **immutable** data structure. <br>
 Record introduced in C# 9. <br>
 A **with** expression produces a copy of its operand with the specified properties and fields modified.<br>
 
@@ -80,7 +84,7 @@ Console.WriteLine($"Name: {myRecord.Name}, Number: {myRecord.Number}");
 Console.WriteLine($"Name: {newMyRecordAnotherNumber.Name}, Number: {newMyRecordAnotherNumber.Number}");
 ```
 It's possible to define a record as **struct**. (ValueType).<br>
-By default, record is **record class**. (reference Type)
+By default, record is a **record class**. (reference Type)
 ```C#
 public record struct MyRecordStruct
 (
@@ -94,28 +98,37 @@ public record class MyRecordClass
 ```
 ---
 
+### Deconstructing a record. 
 We can also deconstruct a record like a tuple 
 ```C#
 MyRecord myRecord = new(Name: "John", Number: 1);
 
-// Method 1
-// string localName;
-// int localNumber;
-// (localName,localNumber) = myRecord;
+string localName;
+int localNumber;
+(localName,localNumber) = myRecord;
 
-// Method 2
-//(string localName, int localNumber) = myRecord;
+Console.WriteLine($"LocalName: {localName}, LocalNumber: {localNumber}");
 
-// Method 3
+
+public record MyRecord(string Name, int Number);
+```
+```C#
+MyRecord myRecord = new(Name: "John", Number: 1);
+
+(string localName, int localNumber) = myRecord;
+
+Console.WriteLine($"LocalName: {localName}, LocalNumber: {localNumber}");
+
+public record MyRecord(string Name, int Number);
+```
+```C#
+MyRecord myRecord = new(Name: "John", Number: 1);
+
 // Deconstructing a record
 var (localName, localNumber) = myRecord;
 
 Console.WriteLine($"LocalName: {localName}, LocalNumber: {localNumber}");
 
-
-public record MyRecord
-(
-    string Name,
-    int Number
-);
+public record MyRecord(string Name,int Number);
 ```
+---
