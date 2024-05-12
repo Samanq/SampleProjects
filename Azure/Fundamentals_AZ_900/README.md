@@ -108,4 +108,19 @@ You can host a **data warehouse** using the **Azure Synapse Analytics** service.
 
 ---
 
- start with 116
+## Concepts
+Infrastructure as a service (IaaS)<br>
+Example is: Virtual machine.
+
+Platform as a service (PaaS)<br>
+Example is Azure SQL Database.
+
+Software as a service (SaaS)<br>
+Example is Office 365.
+
+### Cloud Model types
+Private Cloud<br>
+Public Cloud<br>
+
+
+Continue with 126
