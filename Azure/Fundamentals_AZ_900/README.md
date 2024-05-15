@@ -122,5 +122,14 @@ Example is Office 365.
 Private Cloud<br>
 Public Cloud<br>
 
+---
+## Azure Traffic Manager
+This is a DNS based load balancer.<br>
+We can distribute the traffic across the our resources.
 
-Continue with 126
+We need to create **Traffic Manager Profile** from resources. 
+
+## Azure Content Delivery Network (CDN)
+It helps to distribute content across the world.
+
+Continue from 130
