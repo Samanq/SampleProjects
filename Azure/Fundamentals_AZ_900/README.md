@@ -132,7 +132,18 @@ We need to create **Traffic Manager Profile** from resources.
 ## Azure Content Delivery Network (CDN)
 It helps to distribute content across the world.
 
-Continue from 142
+## Azure Test lab
+We can create an automated workflow
+
+## Azure Cognitive service
+It can be used to manage vision and speech 
+
+## Azure key vault
+It allows you to store secrets, encryption keys and certificates.
+
+
+
+Continue from 147
 
 
 ---
