@@ -132,8 +132,8 @@ We need to create **Traffic Manager Profile** from resources.
 ## Azure Content Delivery Network (CDN)
 It helps to distribute content across the world.
 
-Continue from 137
+Continue from 142
 
 
-
+---
 Next we can sgo through Microsoft Certified: Azure Developer Associate (AZ-204),  and Designing and Implementing Microsoft DevOps Solutions (AZ-400)
