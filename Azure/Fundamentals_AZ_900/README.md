@@ -142,8 +142,20 @@ It can be used to manage vision and speech
 It allows you to store secrets, encryption keys and certificates.
 
 
+## Permissions
+**Owner:** Full access and able to delegate permission to other users. <br>
+**Contributor**: Full access but, <span style="color: red">not</span> able to delegate permission to other users. <br>
+**User Access:** Can delegate permission to other users. <br>
+**Reader:** Can read the properties. <br>
 
-Continue from 147
+## Guiding principles of Zero Trust
+**Verify explicitly:**  Always authenticate and authorize based on all available data points.<br>
+
+**Use least privilege access:**  Limit user access with Just-In-Time and Just-Enough-Access (JIT/JEA), risk-based adaptive policies, and data protection.<br>
+
+**Assume breach:** Minimize blast radius and segment access. Verify end-to-end encryption and use analytics to get visibility, drive threat detection, and improve defenses.<br>
+
+Continue from 166
 
 
 ---
