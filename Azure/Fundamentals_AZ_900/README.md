@@ -155,7 +155,15 @@ It allows you to store secrets, encryption keys and certificates.
 
 **Assume breach:** Minimize blast radius and segment access. Verify end-to-end encryption and use analytics to get visibility, drive threat detection, and improve defenses.<br>
 
-Continue from 166
+
+## Cost management
+### Price calculator
+... 
+### Total Cost of Ownership Calculator (TCO)
+Estimate the cost saving you can realize by migration your workloads to Azure.
+
+
+Continue from 184
 
 
 ---
