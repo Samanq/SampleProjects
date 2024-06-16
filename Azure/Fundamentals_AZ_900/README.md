@@ -163,7 +163,16 @@ It allows you to store secrets, encryption keys and certificates.
 Estimate the cost saving you can realize by migration your workloads to Azure.
 
 
-Continue from 184
+## Resource Lock
+Azure Resource Locks are a security feature designed to prevent accidental deletion or modification of Azure resources. <br/>
+You can apply to Azure resources, like **subscriptions**, **resource groups**, or **individual resources**<br/>
+There are two main lock levels you can implement:
+
+- **Delete Lock (CanNotDelete)**: This lock allows authorized users to access and modify the resource but prevents them from deleting it.
+- **Read-Only Lock (ReadOnly)**: This lock grants read-only access to authorized users, meaning they can view the resource but cannot modify or delete it.
+
+
+Continue from 190
 
 
 ---
