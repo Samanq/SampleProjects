@@ -159,8 +159,22 @@ It allows you to store secrets, encryption keys and certificates.
 ## Cost management
 ### Price calculator
 ... 
+
 ### Total Cost of Ownership Calculator (TCO)
 Estimate the cost saving you can realize by migration your workloads to Azure.
+
+## Service Level Agreement (SLA)
+Is a commitment from Microsoft to its customers, detailing the performance and reliability standards they can expect from Azure services. Here are some key aspects of the Azure SLA:
+
+- **Reliability and Availability**: It guarantees certain levels of service availability and performance.
+- **Service Quality**: Outlines the level of service quality users can expect from Azure.
+- **Compensation**: Specifies the compensation customers are entitled to if Azure fails to meet these commitments.
+
+## Azure support plans
+...
+
+## Azure Hybrid benefit
+With Azure Hybrid Benefit, if you have existing SQL Server or Windows Server licenses , you can get discounts when it comes to the costing for your Azure virtual machines.
 
 
 ## Resource Lock
@@ -171,8 +185,36 @@ There are two main lock levels you can implement:
 - **Delete Lock (CanNotDelete)**: This lock allows authorized users to access and modify the resource but prevents them from deleting it.
 - **Read-Only Lock (ReadOnly)**: This lock grants read-only access to authorized users, meaning they can view the resource but cannot modify or delete it.
 
+## Azure Blueprints
+...
 
-Continue from 190
+## Azure Cloud shell
+...
+
+## Azure Arc
+...
+
+
+## Azure Advisor
+Is a cloud assistant that can gives recommendation to improve the **cost effectiveness**, **performance**, **reliability**. and **security** of Azure resources.
+
+## Azure Service Health
+Is a suite of experiences that provides personalized **alerts** and **guidance** when issues in Azure services affect you. It notifies you about **Azure service incidents** and **planned maintenance**, so you can take action to mitigate downtime.
+
+## Azure Monitor Service
+...
+
+## Azure Log Analytics
+...
+
+## Azure Application Insights
+...
+
+
+
+
+
+Continue from 200
 
 
 ---
