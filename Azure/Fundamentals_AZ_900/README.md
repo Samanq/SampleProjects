@@ -1,7 +1,7 @@
 # Azure Fundamentals  
 
 Resources can have different regions than their resource group region.
-The **ResourceGroup** region is just like the default region.
+The ResourceGroup region is just like the default region.
 
 **Virtual network** is an isolated network in Azure.
 
@@ -40,6 +40,18 @@ The name of the DNS Zone should be the same as the domain.
 In the external DNS server we should add a record with IP of our load balancer to map the external DNS to the Azure DNS Zone.
 
 ---
+## Azure Functions
+...
+
+## Microsoft Entra Cloud Sync
+...
+
+## Scaling
+### Vertical Scaling
+...
+### Horizontal Scaling
+...
+
 
 ## Storage
 
@@ -55,6 +67,7 @@ We can use Table Storage Service to store non-relational structured data.
 
 There are 4 different Access Tiers for files in blob storage (container).
 Those are Hot (Default), Cool, Cold, and Archive.
+
 
 ### Storage Costs
 We have **storage costs** and **access costs**.<br> In the **Cool Access tier**, <ins>storage cost</ins> is <span style="color:green;">lower📉</span> but <ins>access cost</ins> is <span style="color:red;">higher📈</span>.
@@ -118,9 +131,13 @@ Example is Azure SQL Database.
 Software as a service (SaaS)<br>
 Example is Office 365.
 
-### Cloud Model types
-Private Cloud<br>
-Public Cloud<br>
+## Cloud Model Types
+There are three primary cloud deployment models.
+- **Public Cloud**: Services are provided over the internet by third-party providers (e.g., Microsoft Azure, AWS, Google Cloud). These are accessible to anyone and offer scalability and flexibility and can be used with Pay as you go.
+
+- **Private Cloud**: Infrastructure is dedicated to a **single organization**. It can be on-premises or hosted externally. Security and control are key benefits.
+
+- **Hybrid Cloud**: Combines public and private clouds, allowing data and applications to move seamlessly between them. It offers flexibility and optimization.
 
 ---
 ## Azure Traffic Manager
@@ -212,9 +229,12 @@ Is a suite of experiences that provides personalized **alerts** and **guidance**
 
 
 
+## Tips
+ Data coming into Azure is free, but, data going out of Azure has cost.<br>
+ Transferring data from one region to another has a cost as well
 
 
-Continue from 200
+Continue from 207
 
 
 ---
