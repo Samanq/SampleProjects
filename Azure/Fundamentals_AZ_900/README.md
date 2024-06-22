@@ -230,9 +230,11 @@ Is a suite of experiences that provides personalized **alerts** and **guidance**
 
 
 ## Tips
- Data coming into Azure is free, but, data going out of Azure has cost.<br>
- Transferring data from one region to another has a cost as well
+Data coming into Azure is free, but, data going out of Azure has cost.<br>
+Transferring data from one region to another has a cost as well
 
+No charge for virtual network interface<br>
+No charge for virtual networks<br> 
 
 Continue from 207
 
