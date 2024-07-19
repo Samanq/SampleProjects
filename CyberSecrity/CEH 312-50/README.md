@@ -55,5 +55,65 @@ Creating a two way channel between attacker and victim system.
 ### Action on Objectives
 Start stealing data or harming the victim's system. The victim system can also be used as a lunching point to perform other attacks to other victims.
 
+---
+## Types of hackers
+
+### Black Hats
+Black hat hackers are individuals who exploit computer systems, networks, or software for malicious purposes. Unlike white hat hackers, who work to improve security, black hat hackers engage in activities that are illegal and unethical.
+### White Hats
+White hat hackers, also known as ethical hackers, are individuals who use their hacking skills for lawful and constructive purposes. Their primary goal is to improve the security of systems, networks, and applications by identifying and fixing vulnerabilities.
+### Gray Hats
+Gray hat hackers are individuals who operate in the gray area between ethical (white hat) and unethical (black hat) hacking. Their actions can be both beneficial and harmful, and they often do not follow strict ethical guidelines.
+### Suicide Hackers
+Suicide hackers are individuals who carry out cyber attacks with the intention of causing significant harm or disruption, often without regard for the consequences to themselves. Unlike most hackers who aim to avoid detection and potential legal repercussions, suicide hackers are typically motivated by a cause, ideology, or a desire for revenge, and they accept or even anticipate being caught.
+### Script Kiddies
+Script kiddies are individuals, usually with limited technical skills and knowledge, who use pre-written scripts or programs developed by others to carry out hacking activities or cyber attacks. They typically lack a deep understanding of the underlying technology or the intricate workings of the software.
+
+### Spy Hackers, Cyber Terrorists and State Sponsored Hackers
+Spy hackers, also known as cyber-terrorists or state-sponsored hackers, are individuals or groups that engage in cyber activities with the backing or support of nation-states, or driven by ideological, political, or military goals. These hackers are typically well-resourced and highly skilled.<br>
+Spy hackers could be hired by rival business and other individuals to steal intellectual properties. <br>
+Stated Sponsored hackers are hired by governments to obtain information from other countries. 
+
+---
+
+## Hacktivism
+Hacktivism is a form of activism that uses hacking techniques to promote political, social, or ideological causes. Hacktivists leverage their technical skills to challenge, criticize, or disrupt systems they perceive as unjust, corrupt, or oppressive.
+We can refer to **Anonymous**, **LulzSec** and **WikiLeaks** groups as an example.
+
+## Hacking Definition
+
+Exploiting a systems vulnerabilities and security controls to gain access to system resources and features, outside the creator's original purpose.<br>
+
+---
+
+## The Attack Phases
+
+### Reconnaissance
+...
+#### Passive
+No direct interaction with the target.
+#### Active
+Direct interaction with the target.
+### Scanning
+### Gaining Access
+### Maintaining Access
+### Clearing Tracks
+
+---
+
+## Levels of Defense
+### Policies, Processes and Awareness
+### Physical
+### Perimeter
+### Network
+### Host
+### Application
+### Data
+---
 
 
+## Risk Levels
+### Extreme 
+### High
+### Medium
+### Low
