@@ -117,3 +117,21 @@ Direct interaction with the target.
 ### High
 ### Medium
 ### Low
+
+TODO: remember to add the risk matrix.
+---
+
+## The Incident Handling and Response (IH&R) Process
+1. Prepare for Event Handling and Reaction.
+2. Incident Recording and Assignment
+3. Triage
+4. Notification
+5. Containment
+6. Forensic Examination
+7. Eradication
+8. Recovery
+9. Post-incident Actions
+
+---
+
+
