@@ -102,3 +102,55 @@ const buttonArray = Array.from(buttonsByClassName);
     });
 });
 ```
+
+## API
+
+## Send Request to Server
+### Fetch
+```JS
+const url = 'https://catfact.ninja/fact';
+
+// Send a GET request using the fetch API
+fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+```
+### XML Http Request
+```JS
+// Define the URL to which the GET request will be sent
+const url = 'https://catfact.ninja/fact';
+
+// Create a new XMLHttpRequest object
+const xhr = new XMLHttpRequest();
+
+// Configure it: GET-request for the URL
+xhr.open('GET', url, true);
+
+// Set up a function to handle the response data
+xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+        const data = JSON.parse(xhr.responseText);
+        console.log('Success:', data);
+    } else {
+        console.error('Request failed. Returned status of ' + xhr.status);
+    }
+};
+
+// Set up a function to handle any errors
+xhr.onerror = function() {
+    console.error('There has been a problem with your XMLHttpRequest operation.');
+};
+
+// Send the request
+xhr.send();
+```
