@@ -2,11 +2,11 @@
 | --- | --- | --- |
 | ssh | ssh -p 2220 username@hostAddress | Connect via ssh |
 | ls | ls | list files and directories |
-| cat | ??? | concatenate files and print on the standard output |
+| cat | ??? | Concatenate files and print on the standard output |
 | nano | ??? | Text editor |
 | file | file example.txt |  determine the type of a file |
-| du | ??? | ??? |
-| find | find [path] [expression] -exec [command] {} + | Find a files or directories |
+| du | ??? | Estimate file space usage |
+| find | find [path] [expression] -exec [command] {} + | Find files or directories |
 | reset | ??? | ??? |
 | ??? | ??? | ??? |
 | ??? | ??? | ??? |
