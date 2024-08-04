@@ -24,14 +24,29 @@
 | mkdir | ??? | Make Directory |
 | mktemp | ??? | Make a temp directory |
 | chmod | ??? | change file mode bits |
+| chmod | chmod 700 ~/key.private | Restrict the file permission |
 | nc | nc localhost 30000 | Creating a network connection (NetCat) |
 | nc -zv | nc -zv localhost 500-600 | Port Scanning (NetCat) |
 | nc -l | nc -l 2220 | Listening to a port |
 | nc -l port | nc -l 2220 > received_file | Receive a file |
 | nc hostAddress port | nc localhost 2220 < file to send | Send a file |
+| ncat | ncat --ssl 192.168.1.1 31421 | Connect or listen with SSL |
 | opens ssl | openssl s_client -connect localhost:30000 | OpenSSL is a toolkit that implements the (SSL) and (TLS) protocols. |
+| nmap | nmap localhost -p 31000-32000 | Scan the ports. |
+| nmap | nmap 192.168.1.1-254 | Scan IP range. |
 
 
+
+
+
+
+## chmod
+...
+
+To restrict the permission only to the the current user.
+```bash
+chmod 700 ~/key.private
+```
 
 ## Remove (rm)
 | Command and Option | Description |
@@ -46,7 +61,7 @@
 | rmdir -p | Remove an empty subdirectory and its parent directory. |
 | rmdir -v | Print the information that the specified directory was deleted. |
 
-## Download Files using SSH 
+## Transferring Files using SSH  
 
 ```bash
 scp -P 22 root@hostaddress:~/target.txt C:\temp
