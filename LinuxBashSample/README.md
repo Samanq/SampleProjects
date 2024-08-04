@@ -24,6 +24,12 @@
 | mkdir | ??? | Make Directory |
 | mktemp | ??? | Make a temp directory |
 | chmod | ??? | change file mode bits |
+| nc | nc localhost 30000 | Creating a network connection (NetCat) |
+| nc -zv | nc -zv localhost 500-600 | Port Scanning (NetCat) |
+| nc -l | nc -l 2220 | Listening to a port |
+| nc -l port | nc -l 2220 > received_file | Receive a file |
+| nc hostAddress port | nc localhost 2220 < file to send | Send a file |
+| opens ssl | openssl s_client -connect localhost:30000 | OpenSSL is a toolkit that implements the (SSL) and (TLS) protocols. |
 
 
 
