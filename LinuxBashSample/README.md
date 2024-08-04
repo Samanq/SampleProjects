@@ -2,6 +2,7 @@
 | --- | --- | --- |
 | man | man ls | Show the command manual |
 | ssh | ssh -p 2220 username@hostAddress | Connect via ssh |
+| ssh -i | ssh -i C:\temp\sshkey.private user@hostaddress -p 2220  | Connect via ssh an private key |
 | ls | ls | list files and directories |
 | cat | ??? | Concatenate files and print on the standard output |
 | nano | ??? | Text editor |
@@ -22,6 +23,7 @@
 | mv | ??? | Move or rename |
 | mkdir | ??? | Make Directory |
 | mktemp | ??? | Make a temp directory |
+| chmod | ??? | change file mode bits |
 
 
 
@@ -38,3 +40,17 @@
 | rmdir -p | Remove an empty subdirectory and its parent directory. |
 | rmdir -v | Print the information that the specified directory was deleted. |
 
+## Download Files using SSH 
+
+```bash
+scp -P 22 root@hostaddress:~/target.txt C:\temp
+```
+If you need to authenticate via private key
+```bash
+scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/dir
+```
+
+### OR using SSH
+```bash
+ ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
+ ```
