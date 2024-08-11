@@ -1,13 +1,22 @@
+# Linux Common Commands
 | Command | Sample | Description |
 | --- | --- | --- |
 | man | man ls | Show the command manual |
+| whohami | whohami | Shows the current user |
+| pwd | pwd | Shows the current path |
+| su - username | su - test | login with a username |
 | ssh | ssh -p 2220 username@hostAddress | Connect via ssh |
 | ssh -i | ssh -i C:\temp\sshkey.private user@hostaddress -p 2220  | Connect via ssh an private key |
 | ls | ls | list files and directories |
-| cat | ??? | Concatenate files and print on the standard output |
-| nano | ??? | Text editor |
+| ls -l | ls -l | list files and directories with their permissions. |
+| grep | grep "word" filename.txt | Text searching utility that allows you to search through files or output for specific patterns. |
+| more | more largefile.txt | view the contents one screen at a time. |
+| cat | cat file.txt | Concatenate files and print on the standard output |
+| cat /etc/shells | cat /etc/shells | Shows the list of shells. |
+| nano | nano file.txt | Text editor |
+| vi | vi file.txt | Open a text in Visual Editor |
 | file | file example.txt |  determine the type of a file |
-| du | ??? | Estimate file space usage |
+| du | du file.txt | Estimate file space usage |
 | find | find [path] [expression] -exec [command] {} + | Find files or directories |
 | reset | ??? | ??? |
 | sort yourfile.txt | sort sample.txt | Sort the content |
@@ -22,6 +31,7 @@
 | cp | ??? | Copy a file |
 | mv | ??? | Move or rename |
 | mkdir | ??? | Make Directory |
+| touch | touch file.txt | create a file |
 | mktemp | ??? | Make a temp directory |
 | nc | nc localhost 30000 | Creating a network connection (NetCat) |
 | nc -zv | nc -zv localhost 500-600 | Port Scanning (NetCat) |
@@ -36,10 +46,6 @@
 | diff -u | diff -u file1.txt file2.txt | Compare values in unified format. |
 | diff -y | diff -y file1.txt file2.txt | Compare values side by side. |
 | diff -y --suppress-common-lines | diff -y --suppress-common-lines file1.txt file2.txt | Compare values side by side. (only the differences) |
-
-
-
-
 
 
 
@@ -107,18 +113,32 @@ chmod 760 filename.txt
 
 ### Changing Special Permissions
 The chmod command can also set special permissions such as **setuid**, **setgid**, and the **sticky bit** using symbolic or octal notation.
+
+**SetUID**: File will be run withe owner rights instead of current user's right.
+
+**SetGID**: The group owner of the directory would be applied on all the content of the directory.
+
+**Sticky Bit**: Only owner of the file/directory can remove the it.
+
 ```bash
 # Set the setuid bit
 chmod u+s file
 
-# Set the setuid bit using octal notation
+# Set the setuid bit using octal notation (4 is for UID)
 chmod 4755 file
 
 # Set the sticky bit
 chmod +t directory
 
-# Set the sticky bit using octal notation
+# Set the sticky bit using octal notation (1 is for Sticky Bit)
 chmod 1755 directory
+
+# Set the setgid to a directory
+# Assign the current user as the  group owner of the directory 
+chmod g+s directory
+
+# Set the setgid to a directory using octal notation (2 is for )
+chmod 2755 directory
 ```
 
 ## Remove (rm)
@@ -148,3 +168,107 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
 ```bash
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
+---
+
+ # Bash Scripting
+ A Bash script is a text file with **.sh** extension containing a sequence of commands that are executed by the Bash shell.<br/>
+
+ Most Bash scripts begin with a "shebang" **#!** line, which indicates the script should be executed with Bash. The shebang line looks like this:
+ ```bash
+ #!/bin/bash
+ ```
+
+A Bash script can contain any command that you would normally type into a Bash terminal. This includes commands like ls, echo, cd, and more complex operations using loops, conditionals, and functions.
+```bash
+#!/bin/bash
+echo "Hello, World!"
+```
+
+We can run a bash script file by the **bash** command
+```bash
+bash my_script.sh
+```
+
+## Loops
+There are 3 kind of loops that we can use. (for, while and until)
+### for loop
+The for loop iterates over a list of items, executing the block of code for each item.
+```bash
+#!/bin/bash
+
+# Iterating List of files
+for file in file1.txt file2.txt file3.txt
+do
+    echo "Processing $file"
+    # Add commands to process the file here
+done
+
+#----------------------------------------------
+# Loop through numbers 1 to 5
+for i in {1..5}
+do
+    echo "Iteration $i"
+done
+
+#----------------------------------------------
+# C-style for loop
+for ((i=1; i<=5; i++))
+do
+    echo "Iteration $i"
+done
+```
+
+### while loop
+The while loop continues to execute as long as the specified condition is true.
+```bash
+#!/bin/bash
+
+counter=1
+
+while [ $counter -le 5 ]
+do
+    echo "Counter is at $counter"
+    ((counter++))
+done
+
+#----------------------------------------------
+# Read a file line by line
+while IFS= read -r line
+do
+    echo "Line: $line"
+done < "file.txt"
+```
+
+### until loop
+The until loop is the opposite of the while loop; it continues to execute until the specified condition is true.
+```bash
+#!/bin/bash
+
+counter=1
+
+until [ $counter -gt 5 ]
+do
+    echo "Counter is at $counter"
+    ((counter++))
+done
+```
+We can use the **break** statement to exit a loop prematurely and the **continue** statement to skip the rest of the current iteration and move to the next iteration.
+```bash
+#!/bin/bash
+
+for i in {1..10}
+do
+    if [ $i -eq 5 ]; then
+        echo "Skipping iteration $i"
+        continue  # Skip the rest of this iteration
+    fi
+    
+    if [ $i -eq 8 ]; then
+        echo "Breaking the loop at iteration $i"
+        break  # Exit the loop
+    fi
+    
+    echo "Iteration $i"
+done
+
+```
