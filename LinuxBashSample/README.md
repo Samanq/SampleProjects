@@ -2,7 +2,12 @@
 | Command | Sample | Description |
 | --- | --- | --- |
 | man | man ls | Show the command manual |
-| whohami | whohami | Shows the current user |
+| whoami | whoami | Shows the current user |
+| ps -ef | ps -ef | Show running processes |
+| kill [id] | kill 6920 | Kill a process |
+| id | id | Shows the current user uid, gid |
+| su | su | Switch to the root user |
+| sudo | su rm file.txt | Runs the command with root privilege. |
 | pwd | pwd | Shows the current path |
 | su - username | su - test | login with a username |
 | ssh | ssh -p 2220 username@hostAddress | Connect via ssh |
@@ -10,7 +15,9 @@
 | ls | ls | list files and directories |
 | ls -l | ls -l | list files and directories with their permissions. |
 | grep | grep "word" filename.txt | Text searching utility that allows you to search through files or output for specific patterns. |
+| sed | sed -i 's/some/many/g' file.txt | Manipulating text streams. |
 | more | more largefile.txt | view the contents one screen at a time. |
+| stat | stat file.txt | Shows detailed information about the files. |
 | cat | cat file.txt | Concatenate files and print on the standard output |
 | cat /etc/shells | cat /etc/shells | Shows the list of shells. |
 | nano | nano file.txt | Text editor |
@@ -33,6 +40,9 @@
 | mkdir | ??? | Make Directory |
 | touch | touch file.txt | create a file |
 | mktemp | ??? | Make a temp directory |
+| chmod | chmod 777 | Change the permissions |
+| chown | chmod testuser file.txt | Change the owner |
+| chgrp | chgrp testuser file.txt | Change the group |
 | nc | nc localhost 30000 | Creating a network connection (NetCat) |
 | nc -zv | nc -zv localhost 500-600 | Port Scanning (NetCat) |
 | nc -l | nc -l 2220 | Listening to a port |
@@ -48,8 +58,47 @@
 | diff -y --suppress-common-lines | diff -y --suppress-common-lines file1.txt file2.txt | Compare values side by side. (only the differences) |
 
 
+## "|", ">", and "<"
+...
 
-## chmod
+## File System
+...
+### / (Root)
+...
+### /home
+...
+### /tmp
+...
+### /boot
+...
+### /dev
+...
+### /etc
+...
+### /etc/passwd
+...
+### /var
+...
+### /bin
+...
+### /sbin
+...
+
+## Environment Variables
+...
+
+## Daemons
+...
+
+## CronJob and CronTab
+
+create sample: 
+```bash
+./my_script.sh &
+```
+...
+
+## chmod and file permissions
 The **chmod** is used to change the file system **modes** of files and directories. This includes modifying the **read**, write**, and **execute** permissions.
 
 ### Changing Permissions Using Symbolic Notation
@@ -153,6 +202,20 @@ chmod 2755 directory
 | rm ? | Wildcard that represents a single character. |
 | rmdir -p | Remove an empty subdirectory and its parent directory. |
 | rmdir -v | Print the information that the specified directory was deleted. |
+
+## sed
+**sed** is a powerful command-line tool used for manipulating text streams. It's often referred to as a stream editor because it processes text line by line. Common operations include:   
+
+- Finding and replacing text
+- Deleting lines   
+- Inserting lines   
+- Appending text
+
+Example
+```bash
+# needs explanation
+sed -i 's/some/many/g' file.txt
+```
 
 ## Transferring Files using SSH  
 

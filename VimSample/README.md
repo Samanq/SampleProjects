@@ -5,7 +5,7 @@ It's an improved version of the original vi editor, hence its name, "Vi Improved
 We can run the vim by vim command.
 
 ```bash
-# If te file.txt does not exit the file will be created. 
+# If the file.txt does not exist, the file will be created. 
 vim file.txt
 ```
 
