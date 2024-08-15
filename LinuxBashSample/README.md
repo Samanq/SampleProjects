@@ -85,6 +85,7 @@
 ...
 
 ## Environment Variables
+and export command
 ...
 
 ## Daemons
@@ -232,9 +233,6 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
 ---
-## Positional Parameters
-...
----
 
 # Shells and Bash Scripting
 Here's a list of the most common Linux shells:
@@ -279,6 +277,7 @@ bash my_script.sh
 
 ## Loops
 There are 3 kind of loops that we can use. (for, while and until)
+
 ### for loop
 The for loop iterates over a list of items, executing the block of code for each item.
 ```bash
@@ -358,5 +357,48 @@ do
     
     echo "Iteration $i"
 done
+```
 
+## Positional Parameters
+Positional parameters are placeholders for values that you provide when running a script or command.<br>
+They are **ordered**, meaning the first value you provide corresponds to the first parameter, the second value to the second parameter, and so on.<br>
+They are referenced by numbers, starting from **1** (e.g., $1, $2, $3).<br>
+**$0** is a special parameter that holds the name of the script itself.<br> 
+You can access more than 9 positional parameters using curly braces (e.g., \${10}, \${11}).
+
+Example<br>
+If we create a script.sh with the following content.
+```bash
+#!/bin/bash
+echo Name of the script is $0
+echo Hello $1
+echo Hello $2
+echo Hello $3
+echo Hello $4
+echo Hello $5
+echo Hello $6
+echo Hello $7
+echo Hello $8
+echo Hello $9
+echo Hello ${10}
+echo Hello ${11}
+```
+You can run this run script and pass the arguments like this
+```bash
+bash script.sh John Jane Peter Jackson Jim Sara Kate Martin Ana Alice Jack
+```
+The result should be like this
+```text
+Name of the script is script.sh
+Hello John
+Hello Jane
+Hello Peter
+Hello Jackson
+Hello Jim
+Hello Sara
+Hello Kate
+Hello Martin
+Hello Ana
+Hello Alice
+Hello Jack
 ```
