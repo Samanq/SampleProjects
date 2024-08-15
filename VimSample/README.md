@@ -57,3 +57,11 @@ Press **v** in Normal Mode to enter Visual Mode. You can now move the cursor to 
 - Press **y** to yank (copy) the selected text.
 - Press **d** to delete the selected text.
 - Press **p** to paste the copied text.
+
+### Execute commands in vim
+...
+
+Example:
+```bash
+: set shell?
+```

@@ -232,8 +232,33 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
 ---
+## Positional Parameters
+...
+---
 
- # Bash Scripting
+# Shells and Bash Scripting
+Here's a list of the most common Linux shells:
+
+## Bourne-based Shells
+- **Bourne Shell (sh)**: The original shell, still used for scripting.
+- **Bourne Again Shell (bash)**: The most widely used shell, offering advanced features and compatibility.
+- **Korn Shell (ksh)**: Known for its powerful scripting capabilities and interactive features.
+- **Debian Almquist Shell (dash)**: A lightweight and efficient shell often used in embedded systems.
+
+## C-based Shells
+- **C Shell (csh)**: Less common now, but still used in some environments.
+- **TENEX C Shell (tcsh)**: An enhanced version of csh with additional features.
+
+## Modern Shells
+- **Z Shell (zsh)**: Combines features from bash, ksh, and tcsh, offering extensive customization and plugins.
+- **Fish (Friendly Interactive Shell)**: User-friendly with syntax highlighting, autosuggestions, and other interactive features.
+
+ We can find he available shells here.
+ ```bash
+cat /etc/shells
+ ```
+ ---
+ 
  A Bash script is a text file with **.sh** extension containing a sequence of commands that are executed by the Bash shell.<br/>
 
  Most Bash scripts begin with a "shebang" **#!** line, which indicates the script should be executed with Bash. The shebang line looks like this:
