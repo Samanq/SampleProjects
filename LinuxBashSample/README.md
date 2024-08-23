@@ -232,8 +232,74 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
 ```bash
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
+
+
+## Nmap
+Nmap (Network Mapper) is an open-source tool used for network discovery and security auditing.<br>
+Nmap can be used for scanning and discovering networks, hosts, IP ranges, ports, services and vulnerabilities.
+
+### common switches.
+| Switch | Description |
+| --- | --- |
+| -sn | Ping Scan - Disable port scan |
+| -sT | TCP Scan - Full open scan, it uses the 3-way handshake. |
+| -sU | UDP Scan |
+| -sL | DNS Scan (List scan) |
+| -sS | Stealth scan - Half open scan - Broken TCP without ack packages |
+| -p <port ranges> | Only scan specified ports |
+| -S <IP_Address> |  Spoof source address |
+| -O | Enable OS detection |
+| -T<0-5> | Set timing template (higher is faster) |
+| -A | Enable OS detection, version detection, script scanning, and traceroute |
+| -D <decoy1,decoy2[,ME],...> | Cloak a scan with decoys |
+
+### Some Examples
+| Command | Description |
+| --- | --- |
+| nmap localhost -p 31000-32000 | Scan a ports range. |
+| nmap 192.168.1.1-254 | Scan an IP range. |
+| nmap -sn 192.168.0.0/24 | Scan a network. |
+| nmap -sS -D 192.168.0.1-50 | Scan a network in stealth mode and with decoy. |
+
+### Nmap Scripting Engine (NSE)
+Nmap custom scripting involves writing or using scripts with the Nmap Scripting Engine (NSE) to perform custom or advanced network scans and operations. These scripts can be used to detect vulnerabilities, gather additional information about the target, or automate a series of Nmap commands.<br>
+
+NSE scripts are written in the **Lua** programming language, which is lightweight and highly extensible.<br>
+
+NSE provides a range of libraries that simplify common tasks such as making HTTP requests, parsing XML, handling cryptographic functions, etc.
+
+Nmap organizes NSE scripts into categories such as:
+- **auth**: Scripts related to authentication bypass or checks.
+- **brute**: Scripts that perform brute-force attacks.
+- **vuln**: Scripts that check for vulnerabilities.
+- **discovery**: Scripts that discover more information about the target.
+- **safe**: Scripts that are non-intrusive and safe to run on production systems.
+
+List of the categories and the scripts can be found in https://nmap.org/nsedoc/categories/
+
+We can update the list scripts database by running this command
+```bash
+sudo nmap --script-updatedb
+```
+
+We can also run all all the scripts inside a category like this
+```bash
+# sudo nmap --script <Category name> <target>
+sudo nmap --script vuln 127.0.0.1
+```
+
+Users can write their own custom scripts to fulfill specific needs. These scripts can be shared or reused across different environments.
+
+We can run the scripts with --script option
+```bash
+nmap --script script1,script2,script3 --script-args 'arg1=value1,arg2=value2' <target>
+```
 ---
 
+## Subfinder
+asd
+
+---
 # Shells and Bash Scripting
 Here's a list of the most common Linux shells:
 
