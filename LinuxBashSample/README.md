@@ -1,8 +1,13 @@
 # Linux Common Commands
 | Command | Sample | Description |
 | --- | --- | --- |
+| echo | echo "hello" | Display text or the value of variables in the terminal |
+| echo | echo "hello" > test.txt | Writes the text to a file (overwrite the file) |
+| echo | echo "hello" >> test.txt | Appends the text to a file |
+| man | man ls | Show the command manual |
 | man | man ls | Show the command manual |
 | whoami | whoami | Shows the current user |
+| env | env | Shows environment variables |
 | ps -ef | ps -ef | Show running processes |
 | kill [id] | kill 6920 | Kill a process |
 | id | id | Shows the current user uid, gid |
@@ -85,8 +90,58 @@
 ...
 
 ## Environment Variables
-and export command
-...
+Environment variables in Linux are **dynamic** values that affect the behavior of processes and applications on the system. They are used to store information that the operating system and various programs need to operate properly.
+
+### Common Environment Variables:
+- **PATH**: A list of directories where the system looks for executable files.
+- **HOME**: The current user's home directory.
+- **USER**: The username of the current user.
+- **SHELL**: The path to the current shell being used.
+- **LANG**: The system's language and locale settings.
+- **PWD**: The current working directory.
+
+```bash
+# Print all environment variables
+env
+
+# Print a specific environment variables
+printenv HOME
+# Or
+echo $HOME
+# Or
+$HOME
+```
+
+### Temporary variables.
+We can set or create a **temporary** environment variable with export command.<br>
+And with **unset** command we can remove them.
+```bash
+# Create a temporary variable and set the value to Test
+export MYVAR=Test
+
+# Print the created variable
+echo $MYVAR
+
+# Change the value of SHELL temporary.
+export SHELL="/bin/newbash"
+
+# Remove a variable.
+unset MYVAR
+``` 
+### Permanent Variables. 
+To set an environment variable permanently, we would typically add it to one the  configuration files like 
+- ~/.bashrc (for current user)
+- ~/.bash_profile (for current user)
+- /etc/environment (for all users)
+
+We just need to open them in a text editor like nano or vim and add our configuration at the end of the file.
+```bash
+export MYVAR="This is the values!"
+```
+Now save the file and run the **source** command to update the reload the configuration file and update the variables.
+```bash
+source ./bashrc
+```
 
 ## Daemons
 ...
@@ -233,6 +288,9 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
 
+## Curl command
+...
+
 
 ## Nmap
 Nmap (Network Mapper) is an open-source tool used for network discovery and security auditing.<br>
@@ -297,7 +355,17 @@ nmap --script script1,script2,script3 --script-args 'arg1=value1,arg2=value2' <t
 ---
 
 ## Subfinder
-asd
+Subfinder is an open-source tool designed for automating the process of discovering subdomains of a given domain.<br>
+
+It primarily performs **passive subdomain enumeration** by querying multiple online sources, including DNS services, certificate transparency logs, web archives, and more. This approach reduces the risk of detection since it doesn't actively probe the target domain.
+
+ It can output results in various formats, such as JSON or CSV, which makes it easy to integrate with other tools or scripts for further analysis.
+
+you can download it from their github page https://github.com/projectdiscovery/subfinder
+>This tool should only be used if you have obtained the target's written consent.
+ ```bash
+subfinder -d domanName,domainName2,domainName3
+ ```
 
 ---
 # Shells and Bash Scripting

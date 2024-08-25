@@ -17,6 +17,30 @@ CVE is a list of **publicly disclosed** cybersecurity vulnerabilities and exposu
 #### CWE - 942 CORS
 #### CWE-352 CSRF
 
+## Other Vulnerabilities
+### Cross-site Scripting (XSS)
+XSS is a type of security vulnerability commonly found in web applications. It allows attackers to inject malicious scripts (usually JavaScript) into webpages viewed by other users. When these scripts are executed by the user's browser, they can perform actions such as stealing cookies, session tokens, or other sensitive information, redirecting users to malicious sites, or even altering the content of the webpage.
+
+There are **three** main types of XSS:
+
+**1. Stored XSS (Persistent XSS):**
+The malicious script is permanently stored on the target server, such as in a database, message forum, or comment field. When a user views the affected page, the script is served as part of the webpage and executed in the user's browser.
+
+**2. Reflected XSS (Non-Persistent XSS):**
+The malicious script is not stored on the server but is immediately reflected back to the user via a web response. This often happens when data provided by a web client, such as form input or query parameters, is included in the output of a page without proper validation or escaping.
+
+**3. DOM-based XSS:**
+This occurs when the vulnerability is in the client-side code rather than the server-side code. The malicious script is executed as a result of modifying the DOM environment in the user's browser.
+
+To prevent XSS, we can:
+
+**Validate and sanitize input:** Ensure all inputs are properly validated and sanitized to prevent the injection of scripts.
+
+**Encode output:** Use proper encoding of output to ensure that data is treated as text rather than executable code.
+Use security headers: Implement Content Security Policy (CSP) and other relevant security headers.
+
+**Avoid unsafe JavaScript functions:** Functions like eval() and innerHTML should be avoided or used cautiously.
+
 ## TOP 10 Proactive Controls
 The OWASP Top 10 Proactive Controls is a list of security measures that software developers should incorporate into their development processes to improve the security of applications. These controls represent a comprehensive set of best practices for mitigating common security risks.<br>
 You can find the details in https://owasp.org/www-project-proactive-controls
