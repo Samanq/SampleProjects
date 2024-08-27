@@ -273,6 +273,23 @@ Example
 sed -i 's/some/many/g' file.txt
 ```
 
+## locate
+The **locate** command in Linux is used to quickly find files and directories on the system. It searches a pre-built database (mlocate.db) that contains an index of all the files and directories on the system, making it much faster than the find command, which searches the file system in real-time.
+
+```bash
+# Update the database
+sudo updatedb
+
+# Find files by name
+locate filename
+
+# Search with a wildcard
+locate *.conf
+
+# locate -i readme
+locate -i readme
+```
+
 ## Transferring Files using SSH  
 
 ```bash
@@ -366,8 +383,14 @@ you can download it from their github page https://github.com/projectdiscovery/s
  ```bash
 subfinder -d domanName,domainName2,domainName3
  ```
+ 
 
----
+<br>
+<br>
+<br>
+<br>
+<br>
+
 # Shells and Bash Scripting
 Here's a list of the most common Linux shells:
 

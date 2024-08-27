@@ -21,25 +21,52 @@ CVE is a list of **publicly disclosed** cybersecurity vulnerabilities and exposu
 ### Cross-site Scripting (XSS)
 XSS is a type of security vulnerability commonly found in web applications. It allows attackers to inject malicious scripts (usually JavaScript) into webpages viewed by other users. When these scripts are executed by the user's browser, they can perform actions such as stealing cookies, session tokens, or other sensitive information, redirecting users to malicious sites, or even altering the content of the webpage.
 
-There are **three** main types of XSS:
-
-**1. Stored XSS (Persistent XSS):**
+There are **three** main types of XSS and also some variations and subtypes of XSS that are worth noting<br>
+1. **Stored XSS (Persistent XSS):**
 The malicious script is permanently stored on the target server, such as in a database, message forum, or comment field. When a user views the affected page, the script is served as part of the webpage and executed in the user's browser.
 
-**2. Reflected XSS (Non-Persistent XSS):**
+2. **Reflected XSS (Non-Persistent XSS):**
 The malicious script is not stored on the server but is immediately reflected back to the user via a web response. This often happens when data provided by a web client, such as form input or query parameters, is included in the output of a page without proper validation or escaping.
 
-**3. DOM-based XSS:**
+3. **DOM-based XSS:**
 This occurs when the vulnerability is in the client-side code rather than the server-side code. The malicious script is executed as a result of modifying the DOM environment in the user's browser.
 
-To prevent XSS, we can:
+4. **Self-XSS:**
+In a Self-XSS attack, the victim is tricked into executing malicious code in their own browser. This is often done through social engineering, where the attacker convinces the user to paste malicious JavaScript into the browser's developer console.<br>
+**Example:** A user is convinced by an attacker to paste a script like *javascript:alert(document.cookie)* into their browser's console, which results in the user's cookies being displayed.
 
-**Validate and sanitize input:** Ensure all inputs are properly validated and sanitized to prevent the injection of scripts.
+5. **Mutated XSS (mXSS):**
+Mutated XSS, also known as **mXSS**, occurs when a web application filters or attempts to sanitize user input, but the filtering is flawed, and the input is altered or mutated into a different form that still allows the XSS attack to succeed. This often happens when the sanitization process fails to account for all possible input variations or browser quirks.<br>
+**Example**: An input like **<scr\<script>ipt>** might be mutated by the browser into \<script> and executed.
 
-**Encode output:** Use proper encoding of output to ensure that data is treated as text rather than executable code.
+6. **Blind XSS:**
+Is a type of *Stored XSS* where the attacker does not immediately see the result of their attack. Instead, the payload is stored and later executed in a context where the attacker might not have direct access, such as in an admin dashboard or an email client.<br>
+**Example**: An attacker might inject a script into a feedback form that an administrator later views. The script executes when the admin views the feedback, potentially stealing sensitive data from the admin's session.
+
+7. **Client-Side XSS:**
+While DOM-based XSS is a specific type of client-side XSS, the term "Client-Side XSS" is broader and can refer to any XSS that happens on the client side, including cases where client-side JavaScript is improperly handling input or output.<br>
+**Example:** A script that takes URL parameters and dynamically updates the page content without proper sanitization, leading to script execution.
+
+8. **Second-Order XSS:**
+Second-Order XSS Occurs when the attacker injects malicious input into a web application, and the payload is stored in a way that it does not immediately trigger the XSS. Instead, it is later retrieved and executed in a different context or by a different user interaction.<br>
+Example: An attacker injects a script into a user's profile description. The script does nothing when stored but later executes when a different user visits the attacker's profile.
+
+9. **Universal XSS (UXSS):**
+UXSS occurs due to vulnerabilities in the web browser itself rather than the web application. In this case, an attacker exploits a flaw in the browser's security mechanisms, allowing the execution of scripts in a way that bypasses the browser's same-origin policy.<br>
+**Example:** A flaw in a browser's handling of specific HTML elements or protocols that allows cross-site scripts to execute without proper restrictions.
+
+10. **Server XSS:**
+Although most XSS attacks are client-side, there are cases where server-side scripts or code generate output that contains unsanitized user input, leading to XSS. While rare, these attacks can be more dangerous as they often have broader access to resources.<br>
+**Example:** A server-side template engine that fails to escape user input, leading to script injection that is then served to users.
+
+**To prevent XSS, we can**
+
+ - **Validate and sanitize input:** Ensure all inputs are properly validated and sanitized to prevent the injection of scripts.
+
+- **Encode output:** Use proper encoding of output to ensure that data is treated as text rather than executable code.
 Use security headers: Implement Content Security Policy (CSP) and other relevant security headers.
 
-**Avoid unsafe JavaScript functions:** Functions like eval() and innerHTML should be avoided or used cautiously.
+- **Avoid unsafe JavaScript functions:** Functions like **** and **innerHTML** should be avoided or used cautiously.
 
 ## TOP 10 Proactive Controls
 The OWASP Top 10 Proactive Controls is a list of security measures that software developers should incorporate into their development processes to improve the security of applications. These controls represent a comprehensive set of best practices for mitigating common security risks.<br>
