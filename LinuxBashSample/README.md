@@ -383,7 +383,23 @@ you can download it from their github page https://github.com/projectdiscovery/s
  ```bash
 subfinder -d domanName,domainName2,domainName3
  ```
- 
+
+ ## DnsRecon
+DNSRecon is a tool used for DNS (Domain Name System) enumeration.<br>
+
+Since DNSRecon is developed in **Python**, make sure you have Python installed on your machine before proceeding with the installation of DNSRecon.
+
+To install DNSRecon you can use apt install.
+```bash
+sudo apt install dnsrecon
+```
+
+**Samples:**
+```bash
+# DNS enumeration on the domain
+dnsrecon -d example.com
+```
+
 
 <br>
 <br>
