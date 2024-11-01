@@ -19,11 +19,17 @@ There are 4 layers in Domain-Driven Design
 4. In the **Api** project add a refrence to the **Infrastructure** project. (theoretically, the Presentation shouldn't have a reference to the Infrastructure layer, but in actuality, we need a reference to infrastructure).
 
 > Domain_Should_NotHaveDependencyOnApplication
+
 > DomainLayer_ShouldNotHaveDependencyOn_InfrastructureLayer
+
 > DomainLayer_ShouldNotHaveDependencyOn_PresentationLayer
+
 > ApplicationLayer_ShouldNotHaveDependencyOn_InfrastructureLayer
+
 > ApplicationLayer_ShouldNotHaveDependencyOn_PresentationLayer
+
 > InfrastructureLayer_ShouldNotHaveDependencyOn_PresentationLayer
+
 ---
 
 ## Defining Entities in **Domain Layer**
