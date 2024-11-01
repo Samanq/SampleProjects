@@ -16,12 +16,19 @@ There are 4 layers in Domain-Driven Design
 1. In the **Api** project add a refrence to **conctracts** and **application** projects.
 2. In the **Infrastructure** project add a refrence to the **application** project.
 3. In the **Application** project add a refrence to the **domain** project.
-4. In the **Api** project add a refrence to the **Infrastructure** project. (theoretically we shouldn't have a refrence from Presentation layer to Infrastructure layer, but actuality we need a refrence to infrastructure).
+4. In the **Api** project add a refrence to the **Infrastructure** project. (theoretically, the Presentation shouldn't have a reference to the Infrastructure layer, but in actuality, we need a reference to infrastructure).
+
+> Domain_Should_NotHaveDependencyOnApplication
+> DomainLayer_ShouldNotHaveDependencyOn_InfrastructureLayer
+> DomainLayer_ShouldNotHaveDependencyOn_PresentationLayer
+> ApplicationLayer_ShouldNotHaveDependencyOn_InfrastructureLayer
+> ApplicationLayer_ShouldNotHaveDependencyOn_PresentationLayer
+> InfrastructureLayer_ShouldNotHaveDependencyOn_PresentationLayer
 ---
 
 ## Defining Entities in **Domain Layer**
-We Defining entities and exceptions in domain layer.
-1. Open the **CleanArchitecture.Domain**, create a folder named Entities and inside that create a class named **User**
+We Define entities and exceptions in the domain layer.
+1. Open the **CleanArchitecture.Domain**, create a folder named Entities, and inside that create a class named **User**
 ```C#
 namespace CleanArchitecture.Domain.Entities;
 
@@ -35,7 +42,7 @@ public class User
 }
 ```
 ---
-## Defining IDateTimeProvider inteface in **Application layer**
+## Defining IDateTimeProvider interface in **Application layer**
 1. Open the **CleanArchitecture.Application** project.
 2. Navigate to **Common/Interfaces/Services/** and create IDateTimeProvider **interface**.
 ```C#
@@ -61,10 +68,10 @@ public class DateTimeProvider : IDateTimeProvider
 ```
 ## Registering DateTimeProvider service.
 1. Install Microsoft.Extensions.DependencyInjection.Abstractions package in **CleanArchitecture.Infrastructure** project.
-2. In **CleanArchitecture.Infrastructure** project create a class named DependencyInjection.
+2. In **CleanArchitecture.Infrastructure** project creates a class named DependencyInjection.
 3. Create AddInfraStructure method and Add DateTimeProvider as a singleton service.
 
-note: **AddInfraStructure** method returns all services for Infrastructure layer.
+note: **AddInfraStructure** method returns all services for the Infrastructure layer.
 
 ```C#
 using CleanArchitecture.Application.Common.Interfaces.Services;
@@ -85,7 +92,7 @@ public static class DependencyInjection
 4. Open **CleanArchitecture.Api** Project and in **program.cs** register the infrastructure DependencyInjection
 ```C#
 builder.Services
-    .AddInfraStructure();  // Registering Insfrastructure Dependencies
+    .AddInfraStructure();  // Registering Infrastructure Dependencies
 ```
 ---
 
@@ -224,7 +231,7 @@ public class AuthenticationService : IAuthenticationService
 3. Define the DependencyInjection
 
 ## Infrastucture layer
-We Implenet the Interfaces here
+We Implement the Interfaces here
 1. Install Microsoft.Extensions.DependencyInjection.Abstractions package
 2. Define the DependencyInjection
 ```C#
