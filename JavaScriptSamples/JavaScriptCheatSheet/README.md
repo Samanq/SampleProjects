@@ -50,6 +50,30 @@ const anchors = document.anchors;
 ---
 
 ## Get Document info
+### Get Cookies
+```JS
+console.log(document.cookie);
+```
+or
+```JS
+const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+    const [name, value] = cookie.split('=');
+    acc[name] = decodeURIComponent(value);
+    return acc;
+}, {});
+
+console.log(cookies);
+```
+
+---
+## Get Location info
+### Get hash 
+```JS
+// Getting the value of the hash location
+// If the URL is: https://example.com/#Article
+console.log(window.location.hash); // The result of this command is "#Article"
+```
+
 ### Get Current URL
 ```JS
 // Get the full URL of the current page
@@ -75,7 +99,10 @@ params.forEach((value, key) => {
     console.log(`${key}: ${value}`);
 });
 ```
+
+
 ---
+
 ## Add Attributes
 ### Add event Listener
 ```JS
@@ -154,3 +181,15 @@ xhr.onerror = function() {
 // Send the request
 xhr.send();
 ```
+
+
+
+## Working With String
+### Slice
+```JS
+const sample = "#This is a test.";
+const result = sample.slice(5,8); // Slicing from 5th character to 8th character.
+const result2 = sample.slice(1); // The result is: "This is a test."
+console.log(result); // The Result is : "is"
+```
+---
