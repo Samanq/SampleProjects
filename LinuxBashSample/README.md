@@ -61,6 +61,7 @@
 | diff -u | diff -u file1.txt file2.txt | Compare values in unified format. |
 | diff -y | diff -y file1.txt file2.txt | Compare values side by side. |
 | diff -y --suppress-common-lines | diff -y --suppress-common-lines file1.txt file2.txt | Compare values side by side. (only the differences) |
+| systemctl | sudo systemctl restart networking | Restart networking |
 
 
 ## "|", ">", and "<"
