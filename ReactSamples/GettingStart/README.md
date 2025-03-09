@@ -101,9 +101,9 @@ import { Fragment } from "react/jsx-runtime";
 
 const cities = [
   { id: 1, name: "Tehran" },
-  { id: 1, name: "Paris" },
-  { id: 1, name: "Zagreb" },
-  { id: 1, name: "Berlin" },
+  { id: 2, name: "Paris" },
+  { id: 3, name: "Zagreb" },
+  { id: 4, name: "Berlin" },
 ];
 function ListGroup() {
   return (
@@ -134,9 +134,9 @@ import { Fragment } from "react/jsx-runtime";
 
 const cities = [
   { id: 1, name: "Tehran" },
-  { id: 1, name: "Paris" },
-  { id: 1, name: "Zagreb" },
-  { id: 1, name: "Berlin" },
+  { id: 2, name: "Paris" },
+  { id: 3, name: "Zagreb" },
+  { id: 4, name: "Berlin" },
 ];
 
 // MouseOver Handler
@@ -179,9 +179,9 @@ import { Fragment } from "react/jsx-runtime";
 function ListGroup() {
   const cities = [
     { id: 1, name: "Tehran" },
-    { id: 1, name: "Paris" },
-    { id: 1, name: "Zagreb" },
-    { id: 1, name: "Berlin" },
+    { id: 2, name: "Paris" },
+    { id: 3, name: "Zagreb" },
+    { id: 4, name: "Berlin" },
   ];
 
   // State Hook
@@ -215,4 +215,151 @@ export default ListGroup;
 
 ```
 
-## Nex Subject
+## Props
+With Props we can pass a model to a component.
+First we need to define an interface as `props`, then add it to the our component parameters.
+<br>
+We can also pass `functions` as parameter to the component.
+<br>
+`Props` must be treated immutable.
+```tsx
+import { useState } from "react";
+import { Fragment } from "react/jsx-runtime";
+
+// Define Props Interface
+interface Props {
+  items: { id: number; name: string }[];
+  heading: string;
+  onClickItem: (item: string) => void;
+}
+
+// destructuring the props object
+function ListGroup({ items, heading, onClickItem }: Props) {
+  // State Hook
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // MouseOver Handler
+  const handleMouseOver = (event: React.MouseEvent<HTMLLIElement>) => {
+    console.log(event.currentTarget.textContent);
+  };
+
+  return (
+    <Fragment>
+      <h1>{heading}</h1>
+      <ul className="list-group">
+        {items.map((item, index) => (
+          <li
+            key={item.id}
+            className={
+              selectedIndex === index
+                ? "list-group-item active"
+                : "list-group-item"
+            }
+            onClick={() => {
+              setSelectedIndex(index);
+              onClickItem(item.name);
+            }}
+            onMouseOver={handleMouseOver}
+          >
+            {item.name}
+          </li>
+        ))}
+      </ul>
+    </Fragment>
+  );
+}
+
+export default ListGroup;
+
+```
+Then, when we use the component, we have to pass the parameters.
+```tsx
+import "./App.css";
+import ListGroup from "./components/ListGroup";
+
+function App() {
+  // Defining the items
+  const cities = [
+    { id: 1, name: "Tehran" },
+    { id: 2, name: "Paris" },
+    { id: 3, name: "Zagreb" },
+    { id: 4, name: "Berlin" },
+  ];
+
+  // Defining the onClickItem function
+  const onClickItem = (item: string) => {
+    alert(item);
+  };
+
+  return (
+    <div>
+      {/* passing the items and heading props to the ListGroup component */}
+      <ListGroup items={cities} heading="Cities" onClickItem={onClickItem} />
+    </div>
+  );
+}
+export default App;
+
+```
+
+## Passing Children To Component
+We can pass `children` to component.<br>
+For passing HTML elements as children, you have use `ReactNode` as the type of `children`
+```tsx
+import { ReactNode } from "react";
+
+interface AlertProps {
+  // Define children prop as ReactNode
+  children: ReactNode;
+  type: "success" | "error" | "warning" | "info";
+}
+
+const Alert = ({ children, type }: AlertProps) => {
+  const getClassName = () => {
+    switch (type) {
+      case "success":
+        return "alert alert-success";
+      case "error":
+        return "alert alert-danger";
+      case "warning":
+        return "alert alert-warning";
+      case "info":
+      default:
+        return "alert alert-primary";
+    }
+  };
+
+  return (
+    <>
+      <div className={getClassName()} role="alert">
+        {children}
+      </div>
+    </>
+  );
+};
+
+export default Alert;
+
+```
+To use the component we have to pass the children
+```tsx
+import "./App.css";
+import Alert from "./components/Alert";
+
+function App() {
+  return (
+    <div>
+      <Alert type="success">
+        <span>This is a success alert</span>
+      </Alert>
+      <Alert type="error">
+        This is a error alert
+      </Alert>
+    </div>
+  );
+}
+export default App;
+
+```
+
+## NN

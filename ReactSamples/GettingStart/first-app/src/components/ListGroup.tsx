@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-function ListGroup() {
-  const cities = [
-    { id: 1, name: "Tehran" },
-    { id: 1, name: "Paris" },
-    { id: 1, name: "Zagreb" },
-    { id: 1, name: "Berlin" },
-  ];
+// Define Props Interface
+interface Props {
+  items: { id: number; name: string }[];
+  heading: string;
+  onClickItem: (item: string) => void;
+}
 
+// destructuring the props object
+function ListGroup({ items, heading, onClickItem }: Props) {
   // State Hook
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   // MouseOver Handler
   const handleMouseOver = (event: React.MouseEvent<HTMLLIElement>) => {
@@ -18,10 +19,10 @@ function ListGroup() {
   };
 
   return (
-    <Fragment>
-      <h1>List Group</h1>
+    <>
+      <h1>{heading}</h1>
       <ul className="list-group">
-        {cities.map((item, index) => (
+        {items.map((item, index) => (
           <li
             key={item.id}
             className={
@@ -29,14 +30,17 @@ function ListGroup() {
                 ? "list-group-item active"
                 : "list-group-item"
             }
-            onClick={() => setSelectedIndex(index)}
+            onClick={() => {
+              setSelectedIndex(index);
+              onClickItem(item.name);
+            }}
             onMouseOver={handleMouseOver}
           >
             {item.name}
           </li>
         ))}
       </ul>
-    </Fragment>
+    </>
   );
 }
 
