@@ -1,9 +1,12 @@
+import { useState } from "react";
 import "./App.css";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
 import ListGroup from "./components/ListGroup";
 
 function App() {
+  const [showError, setShowError] = useState(false);
+
   // Defining the items
   const cities = [
     { id: 1, name: "Tehran" },
@@ -17,6 +20,10 @@ function App() {
     alert(item);
   };
 
+  const onClickError = () => {
+    setShowError(true);
+  };
+
   return (
     <div>
       {/* passing the items, heading and the click function props to the ListGroup component */}
@@ -24,10 +31,10 @@ function App() {
       <Alert type="success">
         <span>This is a success alert</span>
       </Alert>
-      <Alert type="error">
-        This is a error alert
-      </Alert>
-      <Button buttonType="danger">Click me!</Button>
+      {showError && <Alert type="error">This is an error alert</Alert>}
+      <Button buttonType="danger" onClick={onClickError}>
+        Click me!
+      </Button>
     </div>
   );
 }
