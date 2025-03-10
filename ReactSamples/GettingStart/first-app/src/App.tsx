@@ -1,5 +1,6 @@
 import "./App.css";
 import Alert from "./components/Alert";
+import Button from "./components/Button";
 import ListGroup from "./components/ListGroup";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
       <Alert type="error">
         This is a error alert
       </Alert>
+      <Button buttonType="danger">Click me!</Button>
     </div>
   );
 }
