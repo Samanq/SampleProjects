@@ -3,6 +3,12 @@ import "./App.css";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
 import ListGroup from "./components/ListGroup";
+import CustomButton from "./components/CustomButton/CustomButoon";
+import VanillaCustomButton from "./components/VanillaCustomButton/VanillaCustomButton";
+import InlineCustomButton from "./components/InlineCustomButton/InlineCustomButton";
+import LikeButton from "./components/LikeButton/LikeButton";
+import ExpandableText from "./components/ExpandableText/ExpandableText";
+import UseEffectComponentSample from "./components/UseEffectComonentSample/UseEffectComonentSample";
 
 function App() {
   const [showError, setShowError] = useState(false);
@@ -35,6 +41,30 @@ function App() {
       <Button buttonType="danger" onClick={onClickError}>
         Click me!
       </Button>
+
+      <CustomButton >
+        I'm a custom button
+      </CustomButton>
+
+      <VanillaCustomButton >
+        Vanilla Button
+      </VanillaCustomButton>
+
+      <InlineCustomButton >
+        Inline Button
+      </InlineCustomButton>
+
+      <LikeButton />
+      <ExpandableText maxLength={5}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          pulvinar risus non quam. Sed ultricies, purus sit amet volutpat
+          sagittis, ipsum tortor viverra turpis, sit amet interdum felis turpis
+          nec purus. Nulla facilisi. Sed non semper odio. Sed ut erat nec purus
+          lacinia lacinia. Nulla facilisi. Sed non semper odio. Sed ut erat nec
+          purus lacinia lacinia.
+      </ExpandableText>
+
+      <UseEffectComponentSample />
     </div>
   );
 }
