@@ -159,10 +159,16 @@ include /etc/nginx/conf.d/*.conf;
 include /etc/nginx/sites-enabled/*;
 ```
 
+Reload the nginx
+
+```bash
+sudo systemctl reload nginx
+```
+
 From your computer, not the server, run the following command to test the connection to the server
 
 ```bash
-wscat -c wss://<your_server_ip>/<your_generated_path>
+wscat --no-check -c wss://<your_server_ip>/<your_generated_path>
 ```
 
 ---
