@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TipTapSample.WebApi", "TipTapSample.WebApi\TipTapSample.WebApi.csproj", "{47D9190F-8FE9-4655-A545-719D4EF23DE8}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "tiptampsample.reactapp", "tiptampsample.reactapp\tiptampsample.reactapp.esproj", "{9E7C6A93-2B39-CC51-59E5-DA10E721B025}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47D9190F-8FE9-4655-A545-719D4EF23DE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47D9190F-8FE9-4655-A545-719D4EF23DE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47D9190F-8FE9-4655-A545-719D4EF23DE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47D9190F-8FE9-4655-A545-719D4EF23DE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E7C6A93-2B39-CC51-59E5-DA10E721B025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E7C6A93-2B39-CC51-59E5-DA10E721B025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E7C6A93-2B39-CC51-59E5-DA10E721B025}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9E7C6A93-2B39-CC51-59E5-DA10E721B025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E7C6A93-2B39-CC51-59E5-DA10E721B025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E7C6A93-2B39-CC51-59E5-DA10E721B025}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F5B1F4E-9359-4497-B26C-493C91253C51}
+	EndGlobalSection
+EndGlobal
