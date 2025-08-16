@@ -8,10 +8,15 @@ import TextAlign from "@tiptap/extension-text-align";
 
 type DirMode = "auto" | "ltr" | "rtl";
 
+// Backend base; prefers env or Vite proxy
+const API_BASE = import.meta.env.VITE_API_BASE ?? "/api";
+
 export default function ArticleEditor() {
   const [title, setTitle] = useState("");
   const [dir, setDir] = useState<DirMode>("auto"); // text direction for RTL/LTR
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -78,30 +83,53 @@ export default function ArticleEditor() {
     const file = e.target.files?.[0];
     if (!file || !editor) return;
 
-    // DEMO ONLY: show image immediately with a blob URL.
-    // In production, upload to your server/CDN and use the returned URL.
-    const objectUrl = URL.createObjectURL(file);
-    editor.chain().focus().setImage({ src: objectUrl, alt: file.name }).run();
-    // TODO: upload `file` to your backend and replace blob URL with permanent URL.
-    e.target.value = "";
+    // 1) Optional immediate preview using a blob URL
+    const previewUrl = URL.createObjectURL(file);
+    editor.chain().focus().setImage({ src: previewUrl, alt: file.name }).run();
+
+    // 2) Upload to backend to get a permanent URL, then replace the src in the editor
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch(`${API_BASE}/upload`, { method: "POST", body: form });
+      if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+      const json = await res.json();
+      const permanentUrl = json.url as string;
+      // Replace the most recently inserted image (simple approach)
+      editor.chain().focus().setImage({ src: permanentUrl, alt: file.name }).run();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      e.target.value = "";
+    }
   };
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setSubmitError(null);
+    setSubmitting(true);
     const contentHtml = editor?.getHTML() ?? "";
     const contentJson = editor?.getJSON() ?? null;
 
-    // Example: send to your API
-    // Replace /api/articles with your real endpoint
-    // await fetch("/api/articles", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ title, dir, contentHtml, contentJson }),
-    // });
-
-    console.log({ title, dir, contentHtml, contentJson });
-    alert("Check the console for submitted payload!");
+    try {
+      const res = await fetch(`${API_BASE}/articles`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, dir, contentHtml, contentJson }),
+      });
+      if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
+      const saved = await res.json();
+      console.log("Article saved:", saved);
+      alert("Article created!");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      setSubmitError(message || "Failed to submit article.");
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  // No longer fetching demo weather
 
   const ToolbarButton = (props: {
     onClick: () => void;
@@ -295,6 +323,8 @@ export default function ArticleEditor() {
         <EditorContent editor={editor} />
       </div>
 
+  {/* Additional panels can go here */}
+
       <div>
         <button
           type="submit"
@@ -302,13 +332,17 @@ export default function ArticleEditor() {
             padding: "10px 14px",
             borderRadius: 10,
             border: "1px solid #e5e7eb",
-            background: "#111827",
+            background: submitting ? "#374151" : "#111827",
             color: "white",
             fontWeight: 600,
           }}
+          disabled={submitting}
         >
-          Publish (demo)
+          {submitting ? "Publishing…" : "Publish"}
         </button>
+        {submitError && (
+          <div style={{ color: "#b91c1c", marginTop: 8 }}>{submitError}</div>
+        )}
       </div>
     </form>
   );
