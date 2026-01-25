@@ -1,6 +1,6 @@
-using SingalRSample.WebApi.Models;
+using SignalRSample.WebApi.Models;
 
-namespace SingalRSample.WebApi.Data;
+namespace SignalRSample.WebApi.Data;
 
 /// <summary>
 /// Static in-memory database for orders (POC purposes)

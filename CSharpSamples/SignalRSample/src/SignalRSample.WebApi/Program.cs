@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.SignalR;
-using SingalRSample.WebApi.Data;
-using SingalRSample.WebApi.DTOs;
-using SingalRSample.WebApi.Hubs;
-using SingalRSample.WebApi.Models;
+using SignalRSample.WebApi.Data;
+using SignalRSample.WebApi.DTOs;
+using SignalRSample.WebApi.Hubs;
+using SignalRSample.WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

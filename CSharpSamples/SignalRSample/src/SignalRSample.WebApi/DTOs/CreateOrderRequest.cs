@@ -1,6 +1,6 @@
-using SingalRSample.WebApi.Models;
+using SignalRSample.WebApi.Models;
 
-namespace SingalRSample.WebApi.DTOs;
+namespace SignalRSample.WebApi.DTOs;
 
 public class CreateOrderRequest
 {

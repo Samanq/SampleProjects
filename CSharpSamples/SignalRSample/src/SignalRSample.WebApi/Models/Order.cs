@@ -1,4 +1,4 @@
-namespace SingalRSample.WebApi.Models;
+namespace SignalRSample.WebApi.Models;
 
 public class Order
 {

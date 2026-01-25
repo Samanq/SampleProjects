@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
-using SingalRSample.WebApi.Models;
+using SignalRSample.WebApi.Models;
 
-namespace SingalRSample.WebApi.Hubs;
+namespace SignalRSample.WebApi.Hubs;
 
 /// <summary>
 /// SignalR Hub for real-time order updates
