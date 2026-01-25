@@ -1,0 +1,473 @@
+@page "/orders"
+@using Microsoft.AspNetCore.SignalR.Client
+@using SignalRSample.BlazorWasm.Models
+@inject HttpClient Http
+@implements IAsyncDisposable
+
+<PageTitle>Restaurant Orders</PageTitle>
+
+<h1>🍽️ Restaurant Order Management</h1>
+
+<div class="connection-status mb-3">
+    <span class="badge @(IsConnected ? "bg-success" : "bg-danger")">
+        @(IsConnected ? "🟢 Connected to SignalR" : "🔴 Disconnected")
+    </span>
+</div>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+
+<div class="row">
+    <!-- New Order Form -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">📝 New Order</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Table Number</label>
+                    <input type="text" class="form-control" @bind="newOrder.TableNumber" placeholder="e.g., T1" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" @bind="newOrder.CustomerName" placeholder="Customer name" />
+                </div>
+                
+                <h6>Order Items</h6>
+                @foreach (var item in newOrder.Items)
+                {
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-5">
+                            <input type="text" class="form-control form-control-sm" @bind="item.Name" placeholder="Item" />
+                        </div>
+                        <div class="col-2">
+                            <input type="number" class="form-control form-control-sm" @bind="item.Quantity" min="1" />
+                        </div>
+                        <div class="col-3">
+                            <input type="number" class="form-control form-control-sm" @bind="item.Price" step="0.01" placeholder="$" />
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-sm btn-outline-danger" @onclick="() => RemoveItem(item)">×</button>
+                        </div>
+                    </div>
+                }
+                <button class="btn btn-sm btn-outline-secondary mb-3" @onclick="AddItem">+ Add Item</button>
+                
+                <div class="d-grid">
+                    <button class="btn btn-primary" @onclick="CreateOrder" disabled="@isCreating">
+                        @if (isCreating)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        }
+                        Place Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Orders List -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">📋 Active Orders</h5>
+                <button class="btn btn-sm btn-outline-light" @onclick="LoadOrders">
+                    🔄 Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                @if (isLoading)
+                {
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+                else if (orders.Count == 0)
+                {
+                    <p class="text-muted text-center">No orders yet. Create one to get started!</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Table</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in orders)
+                                {
+                                    <tr class="@GetRowClass(order.Status)">
+                                        <td><strong>@order.Id</strong></td>
+                                        <td>@order.TableNumber</td>
+                                        <td>@order.CustomerName</td>
+                                        <td>
+                                            <small>
+                                                @foreach (var item in order.Items)
+                                                {
+                                                    <div>@item.Quantity × @item.Name</div>
+                                                }
+                                            </small>
+                                        </td>
+                                        <td><strong>$@order.TotalAmount.ToString("F2")</strong></td>
+                                        <td>
+                                            <span class="badge @GetStatusBadgeClass(order.Status)">
+                                                @GetStatusIcon(order.Status) @order.Status
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                @if (order.Status != OrderStatus.Served && order.Status != OrderStatus.Cancelled)
+                                                {
+                                                    <button class="btn btn-outline-success" 
+                                                            @onclick="() => AdvanceStatus(order)"
+                                                            title="Advance Status">
+                                                        ▶
+                                                    </button>
+                                                }
+                                                @if (order.Status == OrderStatus.Pending)
+                                                {
+                                                    <button class="btn btn-outline-danger" 
+                                                            @onclick="() => CancelOrder(order)"
+                                                            title="Cancel Order">
+                                                        ✕
+                                                    </button>
+                                                }
+                                                <button class="btn btn-outline-secondary" 
+                                                        @onclick="() => DeleteOrder(order.Id)"
+                                                        title="Delete Order">
+                                                    🗑
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-highlight-new {
+        animation: highlight 2s ease-out;
+    }
+    
+    @@keyframes highlight {
+        from { background-color: #d4edda; }
+        to { background-color: transparent; }
+    }
+    
+    .connection-status {
+        font-size: 0.9rem;
+    }
+</style>
+
+@code {
+    private HubConnection? hubConnection;
+    private List<Order> orders = new();
+    private CreateOrderRequest newOrder = new() { Items = new List<OrderItem> { new() } };
+    private bool isLoading = true;
+    private bool isCreating = false;
+    private string? errorMessage;
+    private string? successMessage;
+
+    private const string ApiBaseUrl = "http://localhost:5101";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadOrders();
+        await StartSignalRConnection();
+    }
+
+    private async Task StartSignalRConnection()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl($"{ApiBaseUrl}/hubs/orders")
+            .WithAutomaticReconnect()
+            .Build();
+
+        // Handle new order received
+        hubConnection.On<Order>("ReceiveNewOrder", (order) =>
+        {
+            if (!orders.Any(o => o.Id == order.Id))
+            {
+                orders.Insert(0, order);
+                ShowSuccess($"New order #{order.Id} received!");
+                InvokeAsync(StateHasChanged);
+            }
+        });
+
+        // Handle order status changed
+        hubConnection.On<Order>("ReceiveOrderStatusChanged", (updatedOrder) =>
+        {
+            var existingOrder = orders.FirstOrDefault(o => o.Id == updatedOrder.Id);
+            if (existingOrder != null)
+            {
+                var index = orders.IndexOf(existingOrder);
+                orders[index] = updatedOrder;
+                ShowSuccess($"Order #{updatedOrder.Id} status changed to {updatedOrder.Status}");
+                InvokeAsync(StateHasChanged);
+            }
+        });
+
+        // Handle order deleted
+        hubConnection.On<int>("ReceiveOrderDeleted", (orderId) =>
+        {
+            var order = orders.FirstOrDefault(o => o.Id == orderId);
+            if (order != null)
+            {
+                orders.Remove(order);
+                ShowSuccess($"Order #{orderId} was deleted");
+                InvokeAsync(StateHasChanged);
+            }
+        });
+
+        hubConnection.Reconnecting += (exception) =>
+        {
+            ShowError("Connection lost. Reconnecting...");
+            InvokeAsync(StateHasChanged);
+            return Task.CompletedTask;
+        };
+
+        hubConnection.Reconnected += (connectionId) =>
+        {
+            ShowSuccess("Reconnected to server!");
+            InvokeAsync(StateHasChanged);
+            return Task.CompletedTask;
+        };
+
+        try
+        {
+            await hubConnection.StartAsync();
+            ShowSuccess("Connected to real-time updates!");
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Failed to connect to SignalR: {ex.Message}");
+        }
+    }
+
+    private async Task LoadOrders()
+    {
+        isLoading = true;
+        errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            var response = await Http.GetAsync($"{ApiBaseUrl}/api/orders");
+            if (response.IsSuccessStatusCode)
+            {
+                orders = await response.Content.ReadFromJsonAsync<List<Order>>() ?? new();
+            }
+            else
+            {
+                ShowError("Failed to load orders from the server.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Error loading orders: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CreateOrder()
+    {
+        if (string.IsNullOrWhiteSpace(newOrder.TableNumber) || 
+            string.IsNullOrWhiteSpace(newOrder.CustomerName) ||
+            !newOrder.Items.Any(i => !string.IsNullOrWhiteSpace(i.Name)))
+        {
+            ShowError("Please fill in all required fields.");
+            return;
+        }
+
+        isCreating = true;
+        errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            // Clean up empty items
+            newOrder.Items = newOrder.Items.Where(i => !string.IsNullOrWhiteSpace(i.Name)).ToList();
+
+            var response = await Http.PostAsJsonAsync($"{ApiBaseUrl}/api/orders", newOrder);
+            if (response.IsSuccessStatusCode)
+            {
+                // Reset form
+                newOrder = new CreateOrderRequest { Items = new List<OrderItem> { new() } };
+                ShowSuccess("Order created successfully!");
+            }
+            else
+            {
+                ShowError("Failed to create order.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Error creating order: {ex.Message}");
+        }
+        finally
+        {
+            isCreating = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task AdvanceStatus(Order order)
+    {
+        var nextStatus = order.Status switch
+        {
+            OrderStatus.Pending => OrderStatus.Confirmed,
+            OrderStatus.Confirmed => OrderStatus.Preparing,
+            OrderStatus.Preparing => OrderStatus.Ready,
+            OrderStatus.Ready => OrderStatus.Served,
+            _ => order.Status
+        };
+
+        await UpdateOrderStatus(order.Id, nextStatus);
+    }
+
+    private async Task CancelOrder(Order order)
+    {
+        await UpdateOrderStatus(order.Id, OrderStatus.Cancelled);
+    }
+
+    private async Task UpdateOrderStatus(int orderId, OrderStatus newStatus)
+    {
+        try
+        {
+            var request = new UpdateOrderStatusRequest { Status = newStatus };
+            var response = await Http.PutAsJsonAsync($"{ApiBaseUrl}/api/orders/{orderId}/status", request);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                ShowError("Failed to update order status.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Error updating order: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteOrder(int orderId)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"{ApiBaseUrl}/api/orders/{orderId}");
+            if (!response.IsSuccessStatusCode)
+            {
+                ShowError("Failed to delete order.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Error deleting order: {ex.Message}");
+        }
+    }
+
+    private void AddItem()
+    {
+        newOrder.Items.Add(new OrderItem());
+    }
+
+    private void RemoveItem(OrderItem item)
+    {
+        if (newOrder.Items.Count > 1)
+        {
+            newOrder.Items.Remove(item);
+        }
+    }
+
+    private void ShowError(string message)
+    {
+        errorMessage = message;
+        successMessage = null;
+        _ = ClearMessagesAfterDelay();
+    }
+
+    private void ShowSuccess(string message)
+    {
+        successMessage = message;
+        errorMessage = null;
+        _ = ClearMessagesAfterDelay();
+    }
+
+    private async Task ClearMessagesAfterDelay()
+    {
+        await Task.Delay(5000);
+        errorMessage = null;
+        successMessage = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private string GetStatusBadgeClass(OrderStatus status) => status switch
+    {
+        OrderStatus.Pending => "bg-warning text-dark",
+        OrderStatus.Confirmed => "bg-info",
+        OrderStatus.Preparing => "bg-primary",
+        OrderStatus.Ready => "bg-success",
+        OrderStatus.Served => "bg-secondary",
+        OrderStatus.Cancelled => "bg-danger",
+        _ => "bg-secondary"
+    };
+
+    private string GetStatusIcon(OrderStatus status) => status switch
+    {
+        OrderStatus.Pending => "⏳",
+        OrderStatus.Confirmed => "✓",
+        OrderStatus.Preparing => "👨‍🍳",
+        OrderStatus.Ready => "🔔",
+        OrderStatus.Served => "✅",
+        OrderStatus.Cancelled => "❌",
+        _ => ""
+    };
+
+    private string GetRowClass(OrderStatus status) => status switch
+    {
+        OrderStatus.Ready => "table-success",
+        OrderStatus.Cancelled => "table-danger",
+        OrderStatus.Served => "table-secondary",
+        _ => ""
+    };
+
+    private bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
