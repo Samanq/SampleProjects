@@ -1,0 +1,6 @@
+@SingalRSample.WebApi_HostAddress = http://localhost:5101
+
+GET {{SingalRSample.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

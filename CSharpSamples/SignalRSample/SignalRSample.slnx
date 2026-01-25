@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SignalRSample.BlazorWasm/SignalRSample.BlazorWasm.csproj" />
+    <Project Path="src/SingalRSample.WebApi/SingalRSample.WebApi.csproj" />
+  </Folder>
+</Solution>
