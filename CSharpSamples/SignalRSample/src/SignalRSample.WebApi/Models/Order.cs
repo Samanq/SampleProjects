@@ -5,7 +5,7 @@ public class Order
     public int Id { get; set; }
     public string TableNumber { get; set; } = string.Empty;
     public string CustomerName { get; set; } = string.Empty;
-    public List<OrderItem> Items { get; set; } = new();
+    public List<OrderItem> Items { get; init; } = [];
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
@@ -15,8 +15,8 @@ public class Order
 public class OrderItem
 {
     public string Name { get; set; } = string.Empty;
-    public int Quantity { get; set; }
-    public decimal Price { get; set; }
+    public int Quantity { get; init; }
+    public decimal Price { get; init; }
 }
 
 public enum OrderStatus

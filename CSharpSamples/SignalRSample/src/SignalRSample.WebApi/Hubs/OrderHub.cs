@@ -27,7 +27,7 @@ public class OrderHub : Hub
     {
         await Clients.All.SendAsync("ReceiveNewOrder", order);
     }
-
+    
     /// <summary>
     /// Broadcast order status update to all connected clients
     /// </summary>
