@@ -150,3 +150,13 @@ server {
 ```
 
 ---
+
+## nginX logs
+
+To see the live logs you can use the following command
+
+```bash
+sudo tail -f /var/log/nginx/access.log /var/log/nginx/error.log
+```
+
+---
