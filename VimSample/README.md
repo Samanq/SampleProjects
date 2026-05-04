@@ -1,5 +1,6 @@
 # Vim Sample
-Vim is a highly configurable, open-source text editor known for its efficiency and speed.<br/>
+
+Vim is a highly configurable, open-source text editor known for its efficiency and speed.  
 It's an improved version of the original vi editor, hence its name, "Vi Improved."  
   
 We can run the vim by vim command.
@@ -10,6 +11,7 @@ vim file.txt
 ```
 
 ## Modes
+
 **vim** operates in different modes.
 
 - **Normal Mode**: This is the default mode when you open vim. In this mode, you can move the cursor, delete text, copy text, and perform other editing tasks.
@@ -20,48 +22,66 @@ vim file.txt
 
 - **Command-Line Mode**: This mode is used for executing commands like saving and quitting. You enter Command-Line Mode from Normal Mode by pressing **:**
 
-##  Basic Commands in Normal Mode
+## Basic Commands in Normal Mode
+
 ### Navigation
-- h: Move left
-- j: Move down
-- k: Move up
-- l: Move right
-- gg: Go to the beginning of the file
-- G: Go to the end of the file
-- w: Move to the beginning of the next word
-- b: Move to the beginning of the previous word
+
+- `h`: Move left
+- `j`: Move down
+- `k`: Move up
+- `l`: Move right
+- `gg`: Go to the beginning of the file
+- `G`: Go to the end of the file
+- `w`: Move to the beginning of the next word
+- `b`: Move to the beginning of the previous word
+- `/`: Search
+  - `n`: takes you to the next finding.
+  - `shift + n`: takes you to the previous finding.
 
 ### Editing
-- i: Enter Insert Mode to start typing before the cursor
-- a: Enter Insert Mode to start typing after the cursor
-- x: Delete the character under the cursor
-- dd: Delete the entire current line
-- yy: Copy (yank) the current line
-- p: Paste the copied text after the cursor
-- u: Undo the last action
-- Ctrl + r: Redo the undone action
+
+- `i`: Enter Insert Mode to start typing before the cursor
+- `a`: Enter Insert Mode to start typing after the cursor
+- `x`: Delete the character under the cursor
+- `dd`: Delete the entire current line
+- `yy`: Copy (yank) the current line
+- `p`: Paste the copied text after the cursor
+- `u`: Undo the last action
+- `Ctrl + r`: Redo the undone action
+- `:%s:/keyword_to_find/keyword_to_replace`: find and replace.
+  - With appending `/g` you can find and replace all.
+  - With appending `/gc` you can find and replace all with confirmation.
 
 ### Saving and Quitting
-- :w: Save the file
-- :q: Quit vim
-- :wq: Save and quit
-- :q!: Quit without saving
+
+- `:w:` Save the file
+- `:q:` Quit vim
+- `:wq`: Save and quit
+- `:q!`: Quit without saving
 
 ### Entering and Exiting Insert Mode
-- Press **i** in Normal Mode to enter Insert Mode.
-- Press **Esc** to exit Insert Mode and return to Normal Mode.
+
+- Press `i` in Normal Mode to enter Insert Mode.
+- Press `Esc` to exit Insert Mode and return to Normal Mode.
+
+### Other commands
+
+- `:set number` : Set line number
 
 ### Visual Mode
-Press **v** in Normal Mode to enter Visual Mode. You can now move the cursor to select text.
 
-- Press **y** to yank (copy) the selected text.
-- Press **d** to delete the selected text.
-- Press **p** to paste the copied text.
+Press `v` in Normal Mode to enter Visual Mode. You can now move the cursor to select text.
+
+- Press `y` to yank (copy) the selected text.
+- Press `d` to delete the selected text.
+- Press `p` to paste the copied text.
 
 ### Execute commands in vim
+
 ...
 
 Example:
+
 ```bash
 : set shell?
 ```
