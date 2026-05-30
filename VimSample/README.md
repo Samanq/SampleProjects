@@ -48,9 +48,19 @@ vim file.txt
 - `p`: Paste the copied text after the cursor
 - `u`: Undo the last action
 - `Ctrl + r`: Redo the undone action
-- `:%s:/keyword_to_find/keyword_to_replace`: find and replace.
-  - With appending `/g` you can find and replace all.
-  - With appending `/gc` you can find and replace all with confirmation.
+
+### Find and Replace
+- `:%s/old_word/new_word/g`
+- `:%s/old_word/new_word/gc`
+| Part  | What it does |
+| ------------- |:-------------:|
+| `:`      | Enters command mode at the bottom of your screen.     |
+| `%`      | Tells Neovim to look at the entire file.     |
+| `s`      | Stands for substitute.     |
+| `/`      | The separator between your commands (you can actually use other symbols like `#` if your text contains a lot of slashes).     |
+| `g`      | Stands for global. Without it, Neovim only replaces the first match on each line.     |
+| `gc`      | Stands for global. with confirmation     |
+
 
 ### Saving and Quitting
 
