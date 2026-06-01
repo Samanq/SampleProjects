@@ -1,12 +1,12 @@
-# Linux Common Commands
+# Linux Common Bash Commands
 | Command | Sample | Description |
 | --- | --- | --- |
 | echo | echo "hello" | Display text or the value of variables in the terminal |
 | echo | echo "hello" > test.txt | Writes the text to a file (overwrite the file) |
 | echo | echo "hello" >> test.txt | Appends the text to a file |
 | man | man ls | Show the command manual |
-| man | man ls | Show the command manual |
 | whoami | whoami | Shows the current user |
+| hostname | hostname | Shows computer name |
 | env | env | Shows environment variables |
 | ps -ef | ps -ef | Show running processes |
 | kill [id] | kill 6920 | Kill a process |
@@ -16,7 +16,15 @@
 | pwd | pwd | Shows the current path |
 | su - username | su - test | login with a username |
 | ssh | ssh -p 2220 username@hostAddress | Connect via ssh |
-| ssh -i | ssh -i C:\temp\sshkey.private user@hostaddress -p 2220  | Connect via ssh an private key |
+| ssh -i | ssh -i C:\temp\sshkey.private user@hostaddress -p 2220 | Connect via ssh an private key |
+| scp (to remote) | scp -P 2220 file.txt username@host:/remote/path/ | Secure copy a file to a remote host |
+| scp (from remote) | scp -P 2220 username@host:/remote/path/file.txt ./ | Copy a file from a remote host to local |
+| scp with key | scp -i ~/.ssh/id_rsa -P 2220 file.txt user@host:/path/ | Use a private key when copying with scp |
+| rsync (to remote) | rsync -avz -e "ssh -p 2220" ./dir/ user@host:/remote/dir/ | Efficient, resumable sync to remote over SSH |
+| rsync (from remote) | rsync -avz -e "ssh -p 2220" user@host:/remote/dir/ ./localdir/ | Sync files from remote to local |
+| sftp (interactive) | sftp -P 2220 user@host | Start an interactive SFTP session |
+| sftp (batch get) | sftp -P 2220 user@host:/remote/path <<< $'get file.txt' | Non-interactive SFTP file download |
+| sshfs (mount) | sshfs -p 2220 user@host:/remote/path /mnt/point | Mount a remote directory locally over SSH |
 | ls | ls | list files and directories |
 | ls -l | ls -l | list files and directories with their permissions. |
 | grep | grep "word" filename.txt | Text searching utility that allows you to search through files or output for specific patterns. |
@@ -27,14 +35,14 @@
 | cat /etc/shells | cat /etc/shells | Shows the list of shells. |
 | nano | nano file.txt | Text editor |
 | vi | vi file.txt | Open a text in Visual Editor |
-| file | file example.txt |  determine the type of a file |
+| file | file example.txt | determine the type of a file |
 | du | du file.txt | Estimate file space usage |
 | find | find [path] [expression] -exec [command] {} + | Find files or directories |
 | reset | ??? | ??? |
 | sort yourfile.txt | sort sample.txt | Sort the content |
 | uniq | uniq -u | ? |
 | strings | strings data.txt | extract printable strings from binary files. |
-| base64 | base64 --decode data2.txt | Decode and Encode in Base64  |
+| base64 | base64 --decode data2.txt | Decode and Encode in Base64 |
 | tr | tr 'A-Za-z' 'N-ZA-Mn-za-m' < data3.txt | way to perform ROT13 decoding. |
 | gzip | ??? | compress or expand files |
 | bzip2 | ??? | a block-sorting file compressor |
@@ -61,8 +69,24 @@
 | diff -u | diff -u file1.txt file2.txt | Compare values in unified format. |
 | diff -y | diff -y file1.txt file2.txt | Compare values side by side. |
 | diff -y --suppress-common-lines | diff -y --suppress-common-lines file1.txt file2.txt | Compare values side by side. (only the differences) |
-| systemctl | sudo systemctl restart networking | Restart networking |
+| systemctl restart | sudo systemctl restart networking | Restart networking |
+| htop | htop | shows system activities |
 
+
+## Curl examples
+| Command | Sample | Description |
+| --- | --- | --- |
+| curl download | `curl -O https://example.com/file.tar.gz` | Download a file and keep the remote file name |
+| curl save as | `curl -o myfile.txt https://example.com/` | Download and save to a specific filename |
+| curl resume | `curl -C - -O https://example.com/largefile.iso` | Resume an interrupted download |
+| curl follow redirects | `curl -L https://short.url/` | Follow HTTP redirects |
+| curl show headers | `curl -I https://example.com` | Fetch only response headers (HEAD) |
+| curl POST form | `curl -X POST -F "file=@local.txt" https://example.com/upload` | POST multipart/form-data (file upload) |
+| curl POST JSON | `curl -X POST -H "Content-Type: application/json" -d '{"name":"john"}' https://api.example.com/endpoint` | POST JSON payload to an API |
+| curl with header | `curl -H "Authorization: Bearer TOKEN" https://api.example.com` | Send custom request headers |
+| curl basic auth | `curl -u user:pass https://example.com` | HTTP Basic authentication |
+| curl upload (PUT) | `curl -T localfile.txt ftp://example.com/remote.txt --user user:pass` | Upload a file using PUT or FTP with credentials |
+| curl silent + show errors | `curl -sS -O https://example.com/file` | Silent mode but show errors; download file |
 
 ## "|", ">", and "<"
 ...
