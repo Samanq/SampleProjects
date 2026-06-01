@@ -37,7 +37,10 @@
 | vi | vi file.txt | Open a text in Visual Editor |
 | file | file example.txt | determine the type of a file |
 | du | du file.txt | Estimate file space usage |
-| find | find [path] [expression] -exec [command] {} + | Find files or directories |
+| find | find / -name "example" 2>/dev/null | Search from root for files or directories named "example" and hide permission errors |
+| find by type | find . -type f -name "*.txt" | Find text files under the current directory |
+| find directories | find /var -type d -name "log*" 2>/dev/null | Find directories under /var with names starting with "log" |
+| find and execute | find . -type f -name "*.log" -exec rm {} + | Find matching log files and remove them |
 | reset | ??? | ??? |
 | sort yourfile.txt | sort sample.txt | Sort the content |
 | uniq | uniq -u | ? |
