@@ -84,6 +84,8 @@
 | curl resume | `curl -C - -O https://example.com/largefile.iso` | Resume an interrupted download |
 | curl follow redirects | `curl -L https://short.url/` | Follow HTTP redirects |
 | curl show headers | `curl -I https://example.com` | Fetch only response headers (HEAD) |
+| curl insecure headers + redirects | `curl -kIL https://localhost -H "Host: monitoring.example.com"` | Ignore TLS certificate verification, follow redirects, and fetch only response headers with a custom Host header |
+| curl headers + redirects by IP | `curl -IL https://203.0.113.10 -H "Host: monitoring.example.com"` | Follow redirects and fetch only response headers from an example server IP with a custom Host header |
 | curl POST form | `curl -X POST -F "file=@local.txt" https://example.com/upload` | POST multipart/form-data (file upload) |
 | curl POST JSON | `curl -X POST -H "Content-Type: application/json" -d '{"name":"john"}' https://api.example.com/endpoint` | POST JSON payload to an API |
 | curl with header | `curl -H "Authorization: Bearer TOKEN" https://api.example.com` | Send custom request headers |
