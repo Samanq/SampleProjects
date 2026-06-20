@@ -27,7 +27,11 @@
 | sshfs (mount) | sshfs -p 2220 user@host:/remote/path /mnt/point | Mount a remote directory locally over SSH |
 | ls | ls | list files and directories |
 | ls -l | ls -l | list files and directories with their permissions. |
-| grep | grep "word" filename.txt | Text searching utility that allows you to search through files or output for specific patterns. |
+| grep | grep "word" filename.txt | Search through files or output for specific patterns. |
+| grep -ir | grep -ir "application/x-httpd-php" . | Recursively search the current directory for files containing the text, ignoring case |
+| shopt -s | shopt -s extglob dotglob | Enables extended pattern matching (extglob) so you can exclude specific files, and enables dotfile matching (dotglob) so hidden files like .env or .gitignore are included. |
+
+
 | sed | sed -i 's/some/many/g' file.txt | Manipulating text streams. |
 | more | more largefile.txt | view the contents one screen at a time. |
 | stat | stat file.txt | Shows detailed information about the files. |
@@ -41,9 +45,10 @@
 | find by type | find . -type f -name "*.txt" | Find text files under the current directory |
 | find directories | find /var -type d -name "log*" 2>/dev/null | Find directories under /var with names starting with "log" |
 | find and execute | find . -type f -name "*.log" -exec rm {} + | Find matching log files and remove them |
-| reset | ??? | ??? |
+|  |  |  |
+| reset | reset | Reset the terminal screen and restore a clean display |
 | sort yourfile.txt | sort sample.txt | Sort the content |
-| uniq | uniq -u | ? |
+| uniq | uniq -u | Show only lines that appear once (remove duplicates) |
 | strings | strings data.txt | extract printable strings from binary files. |
 | base64 | base64 --decode data2.txt | Decode and Encode in Base64 |
 | tr | tr 'A-Za-z' 'N-ZA-Mn-za-m' < data3.txt | way to perform ROT13 decoding. |
