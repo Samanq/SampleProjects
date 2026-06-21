@@ -30,8 +30,6 @@
 | grep | grep "word" filename.txt | Search through files or output for specific patterns. |
 | grep -ir | grep -ir "application/x-httpd-php" . | Recursively search the current directory for files containing the text, ignoring case |
 | shopt -s | shopt -s extglob dotglob | Enables extended pattern matching (extglob) so you can exclude specific files, and enables dotfile matching (dotglob) so hidden files like .env or .gitignore are included. |
-
-
 | sed | sed -i 's/some/many/g' file.txt | Manipulating text streams. |
 | more | more largefile.txt | view the contents one screen at a time. |
 | stat | stat file.txt | Shows detailed information about the files. |
@@ -79,6 +77,7 @@
 | diff -y --suppress-common-lines | diff -y --suppress-common-lines file1.txt file2.txt | Compare values side by side. (only the differences) |
 | systemctl restart | sudo systemctl restart networking | Restart networking |
 | htop | htop | shows system activities |
+| dig | dig NS samanqaydi.com <br> dig A samanqaydi.com <br> dig AAAA samanqaydi.com <br> dig MX samanqaydi.com <br> dig TXT samanqaydi.com <br> dig CNAME samanqaydi.com <br> dig SOA samanqaydi.com <br> dig ANY samanqaydi.com <br> dig PTR 8.8.8.8.in-addr.arpa | Query NS (Name Server) records <br> Query A (IPv4) records <br> Query AAAA (IPv6) records <br> Query MX (Mail Exchange) records <br> Query TXT (Text) records <br> Query CNAME (Canonical Name) records <br> Query SOA (Start of Authority) records <br> Query ALL available records <br> Query PTR (Pointer) records for reverse lookup |
 
 
 ## Curl examples
