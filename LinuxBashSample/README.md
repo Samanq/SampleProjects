@@ -97,31 +97,66 @@
 | curl upload (PUT) | `curl -T localfile.txt ftp://example.com/remote.txt --user user:pass` | Upload a file using PUT or FTP with credentials |
 | curl silent + show errors | `curl -sS -O https://example.com/file` | Silent mode but show errors; download file |
 
-## "|", ">", and "<"
-...
+## I/O Redirection and Piping
+These operators are used for **I/O Redirection** and **Piping** in Linux. They control where a command's input comes from and where its output goes.
+
+### Pipe (`|`)
+The pipe operator takes the standard output (stdout) of the command on its left and passes it as standard input (stdin) to the command on its right. It is used to chain multiple commands together so the output of one becomes the input of the next.
+**Example:**
+```bash
+# List all running processes and search for "nginx"
+ps -ef | grep nginx
+```
+
+### Output Redirection (`>`)
+The `>` operator redirects the standard output (stdout) of a command to a file. **Warning:** If the file already exists, it will be overwritten completely. If it doesn't exist, it will be created.
+**Example:**
+```bash
+# Write the output of echo to a file named hello.txt
+echo "Hello, World!" > hello.txt
+```
+*(Note: To append to an existing file without overwriting it, use `>>` instead).*
+
+### Input Redirection (`<`)
+The `<` operator feeds the contents of a file to a command as its standard input (stdin), rather than the command reading from the keyboard or waiting for user input.
+**Example:**
+```bash
+# Count the number of lines, words, and characters in hello.txt
+wc < hello.txt
+```
 
 ## File System
-...
+Linux uses a hierarchical file system structure where everything starts from the root directory (`/`). Unlike Windows, which uses drive letters (C:, D:), Linux mounts all storage devices under this single tree.
+
 ### / (Root)
-...
+The primary hierarchy root and root directory of the entire file system hierarchy. Every single file and directory starts from the root directory.
+
 ### /home
-...
+Contains the personal home directories for all regular users on the system (e.g., `/home/username`). Users store their personal files, configurations, and documents here.
+
 ### /tmp
-...
+A directory for storing temporary files created by applications and users. These files are typically deleted automatically when the system reboots.
+
 ### /boot
-...
+Contains the essential files required to boot the operating system, including the Linux kernel, initial RAM disk (initramfs), and the bootloader configuration (e.g., GRUB).
+
 ### /dev
-...
+Contains special device files that represent hardware components and virtual devices (e.g., `/dev/sda` for a hard drive, `/dev/null` for a black hole that discards data). Linux treats everything, including hardware, as a file.
+
 ### /etc
-...
+The central location for system-wide configuration files and scripts. You will find configuration files for services, networking, and applications here (e.g., `/etc/ssh/sshd_config`).
+
 ### /etc/passwd
-...
+A vital configuration file that stores user account information. It contains a list of all user accounts, their user IDs (UIDs), group IDs (GIDs), home directory paths, and default shells. *(Note: Passwords are encrypted and stored separately in `/etc/shadow`)*.
+
 ### /var
-...
+Stands for "variable" data. This directory contains files that are expected to grow in size or change frequently during normal system operation, such as system logs (`/var/log`), caches, databases, and website files (`/var/www`).
+
 ### /bin
-...
+Contains essential user command binaries (executable programs) that need to be available in single-user mode and to all users, such as `ls`, `cp`, `cat`, and `echo`.
+
 ### /sbin
-...
+Contains essential system administration binaries, generally intended to be run by the root user for system maintenance tasks. Examples include `fdisk`, `reboot`, and `iptables`.
 
 ## Environment Variables
 Environment variables in Linux are **dynamic** values that affect the behavior of processes and applications on the system. They are used to store information that the operating system and various programs need to operate properly.
@@ -294,17 +329,42 @@ chmod 2755 directory
 | rmdir -v | Print the information that the specified directory was deleted. |
 
 ## sed
-**sed** is a powerful command-line tool used for manipulating text streams. It's often referred to as a stream editor because it processes text line by line. Common operations include:   
+**sed** is a powerful command-line tool used for manipulating text streams. It's often referred to as a stream editor because it processes text line by line. Common operations include:
 
 - Finding and replacing text
-- Deleting lines   
-- Inserting lines   
+- Deleting lines
+- Inserting lines
 - Appending text
 
-Example
+### Common Practical Examples
 ```bash
-# needs explanation
+# Basic Substitution (Find and Replace)
+# 's' stands for substitute. It replaces the first occurrence of "old" with "new" on each line.
+sed 's/old/new/' file.txt
+
+# Global Substitution
+# The 'g' flag at the end means "global", replacing all occurrences of "old" with "new" on the line, not just the first one.
+sed 's/old/new/g' file.txt
+
+# In-place Editing (from your original example)
+# The '-i' option edits the file "in-place" meaning it modifies the file directly instead of just printing the output to the terminal.
 sed -i 's/some/many/g' file.txt
+
+# Delete Specific Lines
+# Delete the 3rd line of the file ('d' stands for delete).
+sed '3d' file.txt
+
+# Delete lines containing a specific pattern
+# Deletes any line containing the word "error".
+sed '/error/d' file.txt
+
+# Print only specific lines
+# The '-n' option suppresses normal output, and the 'p' flag prints only the matching lines.
+sed -n '/warning/p' file.txt
+
+# Replace using different delimiters
+# If your search string contains slashes (like a file path), you can use a different delimiter like '|' to avoid escaping every slash.
+sed 's|/var/log/old|/var/log/new|g' file.txt
 ```
 
 ## locate
@@ -338,9 +398,6 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
 ```bash
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
-
-## Curl command
-...
 
 
 ## Nmap
