@@ -213,6 +213,50 @@ Now save the file and run the **source** command to update the reload the config
 source ./bashrc
 ```
 
+## Passwordless Sudo
+To allow a user to execute `sudo` commands without being prompted for a password, it is best practice to create a separate drop-in file inside `/etc/sudoers.d/` rather than modifying the main `/etc/sudoers` file directly. This makes it easier to manage, automate, and revoke.
+
+### Enabling Passwordless Sudo
+1. Validate your sudo credentials upfront and create a drop-in file with the configuration (replace `yourusername` with the target username and `custom-config` with your desired filename):
+```bash
+sudo -v
+```
+```bash
+printf '%s\n' 'yourusername ALL=(ALL:ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/custom-config >/dev/null
+```
+
+2. Set the strict owner and permissions required by `sudo`:
+```bash
+sudo chown root:root /etc/sudoers.d/custom-config
+sudo chmod 0440 /etc/sudoers.d/custom-config
+```
+
+3. Verify the syntax of the new file to ensure it is valid:
+```bash
+sudo visudo -cf /etc/sudoers.d/custom-config
+# Expected result: /etc/sudoers.d/custom-config: parsed OK
+```
+
+### Verifying the Setup
+Clear any cached `sudo` credentials, then run a command in non-interactive mode (`-n`), which will fail if a password is required:
+```bash
+sudo -k
+sudo -n true && echo "Passwordless sudo enabled"
+# Expected result: Passwordless sudo enabled
+```
+
+### Revoking Access
+To disable passwordless sudo, simply delete the drop-in file:
+```bash
+sudo rm /etc/sudoers.d/custom-config
+```
+
+To confirm it has been disabled, clear cached credentials and test again (it should error out or prompt for a password):
+```bash
+sudo -k
+sudo -n true
+```
+
 ## Daemons
 ...
 
