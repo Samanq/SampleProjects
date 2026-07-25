@@ -8,9 +8,6 @@
 | whoami | whoami | Shows the current user |
 | hostname | hostname | Shows computer name |
 | env | env | Shows environment variables |
-| nc -l | nc -l 500123 | Netcat. listen to a port |
-| nc | nc 192.168.1.10 500123 | Connect to a netcat |
-| ss | ss -nulpt | Static Sockets. Displays the list of listening ports |
 | ps -ef | ps -ef | Show running processes |
 | kill [id] | kill 6920 | Kill a process |
 | id | id | Shows the current user uid, gid |
@@ -30,7 +27,9 @@
 | sshfs (mount) | sshfs -p 2220 user@host:/remote/path /mnt/point | Mount a remote directory locally over SSH |
 | ls | ls | list files and directories |
 | ls -l | ls -l | list files and directories with their permissions. |
-| grep | grep "word" filename.txt | Text searching utility that allows you to search through files or output for specific patterns. |
+| grep | grep "word" filename.txt | Search through files or output for specific patterns. |
+| grep -ir | grep -ir "application/x-httpd-php" . | Recursively search the current directory for files containing the text, ignoring case |
+| shopt -s | shopt -s extglob dotglob | Enables extended pattern matching (extglob) so you can exclude specific files, and enables dotfile matching (dotglob) so hidden files like .env or .gitignore are included. |
 | sed | sed -i 's/some/many/g' file.txt | Manipulating text streams. |
 | more | more largefile.txt | view the contents one screen at a time. |
 | stat | stat file.txt | Shows detailed information about the files. |
@@ -44,9 +43,10 @@
 | find by type | find . -type f -name "*.txt" | Find text files under the current directory |
 | find directories | find /var -type d -name "log*" 2>/dev/null | Find directories under /var with names starting with "log" |
 | find and execute | find . -type f -name "*.log" -exec rm {} + | Find matching log files and remove them |
-| reset | ??? | ??? |
+|  |  |  |
+| reset | reset | Reset the terminal screen and restore a clean display |
 | sort yourfile.txt | sort sample.txt | Sort the content |
-| uniq | uniq -u | ? |
+| uniq | uniq -u | Show only lines that appear once (remove duplicates) |
 | strings | strings data.txt | extract printable strings from binary files. |
 | base64 | base64 --decode data2.txt | Decode and Encode in Base64 |
 | tr | tr 'A-Za-z' 'N-ZA-Mn-za-m' < data3.txt | way to perform ROT13 decoding. |
@@ -60,7 +60,7 @@
 | touch | touch file.txt | create a file |
 | mktemp | ??? | Make a temp directory |
 | chmod | chmod 777 | Change the permissions |
-| chown | chmod testuser file.txt | Change the owner |
+| chown | chown testuser file.txt | Change the owner |
 | chgrp | chgrp testuser file.txt | Change the group |
 | nc | nc localhost 30000 | Creating a network connection (NetCat) |
 | nc -zv | nc -zv localhost 500-600 | Port Scanning (NetCat) |
@@ -68,6 +68,7 @@
 | nc -l port | nc -l 2220 > received_file | Receive a file |
 | nc hostAddress port | nc localhost 2220 < file to send | Send a file |
 | ncat | ncat --ssl 192.168.1.1 31421 | Connect or listen with SSL |
+| ss | ss -nulpt | Static Sockets. Displays the list of listening ports |
 | opens ssl | openssl s_client -connect localhost:30000 | OpenSSL is a toolkit that implements the (SSL) and (TLS) protocols. |
 | nmap | nmap localhost -p 31000-32000 | Scan the ports. |
 | nmap | nmap 192.168.1.1-254 | Scan IP range. |
@@ -77,6 +78,7 @@
 | diff -y --suppress-common-lines | diff -y --suppress-common-lines file1.txt file2.txt | Compare values side by side. (only the differences) |
 | systemctl restart | sudo systemctl restart networking | Restart networking |
 | htop | htop | shows system activities |
+| dig | dig NS samanqaydi.com <br> dig A samanqaydi.com <br> dig AAAA samanqaydi.com <br> dig MX samanqaydi.com <br> dig TXT samanqaydi.com <br> dig CNAME samanqaydi.com <br> dig SOA samanqaydi.com <br> dig ANY samanqaydi.com <br> dig PTR 8.8.8.8.in-addr.arpa | Query NS (Name Server) records <br> Query A (IPv4) records <br> Query AAAA (IPv6) records <br> Query MX (Mail Exchange) records <br> Query TXT (Text) records <br> Query CNAME (Canonical Name) records <br> Query SOA (Start of Authority) records <br> Query ALL available records <br> Query PTR (Pointer) records for reverse lookup |
 
 
 ## Curl examples
@@ -96,31 +98,66 @@
 | curl upload (PUT) | `curl -T localfile.txt ftp://example.com/remote.txt --user user:pass` | Upload a file using PUT or FTP with credentials |
 | curl silent + show errors | `curl -sS -O https://example.com/file` | Silent mode but show errors; download file |
 
-## "|", ">", and "<"
-...
+## I/O Redirection and Piping
+These operators are used for **I/O Redirection** and **Piping** in Linux. They control where a command's input comes from and where its output goes.
+
+### Pipe (`|`)
+The pipe operator takes the standard output (stdout) of the command on its left and passes it as standard input (stdin) to the command on its right. It is used to chain multiple commands together so the output of one becomes the input of the next.
+**Example:**
+```bash
+# List all running processes and search for "nginx"
+ps -ef | grep nginx
+```
+
+### Output Redirection (`>`)
+The `>` operator redirects the standard output (stdout) of a command to a file. **Warning:** If the file already exists, it will be overwritten completely. If it doesn't exist, it will be created.
+**Example:**
+```bash
+# Write the output of echo to a file named hello.txt
+echo "Hello, World!" > hello.txt
+```
+*(Note: To append to an existing file without overwriting it, use `>>` instead).*
+
+### Input Redirection (`<`)
+The `<` operator feeds the contents of a file to a command as its standard input (stdin), rather than the command reading from the keyboard or waiting for user input.
+**Example:**
+```bash
+# Count the number of lines, words, and characters in hello.txt
+wc < hello.txt
+```
 
 ## File System
-...
+Linux uses a hierarchical file system structure where everything starts from the root directory (`/`). Unlike Windows, which uses drive letters (C:, D:), Linux mounts all storage devices under this single tree.
+
 ### / (Root)
-...
+The primary hierarchy root and root directory of the entire file system hierarchy. Every single file and directory starts from the root directory.
+
 ### /home
-...
+Contains the personal home directories for all regular users on the system (e.g., `/home/username`). Users store their personal files, configurations, and documents here.
+
 ### /tmp
-...
+A directory for storing temporary files created by applications and users. These files are typically deleted automatically when the system reboots.
+
 ### /boot
-...
+Contains the essential files required to boot the operating system, including the Linux kernel, initial RAM disk (initramfs), and the bootloader configuration (e.g., GRUB).
+
 ### /dev
-...
+Contains special device files that represent hardware components and virtual devices (e.g., `/dev/sda` for a hard drive, `/dev/null` for a black hole that discards data). Linux treats everything, including hardware, as a file.
+
 ### /etc
-...
+The central location for system-wide configuration files and scripts. You will find configuration files for services, networking, and applications here (e.g., `/etc/ssh/sshd_config`).
+
 ### /etc/passwd
-...
+A vital configuration file that stores user account information. It contains a list of all user accounts, their user IDs (UIDs), group IDs (GIDs), home directory paths, and default shells. *(Note: Passwords are encrypted and stored separately in `/etc/shadow`)*.
+
 ### /var
-...
+Stands for "variable" data. This directory contains files that are expected to grow in size or change frequently during normal system operation, such as system logs (`/var/log`), caches, databases, and website files (`/var/www`).
+
 ### /bin
-...
+Contains essential user command binaries (executable programs) that need to be available in single-user mode and to all users, such as `ls`, `cp`, `cat`, and `echo`.
+
 ### /sbin
-...
+Contains essential system administration binaries, generally intended to be run by the root user for system maintenance tasks. Examples include `fdisk`, `reboot`, and `iptables`.
 
 ## Environment Variables
 Environment variables in Linux are **dynamic** values that affect the behavior of processes and applications on the system. They are used to store information that the operating system and various programs need to operate properly.
@@ -293,17 +330,42 @@ chmod 2755 directory
 | rmdir -v | Print the information that the specified directory was deleted. |
 
 ## sed
-**sed** is a powerful command-line tool used for manipulating text streams. It's often referred to as a stream editor because it processes text line by line. Common operations include:   
+**sed** is a powerful command-line tool used for manipulating text streams. It's often referred to as a stream editor because it processes text line by line. Common operations include:
 
 - Finding and replacing text
-- Deleting lines   
-- Inserting lines   
+- Deleting lines
+- Inserting lines
 - Appending text
 
-Example
+### Common Practical Examples
 ```bash
-# needs explanation
+# Basic Substitution (Find and Replace)
+# 's' stands for substitute. It replaces the first occurrence of "old" with "new" on each line.
+sed 's/old/new/' file.txt
+
+# Global Substitution
+# The 'g' flag at the end means "global", replacing all occurrences of "old" with "new" on the line, not just the first one.
+sed 's/old/new/g' file.txt
+
+# In-place Editing (from your original example)
+# The '-i' option edits the file "in-place" meaning it modifies the file directly instead of just printing the output to the terminal.
 sed -i 's/some/many/g' file.txt
+
+# Delete Specific Lines
+# Delete the 3rd line of the file ('d' stands for delete).
+sed '3d' file.txt
+
+# Delete lines containing a specific pattern
+# Deletes any line containing the word "error".
+sed '/error/d' file.txt
+
+# Print only specific lines
+# The '-n' option suppresses normal output, and the 'p' flag prints only the matching lines.
+sed -n '/warning/p' file.txt
+
+# Replace using different delimiters
+# If your search string contains slashes (like a file path), you can use a different delimiter like '|' to avoid escaping every slash.
+sed 's|/var/log/old|/var/log/new|g' file.txt
 ```
 
 ## locate
@@ -337,9 +399,6 @@ scp -i key_file.pem your_username@remotehost.edu:/remote/dir/foobar.txt /local/d
 ```bash
  ssh username@hostaddress -p 2220 'cat temp.txt' > C:\temp\temp.txt
  ```
-
-## Curl command
-...
 
 
 ## Nmap
