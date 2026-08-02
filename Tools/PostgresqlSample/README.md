@@ -8,12 +8,12 @@ Podman
 sudo podman run -d \
   --name postgres-db \
   -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=Pass@12345 \
+  -e POSTGRES_PASSWORD='Pass@12345' \
   -e POSTGRES_DB=default_database \
-  -v postgres-data:/var/lib/postgresql/data \
+  -v postgres-data:/var/lib/postgresql \
   -p 5432:5432 \
   --restart=always \
-  postgres
+  postgres:latest
 ```
 
 ---
@@ -24,12 +24,12 @@ Docker
 sudo docker run -d \
   --name postgres-db \
   -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=Pass@12345 \
+  -e POSTGRES_PASSWORD='Pass@12345' \
   -e POSTGRES_DB=default_database \
-  -v postgres-data:/var/lib/postgresql/data \
+  -v postgres-data:/var/lib/postgresql \
   -p 5432:5432 \
   --restart=always \
-  postgres
+  postgres:latest
 ```
 
-> Use ``` ` ``` instead of ```\\``` if you are using this command in powershell
+> Use ``` ` ``` instead of ```\``` if you are using this command in powershell
