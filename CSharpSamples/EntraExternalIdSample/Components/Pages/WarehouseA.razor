@@ -1,0 +1,8 @@
+@page "/warehouse-a"
+@attribute [Authorize(Policy = "WarehouseA")]
+
+<PageTitle>Warehouse A</PageTitle>
+
+<h1>Warehouse A</h1>
+<p class="lead">Only members of the Entra group <code>AccessCode-ADVCD01</code> can see this page.</p>
+<p>Authorization is the policy <code>WarehouseA</code>, which requires the claim <code>access_code = ADVCD01</code>. That claim is added at sign-in by resolving the <code>groups</code> claim of the ID token.</p>

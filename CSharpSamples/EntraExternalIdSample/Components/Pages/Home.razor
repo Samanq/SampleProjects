@@ -1,0 +1,27 @@
+﻿@page "/"
+
+<PageTitle>Entra External ID sample</PageTitle>
+
+<div class="py-5 mx-auto text-center" style="max-width: 48rem">
+    <h1 class="display-6">Entra External ID + Blazor + PostgreSQL</h1>
+    <p class="lead">A proof of concept showing how a customer-facing Blazor app authenticates users with Microsoft Entra External ID and writes back to the directory.</p>
+
+    <ul class="text-start d-inline-block mb-4">
+        <li><strong>Sign-up and sign-in</strong> through an Entra External ID user flow (email + one-time passcode). No password, no Microsoft account needed.</li>
+        <li><strong>PostgreSQL</strong> records every signed-in user (object id, email, name, login count).</li>
+        <li><strong>Access codes</strong>: enter a code + password and the app adds you to a matching Entra security group via Microsoft Graph.</li>
+        <li><strong>Group-based authorization</strong>: the <code>groups</code> claim in your ID token unlocks the Warehouse A / Warehouse B pages.</li>
+        <li><strong>Profile</strong> shows the raw ID token (JWT) and all its claims.</li>
+    </ul>
+
+    <AuthorizeView>
+        <Authorized>
+            <p>Signed in as <strong>@context.User.Identity?.Name</strong>.</p>
+            <a class="btn btn-primary" href="profile">Profile</a>
+            <a class="btn btn-outline-primary" href="access-codes">Access codes</a>
+        </Authorized>
+        <NotAuthorized>
+            <a class="btn btn-primary btn-lg" href="login">Sign in / Sign up to continue</a>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>

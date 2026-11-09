@@ -1,0 +1,100 @@
+@page "/profile"
+@attribute [Authorize]
+@using System.Security.Claims
+@using EntraExternalIdSample.Services
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Authentication
+@inject AppDbContext Db
+@inject AccessCodeService Codes
+
+<PageTitle>Profile</PageTitle>
+
+<h1>Profile</h1>
+
+<h3>Access codes (from the <code>groups</code> claim)</h3>
+@if (accessCodes.Count == 0)
+{
+    <p>No access codes in your token. <a href="access-codes">Assign an access code</a>, then sign out and in again.</p>
+}
+else
+{
+    <table class="table table-sm w-auto">
+        <thead><tr><th>Access code</th><th>Label</th><th>Entra group</th><th>Page</th></tr></thead>
+        <tbody>
+            @foreach (var c in accessCodes)
+            {
+                <tr>
+                    <td>@c.Code</td><td>@c.Label</td><td>@c.GroupName</td>
+                    <td>@(c.Code == "ADVCD01" ? "warehouse-a" : c.Code == "ADVCD02" ? "warehouse-b" : "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<p class="text-muted small">Raw <code>groups</code> claims (object ids) are in the claims table below; they were mapped to codes at sign-in.</p>
+
+<h3>PostgreSQL row (table "Users")</h3>
+@if (user is null)
+{
+    <p class="text-danger">No row found for this user. The OnTokenValidated handler should have created it.</p>
+}
+else
+{
+    <table class="table table-sm w-auto">
+        <tbody>
+            <tr><th>Id</th><td>@user.Id</td></tr>
+            <tr><th>ObjectId</th><td>@user.ObjectId</td></tr>
+            <tr><th>Email</th><td>@user.Email</td></tr>
+            <tr><th>DisplayName</th><td>@user.DisplayName</td></tr>
+            <tr><th>FirstSeenUtc</th><td>@user.FirstSeenUtc</td></tr>
+            <tr><th>LastSeenUtc</th><td>@user.LastSeenUtc</td></tr>
+            <tr><th>LoginCount</th><td>@user.LoginCount</td></tr>
+        </tbody>
+    </table>
+}
+
+<h3>Raw ID token (JWT)</h3>
+@if (idToken is null)
+{
+    <p class="text-muted">No token in the session. Sign out and in again.</p>
+}
+else
+{
+    <p>Three base64url parts separated by dots: header.payload.signature. Paste it into <a href="https://jwt.ms" target="_blank" rel="noopener">jwt.ms</a> to decode it in the browser.</p>
+    <textarea class="form-control font-monospace small" rows="6" readonly>@idToken</textarea>
+}
+
+<h3>Claims from the ID token</h3>
+<table class="table table-sm">
+    <thead><tr><th>Type</th><th>Value</th></tr></thead>
+    <tbody>
+        @foreach (var c in claims)
+        {
+            <tr><td><code>@c.Type</code></td><td>@c.Value</td></tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [CascadingParameter] Task<AuthenticationState> AuthState { get; set; } = default!;
+    [CascadingParameter] HttpContext HttpContext { get; set; } = default!;
+
+    IEnumerable<Claim> claims = [];
+    AppUser? user;
+    List<AccessCode> accessCodes = [];
+    string? idToken;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var principal = (await AuthState).User;
+        claims = principal.Claims;
+        idToken = await HttpContext.GetTokenAsync("id_token");
+        var oid = principal.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier")
+                  ?? principal.FindFirstValue("oid")
+                  ?? principal.FindFirstValue(ClaimTypes.NameIdentifier);
+        user = await Db.Users.SingleOrDefaultAsync(u => u.ObjectId == oid);
+
+        accessCodes = principal.FindAll(AccessCode.ClaimType)
+            .Select(c => Codes.ByCode(c.Value)).OfType<AccessCode>().ToList();
+    }
+}

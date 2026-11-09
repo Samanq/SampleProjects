@@ -1,0 +1,22 @@
+@page "/login"
+
+<PageTitle>Sign in or sign up</PageTitle>
+
+<div class="py-5 mx-auto text-center" style="max-width: 32rem">
+    <h1>Sign in or sign up</h1>
+    <p>Both buttons send you to Microsoft Entra External ID. Entra emails you a one-time passcode and returns a signed ID token to this app once you enter it.</p>
+
+    <AuthorizeView>
+        <Authorized>
+            <p>You are already signed in as <strong>@context.User.Identity?.Name</strong>.</p>
+            <a class="btn btn-primary" href="profile">Go to profile</a>
+        </Authorized>
+        <NotAuthorized>
+            <div class="d-grid gap-2">
+                <a class="btn btn-primary btn-lg" href="authentication/login">Sign in</a>
+                <a class="btn btn-outline-primary btn-lg" href="authentication/signup">Create an account</a>
+            </div>
+            <p class="text-muted small mt-3">New here? "Create an account" opens Entra's sign-up page directly. Existing users can also create an account from the sign-in page.</p>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>

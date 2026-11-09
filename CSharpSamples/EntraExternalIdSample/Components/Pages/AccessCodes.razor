@@ -1,0 +1,80 @@
+@page "/access-codes"
+@attribute [Authorize]
+@using System.Security.Claims
+@using EntraExternalIdSample.Services
+@inject AccessCodeService Codes
+@inject GraphService Graph
+
+<PageTitle>Access codes</PageTitle>
+
+<h1>Access codes</h1>
+
+<p>Enter a code and its password to be added to the matching Entra security group. The membership shows up in the <code>groups</code> claim on your next sign-in.</p>
+
+<EditForm Model="Input" FormName="assign" OnValidSubmit="AssignAsync" class="row g-2 align-items-end mb-3" style="max-width: 32rem">
+    <div class="col-5">
+        <label class="form-label" for="code">Code</label>
+        <InputText id="code" class="form-control" @bind-Value="Input.Code" maxlength="7" placeholder="ADVCD01" />
+    </div>
+    <div class="col-5">
+        <label class="form-label" for="password">Password</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="Input.Password" />
+    </div>
+    <div class="col-2">
+        <button type="submit" class="btn btn-primary w-100">Assign</button>
+    </div>
+</EditForm>
+
+@if (message is not null)
+{
+    <div class="alert @(success ? "alert-success" : "alert-danger")">@message</div>
+}
+
+<h3>Demo codes</h3>
+<table class="table table-sm w-auto">
+    <thead><tr><th>Code</th><th>Password</th><th>Label</th><th>Entra group</th></tr></thead>
+    <tbody>
+        @foreach (var c in Codes.All)
+        {
+            <tr><td>@c.Code</td><td><code>@c.Password</code></td><td>@c.Label</td><td>@c.GroupName</td></tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [CascadingParameter] Task<AuthenticationState> AuthState { get; set; } = default!;
+    [SupplyParameterFromForm] AssignInput Input { get; set; } = new();
+
+    string? message;
+    bool success;
+
+    async Task AssignAsync()
+    {
+        var code = Codes.Verify(Input.Code, Input.Password);
+        if (code is null)
+        {
+            (message, success) = ("Unknown code or wrong password.", false);
+            return;
+        }
+
+        var user = (await AuthState).User;
+        var oid = user.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier")
+                  ?? user.FindFirstValue("oid")!;
+        try
+        {
+            var groupId = await Graph.EnsureGroupAsync(code.GroupName);
+            await Graph.AddMemberAsync(groupId, oid);
+            (message, success) = ($"Added to {code.GroupName} ({code.Label}). Sign out and back in to see it in your claims.", true);
+        }
+        catch (HttpRequestException ex)
+        {
+            (message, success) = (ex.Message, false);
+        }
+    }
+
+    public class AssignInput
+    {
+        public string Code { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+}
